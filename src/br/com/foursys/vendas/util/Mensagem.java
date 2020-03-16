@@ -86,7 +86,7 @@ public class Mensagem {
     public static String produtoAlteradoSucesso = "Produto alterado com sucesso.";
     public static String produtoAlteradoErro = "Falha ao alterar produto.";
     //mensagens Estoque
-    public static String estoqueExcluidoSucesso = "Estoque exclíodo com sucesso!";
+    public static String estoqueExcluidoSucesso = "Estoque excluído com sucesso!";
     public static String estoqueExcluidoErro = "Falha ao excluir estoque!";
     public static String estoqueQuantidadeMaximaVazio = "Por favor, informe a quantidade máxima.\nCampo obrigatório!";
     public static String estoqueQuantidadeMaximaInvalido = "A quantidade máxima informada é inválida.";

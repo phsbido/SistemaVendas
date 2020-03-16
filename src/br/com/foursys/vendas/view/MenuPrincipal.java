@@ -400,12 +400,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtMenuActionPerformed
-        enable(false);
         new ClientePrincipal();
     }//GEN-LAST:event_jbtMenuActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        enable(false);
         new FornecedorPrincipal();
     }//GEN-LAST:event_jButton2ActionPerformed
 
