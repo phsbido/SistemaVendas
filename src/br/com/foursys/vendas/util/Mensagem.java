@@ -85,6 +85,7 @@ public class Mensagem {
     public static String produtoInseridoErro = "Falha ao inserir produto.";
     public static String produtoAlteradoSucesso = "Produto alterado com sucesso.";
     public static String produtoAlteradoErro = "Falha ao alterar produto.";
+    public static String produtoInsuficiente = "Quantidade menor que a quantidade mínima";
     //mensagens Estoque
     public static String estoqueExcluidoSucesso = "Estoque excluído com sucesso!";
     public static String estoqueExcluidoErro = "Falha ao excluir estoque!";

@@ -18,7 +18,7 @@ public class EstoqueDAO extends GenericDAO {
         ArrayList<Estoque> listaRetorno = new ArrayList<>();
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = sessao.createCriteria(Estoque.class);
-        criteria.addOrder(Order.asc("idEstoque"));
+        criteria.addOrder(Order.asc("quantidadeMinima"));
         listaRetorno = (ArrayList<Estoque>) criteria.list();
         return listaRetorno;
     }
