@@ -40,7 +40,7 @@ public class EstoqueController {
     public void excluirEstoque() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewEstoque.getTabelaEstoque().getModel();
         if (this.viewEstoque.getTabelaEstoque().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueNaoSelecionado);
+            JOptionPane.showMessageDialog(null, "");
         } else {
             estoque = listaEstoques.get(this.viewEstoque.getTabelaEstoque().getSelectedRow());
             int opcao = JOptionPane.showConfirmDialog(null, Mensagem.confirmaExclusao, Mensagem.atencao,
@@ -50,10 +50,10 @@ public class EstoqueController {
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.excluir(estoque);
-                    JOptionPane.showMessageDialog(null, Mensagem.estoqueExcluidoSucesso);
-                    listarEstoques();
+                    JOptionPane.showMessageDialog(null, "");
+                    listarEstoque();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.estoqueExcluidoErro);
+                    JOptionPane.showMessageDialog(null, "");
                     Logger.getLogger(EstoqueController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
