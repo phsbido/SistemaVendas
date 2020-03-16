@@ -1,6 +1,5 @@
 package br.com.foursys.vendas;
 
-import br.com.foursys.vendas.view.EstoquePrincipal;
 import br.com.foursys.vendas.view.LoginPrincipal;
 import javax.swing.UIManager;
 
@@ -15,6 +14,6 @@ public class Main {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception ignored) {
         }
-        new EstoquePrincipal();
+        new LoginPrincipal();
     }
 }

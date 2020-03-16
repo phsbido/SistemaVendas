@@ -3,6 +3,7 @@ package br.com.foursys.vendas.controller;
 import br.com.foursys.vendas.dao.EstoqueDAO;
 import br.com.foursys.vendas.model.Estoque;
 import br.com.foursys.vendas.model.Fornecedor;
+import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
 import br.com.foursys.vendas.view.EstoquePrincipal;
@@ -25,7 +26,7 @@ public class EstoqueController {
     private EstoquePrincipal viewEstoque;
     private Estoque estoque = new Estoque();
     private List<Estoque> listaEstoques;
-    private List<Fornecedor> listaFornecedores;
+    private List<Produto> listaProdutos;
     private boolean alterar;
 
     public EstoqueController() {
@@ -74,6 +75,20 @@ public class EstoqueController {
         modelo.setRowCount(0);
         for (Estoque estoque : listaEstoques) {
             modelo.addRow(new String[]{estoque.getProdutoIdProduto().getIdProduto() + "", estoque.getProdutoIdProduto().getDescricao(), estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), estoque.getQuantidadeEstoque() + "", estoque.getQuantidadeMinima() + ""});
+        }
+    }
+
+    public void carregarComboProduto() {
+        ProdutoController controller = new ProdutoController();
+        try {
+            listaProdutos = controller.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.viewEstoque.getJcbProduto().removeAllItems();
+        this.viewEstoque.getJcbProduto().addItem("Mensagem.defaultComboProduto");
+        for (Produto produto : listaProdutos) {
+            this.viewEstoque.getJcbProduto().addItem(produto.getDescricao());
         }
     }
 

@@ -1,19 +1,22 @@
 package br.com.foursys.vendas.view;
 
-import br.com.foursys.vendas.controller.ProdutoController;
+import br.com.foursys.vendas.controller.EstoqueController;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class EstoquePrincipal extends javax.swing.JFrame {
-    ProdutoController controllerProduto = new ProdutoController(EstoquePrincipal.this);
-    
+
+    EstoqueController estoqueController = new EstoqueController(EstoquePrincipal.this);
+
     public EstoquePrincipal() {
         initComponents();
-        this.controllerProduto.carregarComboFornecedor();
-        this.controllerProduto.bloqueioInicial();
-        this.controllerProduto.listarProduto();
+//        this.estoqueController.carregarComboProduto();
+//        this.estoqueController.bloqueioInicial();
+        this.estoqueController.listarEstoque();
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -32,10 +35,10 @@ public class EstoquePrincipal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jlbDescricao = new javax.swing.JLabel();
         jlbFornecedor = new javax.swing.JLabel();
         jlbValorCusto = new javax.swing.JLabel();
         jlbValorVenda = new javax.swing.JLabel();
+        jlbDescricao = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaEstoque = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
@@ -44,10 +47,13 @@ public class EstoquePrincipal extends javax.swing.JFrame {
         jbtCancelar = new javax.swing.JButton();
         jbtSalvar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        ftfQtdeMin = new javax.swing.JTextField();
+        jtfQtdeMin = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jtjQtd = new javax.swing.JTextField();
+        jtfQtde = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jcbProduto = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Controle de Estoque");
@@ -109,7 +115,7 @@ public class EstoquePrincipal extends javax.swing.JFrame {
                 .addComponent(jbtSair, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        painel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dados do Estoque", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        painel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dados do Produto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         jLabel4.setText("Descrição:");
 
@@ -119,13 +125,13 @@ public class EstoquePrincipal extends javax.swing.JFrame {
 
         jLabel7.setText("Valor Venda:");
 
-        jlbDescricao.setText("Caneca Star Wars");
-
         jlbFornecedor.setText("Walt Disney Ltda.");
 
-        jlbValorCusto.setText("R$10,99");
+        jlbValorCusto.setText("R$ 10,50");
 
-        jlbValorVenda.setText("R$56,50");
+        jlbValorVenda.setText("R$ 50,00");
+
+        jlbDescricao.setText("Caneca Star Wars");
 
         javax.swing.GroupLayout painelLayout = new javax.swing.GroupLayout(painel);
         painel.setLayout(painelLayout);
@@ -134,16 +140,16 @@ public class EstoquePrincipal extends javax.swing.JFrame {
             .addGroup(painelLayout.createSequentialGroup()
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jlbDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(painelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jlbValorCusto, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(jlbValorCusto, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(painelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlbDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30)
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
@@ -151,17 +157,17 @@ public class EstoquePrincipal extends javax.swing.JFrame {
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlbValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painelLayout.setVerticalGroup(
             painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel6)
-                    .addComponent(jlbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jlbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlbDescricao))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -172,7 +178,7 @@ public class EstoquePrincipal extends javax.swing.JFrame {
 
         tabelaEstoque.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Caneca Star Wars", "Walt Disney Ltda.", "50", "10"}
+
             },
             new String [] {
                 "Descrição", "Fornecedor", "Quantidade", "Quantidade Mínima"
@@ -211,7 +217,7 @@ public class EstoquePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addComponent(jbtSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
         );
@@ -246,11 +252,11 @@ public class EstoquePrincipal extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dados do Estoque", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        ftfQtdeMin.setText("10");
+        jtfQtdeMin.setText("10");
 
         jLabel2.setText("Quantidade Mínima:");
 
-        jtjQtd.setText("50");
+        jtfQtde.setText("50");
 
         jLabel3.setText("Quantidade:");
 
@@ -262,11 +268,11 @@ public class EstoquePrincipal extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ftfQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtfQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jtjQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtfQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(121, 121, 121))
         );
         jPanel1Layout.setVerticalGroup(
@@ -275,10 +281,37 @@ public class EstoquePrincipal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(ftfQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfQtdeMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jtjQtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfQtde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Seleção do Produto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+
+        jcbProduto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione o Produto-", "Caneca Star Wars" }));
+
+        jLabel1.setText("Produto:");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -287,11 +320,14 @@ public class EstoquePrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(1, 1, 1))
-            .addComponent(painel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(painel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,28 +335,31 @@ public class EstoquePrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(painel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtNovoActionPerformed
-        this.controllerProduto.acaoBotaoNovo();
+        this.estoqueController.acaoBotaoNovo();
     }//GEN-LAST:event_jbtNovoActionPerformed
 
     private void jbtAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAlterarActionPerformed
-        this.controllerProduto.alterarProduto();
+//        this.estoqueController.alterarProduto();
     }//GEN-LAST:event_jbtAlterarActionPerformed
 
     private void jbtExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirActionPerformed
-         this.controllerProduto.excluirProduto();
+//        this.estoqueController.excluirProduto();
     }//GEN-LAST:event_jbtExcluirActionPerformed
 
     private void jbtSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSairActionPerformed
@@ -328,15 +367,15 @@ public class EstoquePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtSairActionPerformed
 
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
-        this.controllerProduto.acaoBotaoCancelar();       
+        this.estoqueController.acaoBotaoCancelar();
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
     private void jbtSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalvarActionPerformed
-       this.controllerProduto.salvarProduto();
+//        this.estoqueController.salvarProduto();
     }//GEN-LAST:event_jbtSalvarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField ftfQtdeMin;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -346,6 +385,7 @@ public class EstoquePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
@@ -355,11 +395,13 @@ public class EstoquePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jbtNovo;
     private javax.swing.JButton jbtSair;
     private javax.swing.JButton jbtSalvar;
+    private javax.swing.JComboBox jcbProduto;
     private javax.swing.JLabel jlbDescricao;
     private javax.swing.JLabel jlbFornecedor;
     private javax.swing.JLabel jlbValorCusto;
     private javax.swing.JLabel jlbValorVenda;
-    private javax.swing.JTextField jtjQtd;
+    private javax.swing.JTextField jtfQtde;
+    private javax.swing.JTextField jtfQtdeMin;
     private javax.swing.JPanel painel;
     private javax.swing.JTable tabelaEstoque;
     // End of variables declaration//GEN-END:variables
@@ -412,53 +454,76 @@ public class EstoquePrincipal extends javax.swing.JFrame {
         this.jbtSalvar = jbtSalvar;
     }
 
-    public JComboBox getJcbFornecedor() {
-        return jcbFornecedor;
+    public JComboBox getJcbProduto() {
+        return jcbProduto;
     }
 
-    public void setJcbFornecedor(JComboBox jcbFornecedor) {
-        this.jcbFornecedor = jcbFornecedor;
+    public void setJcbProduto(JComboBox jcbProduto) {
+        this.jcbProduto = jcbProduto;
     }
 
-    public JTextField getJtfDescricao() {
-        return jtfDescricao;
+    public JLabel getJlbDescricao() {
+        return jlbDescricao;
     }
 
-    public void setJtfDescricao(JTextField jtfDescricao) {
-        this.jtfDescricao = jtfDescricao;
+    public void setJlbDescricao(JLabel jlbDescricao) {
+        this.jlbDescricao = jlbDescricao;
     }
 
-    public JTextField getJtfPesquisarDescricao() {
-        return jtfPesquisarCodigo;
+    public JLabel getJlbFornecedor() {
+        return jlbFornecedor;
     }
 
-    public void setJtfPesquisarDescricao(JTextField jtfPesquisarDescricao) {
-        this.jtfPesquisarCodigo = jtfPesquisarDescricao;
+    public void setJlbFornecedor(JLabel jlbFornecedor) {
+        this.jlbFornecedor = jlbFornecedor;
     }
 
-    public JTextField getJtfValorCusto() {
-        return jtfValorCusto;
+    public JLabel getJlbValorCusto() {
+        return jlbValorCusto;
     }
 
-    public void setJtfValorCusto(JTextField jtfValorCusto) {
-        this.jtfValorCusto = jtfValorCusto;
+    public void setJlbValorCusto(JLabel jlbValorCusto) {
+        this.jlbValorCusto = jlbValorCusto;
     }
 
-    public JTextField getJtfValorVenda() {
-        return jtfValorVenda;
+    public JLabel getJlbValorVenda() {
+        return jlbValorVenda;
     }
 
-    public void setJtfValorVenda(JTextField jtfValorVenda) {
-        this.jtfValorVenda = jtfValorVenda;
+    public void setJlbValorVenda(JLabel jlbValorVenda) {
+        this.jlbValorVenda = jlbValorVenda;
     }
 
-    public JTable getTabelaProduto() {
+    public JTextField getJtfQtde() {
+        return jtfQtde;
+    }
+
+    public void setJtfQtde(JTextField jtfQtde) {
+        this.jtfQtde = jtfQtde;
+    }
+
+    public JTextField getJtfQtdeMin() {
+        return jtfQtdeMin;
+    }
+
+    public void setJtfQtdeMin(JTextField jtfQtdeMin) {
+        this.jtfQtdeMin = jtfQtdeMin;
+    }
+
+    public JPanel getPainel() {
+        return painel;
+    }
+
+    public void setPainel(JPanel painel) {
+        this.painel = painel;
+    }
+
+    public JTable getTabelaEstoque() {
         return tabelaEstoque;
     }
 
-    public void setTabelaProduto(JTable tabelaProduto) {
-        this.tabelaEstoque = tabelaProduto;
+    public void setTabelaEstoque(JTable tabelaEstoque) {
+        this.tabelaEstoque = tabelaEstoque;
     }
 
-   
 }

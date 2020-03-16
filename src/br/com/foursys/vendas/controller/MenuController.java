@@ -2,7 +2,6 @@ package br.com.foursys.vendas.controller;
 
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.view.MenuPrincipal;
-import br.com.foursys.vendas.view.Sobre;
 import javax.swing.JOptionPane;
 
 /**
