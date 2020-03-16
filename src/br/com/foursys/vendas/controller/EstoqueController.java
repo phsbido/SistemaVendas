@@ -50,10 +50,10 @@ public class EstoqueController {
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.excluir(estoque);
-                    JOptionPane.showMessageDialog(null, "");
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueExcluidoSucesso);
                     listarEstoque();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "");
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueExcluidoErro);
                     Logger.getLogger(EstoqueController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
