@@ -94,6 +94,8 @@ public class Mensagem {
     public static String estoqueQuantidadeInvalido = "A quantidade informada é inválida.";
     public static String estoqueInseridoSucesso = "Estoque inserido com sucesso!";
     public static String estoqueInseridoErro = "Falha ao inserir estoque!";
+    public static String estoqueAlteradoSucesso = "Estoque alterado com sucesso!";
+    public static String estoqueAlteradoErro = "Falha ao alterar estoque!";
     public static String estoqueNaoSelecionado = "Por favor, selecione um estoque para realizar esta ação.";
     //Mensagens Geral
     public static String confirmaSair = "Deseja realmente sair?";
