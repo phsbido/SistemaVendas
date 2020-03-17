@@ -156,7 +156,7 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
-                <StringItem index="0" value="(Selecione um Cliente)"/>
+                <StringItem index="0" value="-Selecione um Cliente-"/>
               </StringArray>
             </Property>
           </Properties>
@@ -168,7 +168,7 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
-                <StringItem index="0" value="(Selecione um Fornecedor)"/>
+                <StringItem index="0" value="-Selecione um Funcion&#xe1;rio-"/>
               </StringArray>
             </Property>
           </Properties>
@@ -200,7 +200,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jComboBox1" min="-2" pref="330" max="-2" attributes="0"/>
+                                  <Component id="jcbProduto" min="-2" pref="330" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jbtAdicionarProduto" max="32767" attributes="0"/>
                           </Group>
@@ -208,9 +208,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                                  <EmptySpace pref="54" max="32767" attributes="0"/>
                                   <Component id="jtfQuantidade" min="-2" pref="77" max="-2" attributes="0"/>
-                                  <EmptySpace pref="49" max="32767" attributes="0"/>
+                                  <EmptySpace pref="84" max="32767" attributes="0"/>
                                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jtfDescontoProduto" min="-2" pref="117" max="-2" attributes="0"/>
@@ -238,7 +238,7 @@
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jcbProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
@@ -278,20 +278,17 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfDescontoProduto">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="R$"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="text" type="java.lang.String" value="Desconto:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="jcbProduto">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
-                <StringItem index="0" value="(Selecione um Produto)"/>
+                <StringItem index="0" value="-Selecione um Produto-"/>
               </StringArray>
             </Property>
           </Properties>
@@ -449,11 +446,12 @@
         <Component class="javax.swing.JComboBox" name="jcbFormaDePagamento">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="1-Dinheiro"/>
-                <StringItem index="1" value="2-D&#xe9;bito"/>
-                <StringItem index="2" value="3-Cr&#xe9;dito"/>
-                <StringItem index="3" value="4-Cheque"/>
+              <StringArray count="5">
+                <StringItem index="0" value="-Selecione uma forma de pagamento-"/>
+                <StringItem index="1" value="Dinheiro"/>
+                <StringItem index="2" value="D&#xe9;bito"/>
+                <StringItem index="3" value="Cr&#xe9;dito"/>
+                <StringItem index="4" value="Cheque"/>
               </StringArray>
             </Property>
           </Properties>
@@ -471,7 +469,6 @@
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
               <Format format="" subtype="-1" type="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="R$"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfDescontoFormaDePagamentoActionPerformed"/>

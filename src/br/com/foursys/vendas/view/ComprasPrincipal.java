@@ -41,15 +41,15 @@ public class ComprasPrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jcbSelecionarCliente = new javax.swing.JComboBox<String>();
-        jcbSelecioneFornecedor = new javax.swing.JComboBox<String>();
+        jcbFuncionario = new javax.swing.JComboBox<String>();
+        jcbFornecedor = new javax.swing.JComboBox<String>();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jtfQantidade = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
         jtfDesconto = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jcbSelecionarFornecedor = new javax.swing.JComboBox<String>();
+        jcbProduto = new javax.swing.JComboBox<String>();
         jbtAdicionarProduto = new javax.swing.JButton();
         jbtExcluirProduto = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -92,9 +92,9 @@ public class ComprasPrincipal extends javax.swing.JFrame {
 
         jLabel15.setText("Fornecedor:");
 
-        jcbSelecionarCliente.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Funcionário)" }));
+        jcbFuncionario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Funcionário-" }));
 
-        jcbSelecioneFornecedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Fornecedor)" }));
+        jcbFornecedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Fornecedor-" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -107,8 +107,8 @@ public class ComprasPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jcbSelecionarCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jcbSelecioneFornecedor, 0, 656, Short.MAX_VALUE))
+                    .addComponent(jcbFuncionario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jcbFornecedor, 0, 656, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -116,10 +116,10 @@ public class ComprasPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jcbSelecionarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbSelecioneFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
                 .addContainerGap())
         );
@@ -143,7 +143,7 @@ public class ComprasPrincipal extends javax.swing.JFrame {
 
         jLabel7.setText("Desconto:");
 
-        jcbSelecionarFornecedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Fornecedor)" }));
+        jcbProduto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Produto-" }));
 
         jbtAdicionarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/salvar.png"))); // NOI18N
         jbtAdicionarProduto.setText("Adicionar Produto");
@@ -181,7 +181,7 @@ public class ComprasPrincipal extends javax.swing.JFrame {
                         .addGap(14, 14, 14)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jcbSelecionarFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
@@ -202,7 +202,7 @@ public class ComprasPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jcbSelecionarFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(jtfQantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
@@ -220,7 +220,7 @@ public class ComprasPrincipal extends javax.swing.JFrame {
 
         jLabel3.setText("Forma de Pagamento:");
 
-        jcbFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1-Dinheiro", "2-Débito", "3-Crédito", "4-Cheque" }));
+        jcbFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione uma forma de pagamento-", "Dinheiro", "Débito", "Crédito", "Cheque" }));
 
         jLabel8.setText("Desconto:");
 
@@ -270,14 +270,14 @@ public class ComprasPrincipal extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jcbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(jcbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(jtfDesonto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jbtIncluirFormaPagamento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                         .addComponent(jbtExcluirFormaPagamento))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
@@ -390,7 +390,6 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfDesontoActionPerformed
 
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
@@ -416,9 +415,9 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jbtIniciarCompra;
     private javax.swing.JButton jbtSair;
     private javax.swing.JComboBox<String> jcbFormaPagamento;
-    private javax.swing.JComboBox<String> jcbSelecionarCliente;
-    private javax.swing.JComboBox<String> jcbSelecionarFornecedor;
-    private javax.swing.JComboBox<String> jcbSelecioneFornecedor;
+    private javax.swing.JComboBox<String> jcbFornecedor;
+    private javax.swing.JComboBox<String> jcbFuncionario;
+    private javax.swing.JComboBox<String> jcbProduto;
     private javax.swing.JLabel jlbValorTotal;
     private javax.swing.JTextField jtfDesconto;
     private javax.swing.JFormattedTextField jtfDesonto;
@@ -499,28 +498,28 @@ public class ComprasPrincipal extends javax.swing.JFrame {
         this.jcbFormaPagamento = jcbFormaPagamento;
     }
 
-    public JComboBox<String> getJcbSelecionarCliente() {
-        return jcbSelecionarCliente;
+    public JComboBox<String> getJcbFornecedor() {
+        return jcbFornecedor;
     }
 
-    public void setJcbSelecionarCliente(JComboBox<String> jcbSelecionarCliente) {
-        this.jcbSelecionarCliente = jcbSelecionarCliente;
+    public void setJcbFornecedor(JComboBox<String> jcbFornecedor) {
+        this.jcbFornecedor = jcbFornecedor;
     }
 
-    public JComboBox<String> getJcbSelecionarFornecedor() {
-        return jcbSelecionarFornecedor;
+    public JComboBox<String> getJcbFuncionario() {
+        return jcbFuncionario;
     }
 
-    public void setJcbSelecionarFornecedor(JComboBox<String> jcbSelecionarFornecedor) {
-        this.jcbSelecionarFornecedor = jcbSelecionarFornecedor;
+    public void setJcbFuncionario(JComboBox<String> jcbFuncionario) {
+        this.jcbFuncionario = jcbFuncionario;
     }
 
-    public JComboBox<String> getJcbSelecioneFornecedor() {
-        return jcbSelecioneFornecedor;
+    public JComboBox<String> getJcbProduto() {
+        return jcbProduto;
     }
 
-    public void setJcbSelecioneFornecedor(JComboBox<String> jcbSelecioneFornecedor) {
-        this.jcbSelecioneFornecedor = jcbSelecioneFornecedor;
+    public void setJcbProduto(JComboBox<String> jcbProduto) {
+        this.jcbProduto = jcbProduto;
     }
 
     public JLabel getJlbValorTotal() {
@@ -570,6 +569,5 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     public void setTabelaProdutos(JTable tabelaProdutos) {
         this.tabelaProdutos = tabelaProdutos;
     }
-
 
 }

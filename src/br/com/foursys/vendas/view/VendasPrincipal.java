@@ -17,7 +17,6 @@ import javax.swing.JTextField;
  */
 public class VendasPrincipal extends javax.swing.JFrame {
 
- 
     public VendasPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
@@ -112,6 +111,14 @@ public class VendasPrincipal extends javax.swing.JFrame {
         this.jcbFornecedor = jcbFornecedor;
     }
 
+    public JComboBox<String> getJcbProduto() {
+        return jcbProduto;
+    }
+
+    public void setJcbProduto(JComboBox<String> jcbProduto) {
+        this.jcbProduto = jcbProduto;
+    }
+
     public JFormattedTextField getJtfDescontoFormaDePagamento() {
         return jtfDescontoFormaDePagamento;
     }
@@ -152,7 +159,6 @@ public class VendasPrincipal extends javax.swing.JFrame {
         this.tabelaProduto = tabelaProduto;
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -170,7 +176,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jtfDescontoProduto = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<String>();
+        jcbProduto = new javax.swing.JComboBox<String>();
         jbtAdicionarProduto = new javax.swing.JButton();
         jbtExcluirProduto = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -212,9 +218,9 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
         jLabel15.setText("Funcionário:");
 
-        jcbCliente.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Cliente)" }));
+        jcbCliente.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Cliente-" }));
 
-        jcbFornecedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Fornecedor)" }));
+        jcbFornecedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Funcionário-" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -261,11 +267,9 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
         jLabel5.setText("Quantidade:");
 
-        jtfDescontoProduto.setText("R$");
-
         jLabel7.setText("Desconto:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Produto)" }));
+        jcbProduto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Produto-" }));
 
         jbtAdicionarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/salvar.png"))); // NOI18N
         jbtAdicionarProduto.setText("Adicionar Produto");
@@ -303,15 +307,15 @@ public class VendasPrincipal extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jbtAdicionarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                                 .addComponent(jtfQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
                                 .addComponent(jtfDescontoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -332,7 +336,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addGap(3, 3, 3)))
                 .addGap(10, 10, 10)
@@ -350,12 +354,11 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
         jLabel3.setText("Forma de Pagamento:");
 
-        jcbFormaDePagamento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1-Dinheiro", "2-Débito", "3-Crédito", "4-Cheque" }));
+        jcbFormaDePagamento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione uma forma de pagamento-", "Dinheiro", "Débito", "Crédito", "Cheque" }));
 
         jLabel8.setText("Desconto:");
 
         jtfDescontoFormaDePagamento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat(""))));
-        jtfDescontoFormaDePagamento.setText("R$");
         jtfDescontoFormaDePagamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfDescontoFormaDePagamentoActionPerformed(evt);
@@ -505,7 +508,6 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -532,6 +534,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcbCliente;
     private javax.swing.JComboBox<String> jcbFormaDePagamento;
     private javax.swing.JComboBox<String> jcbFornecedor;
+    private javax.swing.JComboBox<String> jcbProduto;
     private javax.swing.JFormattedTextField jtfDescontoFormaDePagamento;
     private javax.swing.JTextField jtfDescontoProduto;
     private javax.swing.JFormattedTextField jtfQuantidade;
