@@ -5,6 +5,7 @@
  */
 package br.com.foursys.vendas.view;
 
+import br.com.foursys.vendas.controller.ComprasController;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -18,12 +19,17 @@ import javax.swing.JTextField;
  */
 public class ComprasPrincipal extends javax.swing.JFrame {
 
+    ComprasController comprasController = new ComprasController(ComprasPrincipal.this);
+
     /**
      * Creates new form Cliente
      */
     public ComprasPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
+        this.comprasController.carregarComboFornecedor();
+        this.comprasController.carregarComboFuncionario();
+        this.comprasController.carregarComboProduto();
         setVisible(true);
     }
 
@@ -308,6 +314,11 @@ public class ComprasPrincipal extends javax.swing.JFrame {
 
         jbtSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/sair.png"))); // NOI18N
         jbtSair.setText("Sair");
+        jbtSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSairActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Valor Total"));
 
@@ -388,6 +399,10 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     private void jtfDesontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDesontoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfDesontoActionPerformed
+
+    private void jbtSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSairActionPerformed
+        dispose();
+    }//GEN-LAST:event_jbtSairActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
