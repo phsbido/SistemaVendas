@@ -6,8 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridica.findByInscricaoEstadual", query = "SELECT p FROM PessoaJuridica p WHERE p.inscricaoEstadual = :inscricaoEstadual"),
     @NamedQuery(name = "PessoaJuridica.findByDataFundacao", query = "SELECT p FROM PessoaJuridica p WHERE p.dataFundacao = :dataFundacao")})
 public class PessoaJuridica implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +54,9 @@ public class PessoaJuridica implements Serializable {
     @Column(name = "data_fundacao")
     private String dataFundacao;
     @OneToMany(mappedBy = "pessoaJuridicaIdPessoaJuridica")
-    private Collection<Cliente> clienteCollection;
+    private List<Cliente> clienteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaIdPessoaJuridica")
+    private List<Fornecedor> fornecedorList;
 
     public PessoaJuridica() {
     }
@@ -111,12 +113,21 @@ public class PessoaJuridica implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
-        return clienteCollection;
+    public List<Cliente> getClienteList() {
+        return clienteList;
     }
 
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
-        this.clienteCollection = clienteCollection;
+    public void setClienteList(List<Cliente> clienteList) {
+        this.clienteList = clienteList;
+    }
+
+    @XmlTransient
+    public List<Fornecedor> getFornecedorList() {
+        return fornecedorList;
+    }
+
+    public void setFornecedorList(List<Fornecedor> fornecedorList) {
+        this.fornecedorList = fornecedorList;
     }
 
     @Override
@@ -143,5 +154,5 @@ public class PessoaJuridica implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.PessoaJuridica[ idPessoaJuridica=" + idPessoaJuridica + " ]";
     }
-
+    
 }

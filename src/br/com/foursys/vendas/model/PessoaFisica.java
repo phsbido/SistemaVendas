@@ -6,8 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaFisica.findByCpf", query = "SELECT p FROM PessoaFisica p WHERE p.cpf = :cpf"),
     @NamedQuery(name = "PessoaFisica.findByDataNascimento", query = "SELECT p FROM PessoaFisica p WHERE p.dataNascimento = :dataNascimento")})
 public class PessoaFisica implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,7 +55,9 @@ public class PessoaFisica implements Serializable {
     @Column(name = "data_nascimento")
     private String dataNascimento;
     @OneToMany(mappedBy = "pessoaFisicaIdPessoaFisica")
-    private Collection<Cliente> clienteCollection;
+    private List<Cliente> clienteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaIdPessoaFisica")
+    private List<Funcionario> funcionarioList;
 
     public PessoaFisica() {
     }
@@ -113,12 +115,21 @@ public class PessoaFisica implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
-        return clienteCollection;
+    public List<Cliente> getClienteList() {
+        return clienteList;
     }
 
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
-        this.clienteCollection = clienteCollection;
+    public void setClienteList(List<Cliente> clienteList) {
+        this.clienteList = clienteList;
+    }
+
+    @XmlTransient
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
+    }
+
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
     }
 
     @Override
@@ -145,5 +156,5 @@ public class PessoaFisica implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.PessoaFisica[ idPessoaFisica=" + idPessoaFisica + " ]";
     }
-
+    
 }

@@ -58,6 +58,8 @@ public class Mensagem {
     //mensagens cidade e estado
     public static String defaultComboCidade = "-Selecione uma cidade-";
     public static String defaultComboEstado = "-Selecione um estado-";
+    public static String defaultComboFuncionario = "-Selecione um funcionário-";
+    public static String defaultComboCliente = "-Selecione um cliente-";
     //mensagem definição de pessoa
     public static String pessoaFisicaOuJuridica = "Selecione pessoa física ou pessoa jurídica.";
     //mensagens pessoa juridica
@@ -85,8 +87,9 @@ public class Mensagem {
     public static String produtoInseridoErro = "Falha ao inserir produto.";
     public static String produtoAlteradoSucesso = "Produto alterado com sucesso.";
     public static String produtoAlteradoErro = "Falha ao alterar produto.";
+    public static String produtoInsuficiente = "Quantidade menor que a quantidade mínima";
     //mensagens Estoque
-    public static String estoqueExcluidoSucesso = "Estoque exclíodo com sucesso!";
+    public static String estoqueExcluidoSucesso = "Estoque excluído com sucesso!";
     public static String estoqueExcluidoErro = "Falha ao excluir estoque!";
     public static String estoqueQuantidadeMaximaVazio = "Por favor, informe a quantidade máxima.\nCampo obrigatório!";
     public static String estoqueQuantidadeMaximaInvalido = "A quantidade máxima informada é inválida.";
@@ -94,6 +97,8 @@ public class Mensagem {
     public static String estoqueQuantidadeInvalido = "A quantidade informada é inválida.";
     public static String estoqueInseridoSucesso = "Estoque inserido com sucesso!";
     public static String estoqueInseridoErro = "Falha ao inserir estoque!";
+    public static String estoqueAlteradoSucesso = "Estoque alterado com sucesso!";
+    public static String estoqueAlteradoErro = "Falha ao alterar estoque!";
     public static String estoqueNaoSelecionado = "Por favor, selecione um estoque para realizar esta ação.";
     //Mensagens Geral
     public static String confirmaSair = "Deseja realmente sair?";
@@ -101,4 +106,5 @@ public class Mensagem {
     public static String confirmaEncerrar = "Deseja realmente encerrar o sistema?";
     public static String confirmaExclusao = "Confirma em excluir este registro?";
     public static String erro = "Erro!";
+    //Mensagens Compra
 }//fim da classe

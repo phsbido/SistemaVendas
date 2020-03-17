@@ -6,7 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,7 +37,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Venda.findByValorTotal", query = "SELECT v FROM Venda v WHERE v.valorTotal = :valorTotal"),
     @NamedQuery(name = "Venda.findByFormaPagamento", query = "SELECT v FROM Venda v WHERE v.formaPagamento = :formaPagamento")})
 public class Venda implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,12 +52,16 @@ public class Venda implements Serializable {
     @Basic(optional = false)
     @Column(name = "forma_pagamento")
     private String formaPagamento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vendaIdVenda")
+    private List<ContasReceber> contasReceberList;
     @JoinColumn(name = "cliente_id_cliente", referencedColumnName = "id_cliente")
     @ManyToOne(optional = false)
     private Cliente clienteIdCliente;
     @JoinColumn(name = "funcionario_id_funcionario", referencedColumnName = "id_funcionario")
     @ManyToOne(optional = false)
     private Funcionario funcionarioIdFuncionario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vendaIdVenda")
+    private List<ItemVenda> itemVendaList;
 
     public Venda() {
     }
@@ -102,6 +109,15 @@ public class Venda implements Serializable {
         this.formaPagamento = formaPagamento;
     }
 
+    @XmlTransient
+    public List<ContasReceber> getContasReceberList() {
+        return contasReceberList;
+    }
+
+    public void setContasReceberList(List<ContasReceber> contasReceberList) {
+        this.contasReceberList = contasReceberList;
+    }
+
     public Cliente getClienteIdCliente() {
         return clienteIdCliente;
     }
@@ -116,6 +132,15 @@ public class Venda implements Serializable {
 
     public void setFuncionarioIdFuncionario(Funcionario funcionarioIdFuncionario) {
         this.funcionarioIdFuncionario = funcionarioIdFuncionario;
+    }
+
+    @XmlTransient
+    public List<ItemVenda> getItemVendaList() {
+        return itemVendaList;
+    }
+
+    public void setItemVendaList(List<ItemVenda> itemVendaList) {
+        this.itemVendaList = itemVendaList;
     }
 
     @Override
@@ -142,5 +167,5 @@ public class Venda implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Venda[ idVenda=" + idVenda + " ]";
     }
-
+    
 }

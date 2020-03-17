@@ -2,7 +2,6 @@ package br.com.foursys.vendas.controller;
 
 import br.com.foursys.vendas.dao.EstoqueDAO;
 import br.com.foursys.vendas.model.Estoque;
-import br.com.foursys.vendas.model.Fornecedor;
 import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
@@ -40,7 +39,7 @@ public class EstoqueController {
     public void excluirEstoque() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewEstoque.getTabelaEstoque().getModel();
         if (this.viewEstoque.getTabelaEstoque().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, "");
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueNaoSelecionado);
         } else {
             estoque = listaEstoques.get(this.viewEstoque.getTabelaEstoque().getSelectedRow());
             int opcao = JOptionPane.showConfirmDialog(null, Mensagem.confirmaExclusao, Mensagem.atencao,
@@ -74,22 +73,20 @@ public class EstoqueController {
         DefaultTableModel modelo = (DefaultTableModel) this.viewEstoque.getTabelaEstoque().getModel();
         modelo.setRowCount(0);
         for (Estoque estoque : listaEstoques) {
-            modelo.addRow(new String[]{estoque.getProdutoIdProduto().getIdProduto() + "", estoque.getProdutoIdProduto().getDescricao(), estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), estoque.getQuantidadeEstoque() + "", estoque.getQuantidadeMinima() + ""});
+            modelo.addRow(new String[]{estoque.getProdutoIdProduto().getDescricao(), estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), estoque.getQuantidadeEstoque() + "", estoque.getQuantidadeMinima() + ""});
         }
     }
 
+// carregar combo de produto
     public void carregarComboProduto() {
         ProdutoController controller = new ProdutoController();
-        try {
-            listaProdutos = controller.buscarTodos();
-        } catch (Exception ex) {
-            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        listaProdutos = controller.buscarProdutos();
         this.viewEstoque.getJcbProduto().removeAllItems();
-        this.viewEstoque.getJcbProduto().addItem("Mensagem.defaultComboProduto");
-        for (Produto produto : listaProdutos) {
-            this.viewEstoque.getJcbProduto().addItem(produto.getDescricao());
+        this.viewEstoque.getJcbProduto().addItem(Mensagem.defaultComboProduto);
+        for (Produto listaProduto : listaProdutos) {
+            this.viewEstoque.getJcbProduto().addItem(listaProduto.getDescricao());
         }
+
     }
 
     public void bloqueioInicial() {
@@ -99,28 +96,29 @@ public class EstoqueController {
         this.viewEstoque.getJbtSair().setEnabled(true);
         this.viewEstoque.getJbtSalvar().setEnabled(false);
         this.viewEstoque.getJbtCancelar().setEnabled(false);
+        this.viewEstoque.getJtfQtde().setEditable(false);
+        this.viewEstoque.getJtfQtdeMin().setEditable(false);
+        this.viewEstoque.getJbtSelecionar().setEnabled(false);
         bloquearCampos();
     }
 
     public void bloquearCampos() {
-        this.viewEstoque.getJtfPesquisarDescricao().setEditable(true);
-        this.viewEstoque.getJtfPesquisarDescricao().grabFocus();
+        this.viewEstoque.getJcbProduto().setEnabled(false);
         this.viewEstoque.getJtfQtde().setEditable(false);
         this.viewEstoque.getJtfQtdeMin().setEditable(false);
 
     }
 
     public void liberarCampos() {
-        this.viewEstoque.getJtfPesquisarDescricao().setEditable(false);
-        this.viewEstoque.getJtfPesquisarCodigo().setEditable(false);
-        this.viewEstoque.getJtfQtdeMin().grabFocus();
+        this.viewEstoque.getJcbProduto().setEnabled(true);
+        this.viewEstoque.getJcbProduto().grabFocus();
         this.viewEstoque.getJtfQtdeMin().setEditable(true);
         this.viewEstoque.getJtfQtde().setEditable(true);
+        this.viewEstoque.getJbtSelecionar().setEnabled(true);
     }
 
     public void limparCampos() {
-        this.viewEstoque.getJtfPesquisarDescricao().setText("");
-        this.viewEstoque.getJtfPesquisarCodigo().setText("");
+        this.viewEstoque.getJcbProduto().setSelectedIndex(0);
         this.viewEstoque.getJlbDescricao().setText("");
         this.viewEstoque.getJlbFornecedor().setText("");
         this.viewEstoque.getJlbValorCusto().setText("");
@@ -130,8 +128,6 @@ public class EstoqueController {
     }
 
     public void acaoBotaoCancelar() {
-        this.viewEstoque.getJtfPesquisarDescricao().setEditable(true);
-        this.viewEstoque.getJtfPesquisarDescricao().grabFocus();
         this.viewEstoque.getJbtNovo().setEnabled(true);
         this.viewEstoque.getJbtAlterar().setEnabled(true);
         this.viewEstoque.getJbtExcluir().setEnabled(true);
@@ -146,7 +142,6 @@ public class EstoqueController {
         this.viewEstoque.getJbtNovo().setEnabled(false);
         this.viewEstoque.getJbtAlterar().setEnabled(false);
         this.viewEstoque.getJbtExcluir().setEnabled(false);
-        this.viewEstoque.getJtfPesquisarDescricao().setEditable(false);
         this.viewEstoque.getJbtSair().setEnabled(false);
         this.viewEstoque.getJbtSalvar().setEnabled(true);
         this.viewEstoque.getJbtCancelar().setEnabled(true);
@@ -155,29 +150,29 @@ public class EstoqueController {
     }
 
     public boolean validarSalvar() {
-        if (Valida.verificarVazio(this.viewEstoque.getJtfDescricao().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueDescricaoVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
-            this.viewEstoque.getJtfDescricao().grabFocus();
+        if (Valida.verificarCombo(this.viewEstoque.getJcbProduto().getSelectedIndex())) {
+            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            this.viewEstoque.getJcbProduto().grabFocus();
             return false;
-        } else if (Valida.verificarCombo(this.viewEstoque.getJcbFornecedor().getSelectedIndex())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueFornecedorVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
-            this.viewEstoque.getJcbFornecedor().grabFocus();
+        } else if (Valida.verificarVazio(this.viewEstoque.getJtfQtdeMin().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeMaximaVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
-        } else if (Valida.verificarVazio(this.viewEstoque.getJtfValorCusto().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueValorCustoVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
-            this.viewEstoque.getJtfValorCusto().grabFocus();
+        } else if (!Valida.validarNumero(this.viewEstoque.getJtfQtdeMin().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeMaximaInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
-        } else if (!Valida.validarNumero(this.viewEstoque.getJtfValorCusto().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueValorCustoInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
-            this.viewEstoque.getJtfValorCusto().grabFocus();
+        } else if (Valida.verificarVazio(this.viewEstoque.getJtfQtde().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
-        } else if (Valida.verificarVazio(this.viewEstoque.getJtfValorVenda().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueValorVendaVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
-            this.viewEstoque.getJtfValorVenda().grabFocus();
+        } else if (!Valida.validarNumero(this.viewEstoque.getJtfQtde().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            this.viewEstoque.getJtfQtde().grabFocus();
             return false;
-        } else if (!Valida.validarNumero(this.viewEstoque.getJtfValorVenda().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueValorVendaInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
-            this.viewEstoque.getJtfValorVenda().grabFocus();
+        }  else if (Integer.parseInt(this.viewEstoque.getJtfQtde().getText()) < (Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()))) {
+            JOptionPane.showMessageDialog(null, Mensagem.produtoInsuficiente, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
         }
         return true;
@@ -185,13 +180,15 @@ public class EstoqueController {
 
     public void salvarEstoque() {
         if (this.alterar == false) {
+//            salvar 
             if (validarSalvar()) {
                 Estoque estoque = new Estoque();
-                estoque.setDescricao(this.viewEstoque.getJtfDescricao().getText());
-                Fornecedor fornecedor = listaFornecedores.get(this.viewEstoque.getJcbFornecedor().getSelectedIndex() - 1);
-                estoque.setFornecedorIdFornecedor(fornecedor);
-                estoque.setValorCusto(Double.parseDouble(this.viewEstoque.getJtfValorCusto().getText()));
-                estoque.setValorVenda(Double.parseDouble(this.viewEstoque.getJtfValorVenda().getText()));
+
+                estoque.setQuantidadeEstoque(Integer.parseInt(this.viewEstoque.getJtfQtde().getText()));
+                estoque.setQuantidadeMinima(Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()));
+                Produto produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
+                estoque.setProdutoIdProduto(produto);
+
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.salvar(estoque);
@@ -202,16 +199,17 @@ public class EstoqueController {
                 }
                 limparCampos();
                 bloqueioInicial();
-                listarEstoques();
+                listarEstoque();
             }
         } else {
+//            alterar
             if (validarSalvar()) {
-                estoque.setDescricao(this.viewEstoque.getJtfDescricao().getText());
-                Fornecedor fornecedor;
-                fornecedor = listaFornecedores.get(this.viewEstoque.getJcbFornecedor().getSelectedIndex() - 1);
-                estoque.getFornecedorIdFornecedor().setIdFornecedor(fornecedor.getIdFornecedor());
-                estoque.setValorCusto(Double.parseDouble(this.viewEstoque.getJtfValorCusto().getText()));
-                estoque.setValorVenda(Double.parseDouble(this.viewEstoque.getJtfValorVenda().getText()));
+
+                Produto produto;
+                produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
+                estoque.getProdutoIdProduto().setIdProduto(produto.getIdProduto());
+                estoque.setQuantidadeEstoque(Integer.parseInt(this.viewEstoque.getJtfQtde().getText()));
+                estoque.setQuantidadeMinima(Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()));
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.salvar(estoque);
@@ -222,7 +220,7 @@ public class EstoqueController {
                 }
                 limparCampos();
                 bloqueioInicial();
-                listarEstoques();
+                listarEstoque();
 
             }
         }
@@ -236,8 +234,8 @@ public class EstoqueController {
         this.viewEstoque.getJbtSalvar().setEnabled(true);
         this.viewEstoque.getJbtCancelar().setEnabled(true);
         liberarCampos();
-        this.viewEstoque.getJtfDescricao().setEditable(false);
-
+        this.viewEstoque.getJcbProduto().setEnabled(false);
+        this.viewEstoque.getJbtSelecionar().setEnabled(false);
     }
 
     public void alterarEstoque() {
@@ -246,12 +244,27 @@ public class EstoqueController {
             JOptionPane.showMessageDialog(null, Mensagem.estoqueNaoSelecionado);
         } else {
             estoque = listaEstoques.get(this.viewEstoque.getTabelaEstoque().getSelectedRow());
-            this.viewEstoque.getJtfDescricao().setText(estoque.getDescricao());
-            this.viewEstoque.getJtfValorCusto().setText(estoque.getValorCusto() + "");
-            this.viewEstoque.getJtfValorVenda().setText(estoque.getValorVenda() + "");
-            this.viewEstoque.getJcbFornecedor().setSelectedItem(estoque.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+            this.viewEstoque.getJcbProduto().setSelectedItem(estoque.getProdutoIdProduto().getDescricao());
+            this.viewEstoque.getJtfQtde().setText(estoque.getQuantidadeEstoque() + "");
+            this.viewEstoque.getJlbDescricao().setText(estoque.getProdutoIdProduto().getDescricao() + "");
+            this.viewEstoque.getJlbFornecedor().setText(estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+            this.viewEstoque.getJlbValorVenda().setText(estoque.getProdutoIdProduto().getValorVenda() + "");
+            this.viewEstoque.getJlbValorCusto().setText(estoque.getProdutoIdProduto().getValorCusto() + "");
+            this.viewEstoque.getJtfQtdeMin().setText(estoque.getQuantidadeMinima() + "");
             this.alterar = true;
             acaoBotaoAlterar();
         }
     }
+
+    public void carregarInformacoes() {
+
+        Produto produto = null;
+        produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
+        this.viewEstoque.getJlbDescricao().setText(produto.getDescricao());
+        this.viewEstoque.getJlbFornecedor().setText(produto.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+        this.viewEstoque.getJlbValorVenda().setText(produto.getValorVenda() + "");
+        this.viewEstoque.getJlbValorCusto().setText(produto.getValorCusto() + "");
+
+    }//fim carregarInformacoes
+
 }

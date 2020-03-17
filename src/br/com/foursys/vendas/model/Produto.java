@@ -6,7 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,7 +37,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Produto.findByValorVenda", query = "SELECT p FROM Produto p WHERE p.valorVenda = :valorVenda"),
     @NamedQuery(name = "Produto.findByValorCusto", query = "SELECT p FROM Produto p WHERE p.valorCusto = :valorCusto")})
 public class Produto implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +52,15 @@ public class Produto implements Serializable {
     @Basic(optional = false)
     @Column(name = "valor_custo")
     private double valorCusto;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produtoIdProduto")
+    private List<ItemCompra> itemCompraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produtoIdProduto")
+    private List<Estoque> estoqueList;
     @JoinColumn(name = "fornecedor_id_fornecedor", referencedColumnName = "id_fornecedor")
     @ManyToOne(optional = false)
     private Fornecedor fornecedorIdFornecedor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produtoIdProduto")
+    private List<ItemVenda> itemVendaList;
 
     public Produto() {
     }
@@ -99,12 +108,39 @@ public class Produto implements Serializable {
         this.valorCusto = valorCusto;
     }
 
+    @XmlTransient
+    public List<ItemCompra> getItemCompraList() {
+        return itemCompraList;
+    }
+
+    public void setItemCompraList(List<ItemCompra> itemCompraList) {
+        this.itemCompraList = itemCompraList;
+    }
+
+    @XmlTransient
+    public List<Estoque> getEstoqueList() {
+        return estoqueList;
+    }
+
+    public void setEstoqueList(List<Estoque> estoqueList) {
+        this.estoqueList = estoqueList;
+    }
+
     public Fornecedor getFornecedorIdFornecedor() {
         return fornecedorIdFornecedor;
     }
 
     public void setFornecedorIdFornecedor(Fornecedor fornecedorIdFornecedor) {
         this.fornecedorIdFornecedor = fornecedorIdFornecedor;
+    }
+
+    @XmlTransient
+    public List<ItemVenda> getItemVendaList() {
+        return itemVendaList;
+    }
+
+    public void setItemVendaList(List<ItemVenda> itemVendaList) {
+        this.itemVendaList = itemVendaList;
     }
 
     @Override
@@ -131,5 +167,5 @@ public class Produto implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Produto[ idProduto=" + idProduto + " ]";
     }
-
+    
 }

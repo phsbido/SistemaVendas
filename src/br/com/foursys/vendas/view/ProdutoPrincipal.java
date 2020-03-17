@@ -14,7 +14,7 @@ public class ProdutoPrincipal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.produtoController.limparCampos();
-//        this.produtoController.listarFornecedores();
+        this.produtoController.listarProdutos();
         this.produtoController.carregarComboFornecedor();
         this.produtoController.bloqueioInicial();
         setVisible(true);

@@ -6,7 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,7 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Contato.findByCelular", query = "SELECT c FROM Contato c WHERE c.celular = :celular"),
     @NamedQuery(name = "Contato.findByEmail", query = "SELECT c FROM Contato c WHERE c.email = :email")})
 public class Contato implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +47,12 @@ public class Contato implements Serializable {
     private String celular;
     @Column(name = "email")
     private String email;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contatoIdContato")
+    private List<Cliente> clienteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contatoIdContato")
+    private List<Fornecedor> fornecedorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contatoIdContato")
+    private List<Funcionario> funcionarioList;
 
     public Contato() {
     }
@@ -84,6 +93,33 @@ public class Contato implements Serializable {
         this.email = email;
     }
 
+    @XmlTransient
+    public List<Cliente> getClienteList() {
+        return clienteList;
+    }
+
+    public void setClienteList(List<Cliente> clienteList) {
+        this.clienteList = clienteList;
+    }
+
+    @XmlTransient
+    public List<Fornecedor> getFornecedorList() {
+        return fornecedorList;
+    }
+
+    public void setFornecedorList(List<Fornecedor> fornecedorList) {
+        this.fornecedorList = fornecedorList;
+    }
+
+    @XmlTransient
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
+    }
+
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -108,5 +144,5 @@ public class Contato implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Contato[ idContato=" + idContato + " ]";
     }
-
+    
 }

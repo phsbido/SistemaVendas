@@ -52,6 +52,17 @@ public class FuncionarioController {
         return listaFuncionario;
     }
 
+    public List<Funcionario> buscarTodos() {
+        FuncionarioDAO dao = new FuncionarioDAO();
+        List<Funcionario> listaFuncionario = null;
+        try {
+            listaFuncionario = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFuncionario;
+    }
+
     public void excluirFuncionario() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewFuncionario.getTabelaFuncionario().getModel();
         if (this.viewFuncionario.getTabelaFuncionario().getSelectedRow() < 0) {

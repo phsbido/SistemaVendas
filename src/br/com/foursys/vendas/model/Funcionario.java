@@ -6,7 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,7 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Funcionario.findBySenha", query = "SELECT f FROM Funcionario f WHERE f.senha = :senha"),
     @NamedQuery(name = "Funcionario.findByLogin", query = "SELECT f FROM Funcionario f WHERE f.login = :login")})
 public class Funcionario implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +48,12 @@ public class Funcionario implements Serializable {
     @Basic(optional = false)
     @Column(name = "login")
     private String login;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioIdFuncionario")
+    private List<Compra> compraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioIdFuncionario")
+    private List<Venda> vendaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioIdFuncionario")
+    private List<LogUsuario> logUsuarioList;
     @JoinColumn(name = "contato_id_contato", referencedColumnName = "id_contato")
     @ManyToOne(optional = false)
     private Contato contatoIdContato;
@@ -90,6 +99,33 @@ public class Funcionario implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    @XmlTransient
+    public List<Compra> getCompraList() {
+        return compraList;
+    }
+
+    public void setCompraList(List<Compra> compraList) {
+        this.compraList = compraList;
+    }
+
+    @XmlTransient
+    public List<Venda> getVendaList() {
+        return vendaList;
+    }
+
+    public void setVendaList(List<Venda> vendaList) {
+        this.vendaList = vendaList;
+    }
+
+    @XmlTransient
+    public List<LogUsuario> getLogUsuarioList() {
+        return logUsuarioList;
+    }
+
+    public void setLogUsuarioList(List<LogUsuario> logUsuarioList) {
+        this.logUsuarioList = logUsuarioList;
     }
 
     public Contato getContatoIdContato() {
@@ -140,5 +176,5 @@ public class Funcionario implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Funcionario[ idFuncionario=" + idFuncionario + " ]";
     }
-
+    
 }

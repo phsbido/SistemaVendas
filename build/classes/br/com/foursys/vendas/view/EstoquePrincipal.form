@@ -175,7 +175,7 @@
                       <Component id="jlbFornecedor" min="-2" pref="177" max="-2" attributes="0"/>
                       <Component id="jlbValorVenda" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="28" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -222,24 +222,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbFornecedor">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Walt Disney Ltda."/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbValorCusto">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="R$ 10,50"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbValorVenda">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="R$ 50,00"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbDescricao">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Caneca Star Wars"/>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -442,9 +430,6 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="jtfQtdeMin">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="10"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
@@ -452,9 +437,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfQtde">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="50"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -481,7 +463,9 @@
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jcbProduto" min="-2" pref="508" max="-2" attributes="0"/>
+                  <Component id="jcbProduto" min="-2" pref="357" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jbtSelecionar" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -493,6 +477,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jcbProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jbtSelecionar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="18" max="32767" attributes="0"/>
               </Group>
@@ -509,11 +494,23 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jcbProdutoItemStateChanged"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcbProdutoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Produto:"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jbtSelecionar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Selecionar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtSelecionarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -6,7 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,7 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Fornecedor.findByIdFornecedor", query = "SELECT f FROM Fornecedor f WHERE f.idFornecedor = :idFornecedor"),
     @NamedQuery(name = "Fornecedor.findByContato", query = "SELECT f FROM Fornecedor f WHERE f.contato = :contato")})
 public class Fornecedor implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +44,10 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "contato")
     private String contato;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedorIdFornecedor")
+    private List<Compra> compraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedorIdFornecedor")
+    private List<Produto> produtoList;
     @JoinColumn(name = "contato_id_contato", referencedColumnName = "id_contato")
     @ManyToOne(optional = false)
     private Contato contatoIdContato;
@@ -77,6 +84,24 @@ public class Fornecedor implements Serializable {
 
     public void setContato(String contato) {
         this.contato = contato;
+    }
+
+    @XmlTransient
+    public List<Compra> getCompraList() {
+        return compraList;
+    }
+
+    public void setCompraList(List<Compra> compraList) {
+        this.compraList = compraList;
+    }
+
+    @XmlTransient
+    public List<Produto> getProdutoList() {
+        return produtoList;
+    }
+
+    public void setProdutoList(List<Produto> produtoList) {
+        this.produtoList = produtoList;
     }
 
     public Contato getContatoIdContato() {
@@ -127,5 +152,5 @@ public class Fornecedor implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Fornecedor[ idFornecedor=" + idFornecedor + " ]";
     }
-
+    
 }

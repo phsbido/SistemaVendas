@@ -6,6 +6,7 @@ import br.com.foursys.vendas.model.Fornecedor;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
 import br.com.foursys.vendas.view.ProdutoPrincipal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,20 @@ public class ProdutoController {
 
     public ProdutoController(ProdutoPrincipal viewProduto) {
         this.viewProduto = viewProduto;
+    }
+
+    public List<Produto> buscarProdutos() {
+
+        ProdutoDAO dao = new ProdutoDAO();
+        List<Produto> listaProdutos = new ArrayList<Produto>();
+
+        try {
+            listaProdutos = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listaProdutos;
     }
 
     public void excluirProduto() {
