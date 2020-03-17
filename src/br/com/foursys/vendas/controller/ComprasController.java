@@ -14,6 +14,8 @@ import br.com.foursys.vendas.view.ComprasPrincipal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -71,6 +73,57 @@ public class ComprasController {
         for (Produto listaProduto : listaProdutos) {
             this.viewCompras.getJcbProduto().addItem(listaProduto.getDescricao());
         }
+    }
 
+    public void bloqueioInicial() {
+        this.viewCompras.getJcbFuncionario().grabFocus();
+        this.viewCompras.getJcbFuncionario().setEnabled(true);
+        this.viewCompras.getJcbFornecedor().setEnabled(true);
+        this.viewCompras.getJbtIniciarCompra().setEnabled(false);
+        this.viewCompras.getJcbProduto().setEnabled(false);
+        this.viewCompras.getJtfQuantidade().setEditable(false);
+        this.viewCompras.getJtfDescontoProduto().setEditable(false);
+        this.viewCompras.getJbtAdicionarProduto().setEnabled(false);
+        this.viewCompras.getJbtExcluirProduto().setEnabled(false);
+        this.viewCompras.getTabelaProdutos().setEnabled(false);
+        this.viewCompras.getJcbFormaPagamento().setEnabled(false);
+        this.viewCompras.getJtfDescontoPagamento().setEditable(false);
+        this.viewCompras.getJbtIncluirFormaPagamento().setEnabled(false);
+        this.viewCompras.getJbtExcluirFormaPagamento().setEnabled(false);
+        this.viewCompras.getTabelaFormaPagamento().setEnabled(false);
+        this.viewCompras.getJbtConfirmar().setEnabled(false);
+        this.viewCompras.getJbtCancelar().setEnabled(false);
+        this.viewCompras.getJbtSair().setEnabled(true);
+    }
+
+    public void liberaIniciarCompra() {
+        if ((this.viewCompras.getJcbFuncionario().getSelectedIndex() != 0) && this.viewCompras.getJcbFornecedor().getSelectedIndex() != 0) {
+            this.viewCompras.getJbtIniciarCompra().setEnabled(true);
+        }
+    }
+
+    public void inserirProduto() {
+        if (this.viewCompras.getJcbProduto().getSelectedIndex() != 0) {
+            DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
+            modelo.setRowCount(0);
+            modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString()});
+        } else {
+            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
+        }
+    }
+
+    public void carregarFormaPagamento() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
+        modelo.setRowCount(0);
+        modelo.addRow(new String[]{this.viewCompras.getJcbFormaPagamento().getSelectedItem() + ""});
+    }
+
+    public void acaoBotaoIniciarCompra() {
+        this.viewCompras.getJcbProduto().setEnabled(true);
+        this.viewCompras.getJtfQuantidade().setEditable(true);
+        this.viewCompras.getJtfDescontoProduto().setEditable(true);
+        this.viewCompras.getJbtAdicionarProduto().setEnabled(true);
+        this.viewCompras.getJbtExcluirProduto().setEnabled(true);
+        this.viewCompras.getTabelaProdutos().setEnabled(true);
     }
 }

@@ -43,7 +43,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jtfDescontoProduto = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jcbDescricao = new javax.swing.JComboBox<String>();
+        jcbProduto = new javax.swing.JComboBox<String>();
         jbtAdicionarProduto = new javax.swing.JButton();
         jbtAlterarProduto = new javax.swing.JButton();
         jbtExcluirProduto = new javax.swing.JButton();
@@ -136,7 +136,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
         jLabel7.setText("Desconto:");
 
-        jcbDescricao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Produto)" }));
+        jcbProduto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "(Selecione um Produto)" }));
 
         jbtAdicionarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/salvar.png"))); // NOI18N
         jbtAdicionarProduto.setText("Adicionar Produto");
@@ -316,7 +316,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jcbDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel5))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -351,7 +351,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jcbDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addGap(3, 3, 3)))
                 .addGap(10, 10, 10)
@@ -456,141 +456,14 @@ public class VendasPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jbtIniciarVenda;
     private javax.swing.JButton jbtSair;
     private javax.swing.JComboBox<String> jcbCliente;
-    private javax.swing.JComboBox<String> jcbDescricao;
     private javax.swing.JComboBox<String> jcbFormaDePagamento;
     private javax.swing.JComboBox<String> jcbFuncionario;
+    private javax.swing.JComboBox<String> jcbProduto;
     private javax.swing.JFormattedTextField jtfDescontoFormaDePagamento;
     private javax.swing.JTextField jtfDescontoProduto;
     private javax.swing.JFormattedTextField jtfQuantidade;
     // End of variables declaration//GEN-END:variables
 
-    public JButton getJbtAdicionarProduto() {
-        return jbtAdicionarProduto;
-    }
-
-    public void setJbtAdicionarProduto(JButton jbtAdicionarProduto) {
-        this.jbtAdicionarProduto = jbtAdicionarProduto;
-    }
-
-    public JButton getJbtAlterarProduto() {
-        return jbtAlterarProduto;
-    }
-
-    public void setJbtAlterarProduto(JButton jbtAlterarProduto) {
-        this.jbtAlterarProduto = jbtAlterarProduto;
-    }
-
-    public JButton getJbtCancelar() {
-        return jbtCancelar;
-    }
-
-    public void setJbtCancelar(JButton jbtCancelar) {
-        this.jbtCancelar = jbtCancelar;
-    }
-
-    public JButton getJbtConfirmar() {
-        return jbtConfirmar;
-    }
-
-    public void setJbtConfirmar(JButton jbtConfirmar) {
-        this.jbtConfirmar = jbtConfirmar;
-    }
-
-    public JButton getJbtExcluirFormaDePagamento() {
-        return jbtExcluirFormaDePagamento;
-    }
-
-    public void setJbtExcluirFormaDePagamento(JButton jbtExcluirFormaDePagamento) {
-        this.jbtExcluirFormaDePagamento = jbtExcluirFormaDePagamento;
-    }
-
-    public JButton getJbtExcluirProduto() {
-        return jbtExcluirProduto;
-    }
-
-    public void setJbtExcluirProduto(JButton jbtExcluirProduto) {
-        this.jbtExcluirProduto = jbtExcluirProduto;
-    }
-
-    public JButton getJbtIncluirFormaDePagamento() {
-        return jbtIncluirFormaDePagamento;
-    }
-
-    public void setJbtIncluirFormaDePagamento(JButton jbtIncluirFormaDePagamento) {
-        this.jbtIncluirFormaDePagamento = jbtIncluirFormaDePagamento;
-    }
-
-    public JButton getJbtIniciarVenda() {
-        return jbtIniciarVenda;
-    }
-
-    public void setJbtIniciarVenda(JButton jbtIniciarVenda) {
-        this.jbtIniciarVenda = jbtIniciarVenda;
-    }
-
-    public JButton getJbtSair() {
-        return jbtSair;
-    }
-
-    public void setJbtSair(JButton jbtSair) {
-        this.jbtSair = jbtSair;
-    }
-
-    public JComboBox<String> getJcbCliente() {
-        return jcbCliente;
-    }
-
-    public void setJcbCliente(JComboBox<String> jcbCliente) {
-        this.jcbCliente = jcbCliente;
-    }
-
-    public JComboBox<String> getJcbFormaDePagamento() {
-        return jcbFormaDePagamento;
-    }
-
-    public void setJcbFormaDePagamento(JComboBox<String> jcbFormaDePagamento) {
-        this.jcbFormaDePagamento = jcbFormaDePagamento;
-    }
-
-    public JComboBox<String> getJcbFuncionario() {
-        return jcbFuncionario;
-    }
-
-    public void setJcbFuncionario(JComboBox<String> jcbFuncionario) {
-        this.jcbFuncionario = jcbFuncionario;
-    }
-
-    public JFormattedTextField getJtfDescontoFormaDePagamento() {
-        return jtfDescontoFormaDePagamento;
-    }
-
-    public void setJtfDescontoFormaDePagamento(JFormattedTextField jtfDescontoFormaDePagamento) {
-        this.jtfDescontoFormaDePagamento = jtfDescontoFormaDePagamento;
-    }
-
-    public JTextField getJtfDescontoProduto() {
-        return jtfDescontoProduto;
-    }
-
-    public void setJtfDescontoProduto(JTextField jtfDescontoProduto) {
-        this.jtfDescontoProduto = jtfDescontoProduto;
-    }
-
-    public JFormattedTextField getJtfQuantidade() {
-        return jtfQuantidade;
-    }
-
-    public void setJtfQuantidade(JFormattedTextField jtfQuantidade) {
-        this.jtfQuantidade = jtfQuantidade;
-    }
-
-    public JComboBox<String> getJcbDescricao() {
-        return jcbDescricao;
-    }
-
-    public void setJcbDescricao(JComboBox<String> jcbDescricao) {
-        this.jcbDescricao = jcbDescricao;
-    }
-
+   
 
 }

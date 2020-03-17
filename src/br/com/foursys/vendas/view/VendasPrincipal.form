@@ -176,7 +176,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jcbDescricao" min="-2" pref="330" max="-2" attributes="0"/>
+                                  <Component id="jcbProduto" min="-2" pref="330" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -222,7 +222,7 @@
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcbDescricao" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jcbProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
@@ -271,7 +271,7 @@
             <Property name="text" type="java.lang.String" value="Desconto:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jcbDescricao">
+        <Component class="javax.swing.JComboBox" name="jcbProduto">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">

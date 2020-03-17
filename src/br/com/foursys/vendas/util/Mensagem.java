@@ -105,4 +105,5 @@ public class Mensagem {
     public static String confirmaEncerrar = "Deseja realmente encerrar o sistema?";
     public static String confirmaExclusao = "Confirma em excluir este registro?";
     public static String erro = "Erro!";
+    //Mensagens Compra
 }//fim da classe

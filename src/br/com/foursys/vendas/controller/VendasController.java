@@ -1,8 +1,16 @@
 package br.com.foursys.vendas.controller;
 
+import br.com.foursys.vendas.dao.ProdutoDAO;
+import br.com.foursys.vendas.model.Cliente;
+import br.com.foursys.vendas.model.Funcionario;
+import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.model.Venda;
+import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.view.VendasPrincipal;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,14 +20,85 @@ public class VendasController {
 
     private VendasPrincipal viewVendas;
     private Venda venda = new Venda();
-    private List<Venda> listaVendas;
+    private List<Cliente> listaClientes;
+    private List<Funcionario> listaFuncionarios;
+    private List<Produto> listaProdutos;
+    private List<Funcionario> listaFuncionario;
+    private boolean alterar;
+    private double valorTotal;
 
     public VendasController() {
 
     }
 
+    public void carregarCliente() {
+        ClienteController controller = new ClienteController();
+        try {
+            listaClientes = controller.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.viewVendas.getJcbCliente().removeAllItems();
+        this.viewVendas.getJcbCliente().addItem(Mensagem.defaultComboCliente);
+        for (Cliente cliente : listaClientes) {
+            this.viewVendas.getJcbCliente().addItem(cliente.getPessoaFisicaIdPessoaFisica().getNome());
+            this.viewVendas.getJcbCliente().addItem(cliente.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+        }
+    }
+
+    public void carregarFuncionario() {
+        FuncionarioController controller = new FuncionarioController();
+        try {
+            listaFuncionario = controller.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.viewVendas.getJcbFuncionario().removeAllItems();
+        this.viewVendas.getJcbFuncionario().addItem(Mensagem.defaultComboFuncionario);
+        for (Funcionario funcionario : listaFuncionarios) {
+            this.viewVendas.getJcbCliente().addItem(funcionario.getPessoaFisicaIdPessoaFisica().getNome());
+
+        }
+    }
+
+    public void carregarProduto() {
+        ProdutoController controller = new ProdutoController();
+        try {
+            listaProdutos = controller.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.viewVendas.getJcbProduto().removeAllItems();
+        this.viewVendas.getJcbProduto().addItem(Mensagem.defaultComboFornecedor);
+        for (Produto produto : listaProdutos) {
+            this.viewVendas.getJcbProduto().addItem(produto.getDescricao());
+
+        }
+    }
+
     public VendasController(VendasPrincipal viewVendas) {
         this.viewVendas = viewVendas;
+    }
+
+    public void listarProdutos() {
+        try {
+            ProdutoDAO dao = new ProdutoDAO();
+            listaProdutos = dao.buscarTodos();
+            carregarTabela();
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void carregarTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewVendas.getTabelaProdutos().getModel();
+
+        modelo.setRowCount(0);
+        for (Produto produto : listaProdutos) {
+            valorTotal = (produto.getValorVenda() * Integer.parseInt(this.viewVendas.getJtfQuantidade().getText())) - Integer.parseInt(this.viewVendas.getJtfDescontoProduto().getText());
+            modelo.addRow(new String[]{produto.getDescricao(), this.viewVendas.getJtfQuantidade().getText(), produto.getValorVenda() + "", this.viewVendas.getJtfDescontoProduto().getText(), valorTotal + ""});
+        }
+
     }
 
     public void bloqueioInicial() {
