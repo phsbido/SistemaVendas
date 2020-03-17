@@ -5,9 +5,8 @@
         <group>
             <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/view/MenuPrincipal.java</file>
             <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/controller/EstoqueController.java</file>
-            <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/controller/ClienteController.java</file>
+            <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/view/EstoquePrincipal.java</file>
             <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/Main.java</file>
-            <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/view/ClientePrincipal.java</file>
             <file>file:/C:/Workspace%20Netbeans/SistemaDeVendas/src/br/com/foursys/vendas/controller/MenuController.java</file>
         </group>
     </open-files>

@@ -239,7 +239,7 @@ public class EstoqueController {
         this.viewEstoque.getJcbProduto().setEnabled(false);
         this.viewEstoque.getJbtSelecionar().setEnabled(false);
     }
-
+//aaaaaaaaaaaaaaaaaaaaaaaaaaa
     public void alterarEstoque() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewEstoque.getTabelaEstoque().getModel();
         if (this.viewEstoque.getTabelaEstoque().getSelectedRow() < 0) {
