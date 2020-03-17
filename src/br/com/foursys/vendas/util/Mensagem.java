@@ -59,6 +59,7 @@ public class Mensagem {
     public static String defaultComboCidade = "-Selecione uma cidade-";
     public static String defaultComboEstado = "-Selecione um estado-";
     public static String defaultComboFuncionario = "-Selecione um funcionário-";
+    public static String defaultComboCliente = "-Selecione um cliente-";
     //mensagem definição de pessoa
     public static String pessoaFisicaOuJuridica = "Selecione pessoa física ou pessoa jurídica.";
     //mensagens pessoa juridica

@@ -43,6 +43,17 @@ public class ClienteController {
     public ClienteController(ClientePrincipal viewCliente) {
         this.viewCliente = viewCliente;
     }
+    
+    public List<Cliente> buscarTodos() {
+        ClienteDAO dao = new ClienteDAO();
+        List<Cliente> listaFuncionario = null;
+        try {
+            listaFuncionario = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFuncionario;
+    }
 
     public void excluirCliente() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewCliente.getTabelaCliente().getModel();

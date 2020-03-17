@@ -31,6 +31,10 @@ public class VendasController {
 
     }
 
+    public VendasController(VendasPrincipal viewVendas) {
+        this.viewVendas = viewVendas;
+    }
+
     public void carregarCliente() {
         ClienteController controller = new ClienteController();
         try {
@@ -64,7 +68,7 @@ public class VendasController {
     public void carregarProduto() {
         ProdutoController controller = new ProdutoController();
         try {
-            listaProdutos = controller.buscarTodos();
+            listaProdutos = controller.buscarProdutos();
         } catch (Exception ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,10 +78,6 @@ public class VendasController {
             this.viewVendas.getJcbProduto().addItem(produto.getDescricao());
 
         }
-    }
-
-    public VendasController(VendasPrincipal viewVendas) {
-        this.viewVendas = viewVendas;
     }
 
     public void listarProdutos() {
@@ -90,9 +90,9 @@ public class VendasController {
         }
     }
 
+    //Não tem porque carregar tabela nessa tela, favor verificar nome dos métodos.
     public void carregarTabela() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewVendas.getTabelaProdutos().getModel();
-
+        DefaultTableModel modelo = (DefaultTableModel) this.viewVendas.getTabelaProduto().getModel();
         modelo.setRowCount(0);
         for (Produto produto : listaProdutos) {
             valorTotal = (produto.getValorVenda() * Integer.parseInt(this.viewVendas.getJtfQuantidade().getText())) - Integer.parseInt(this.viewVendas.getJtfDescontoProduto().getText());
@@ -104,11 +104,10 @@ public class VendasController {
     public void bloqueioInicial() {
 
         this.viewVendas.getJbtAdicionarProduto().setEnabled(false);
-        this.viewVendas.getJbtAlterarProduto().setEnabled(false);
         this.viewVendas.getJbtExcluirFormaDePagamento().setEnabled(false);
         this.viewVendas.getJtfDescontoProduto().setEditable(false);
         this.viewVendas.getJtfQuantidade().setEditable(false);
-        this.viewVendas.getJcbDescricao().setEnabled(false);
+        this.viewVendas.getJcbProduto().setEnabled(false);
 
         bloquearCampos();
     }
@@ -125,13 +124,13 @@ public class VendasController {
 
     }
 
+    //Métodos com ambiguidade e sem descrição, favor mudar o nome e/ou adicionar comentários.
     public void liberarCampos1() {
 
         this.viewVendas.getJbtAdicionarProduto().setEnabled(true);
-        this.viewVendas.getJbtAlterarProduto().setEnabled(true);
         this.viewVendas.getJtfDescontoProduto().setEditable(true);
         this.viewVendas.getJtfQuantidade().setEditable(true);
-        this.viewVendas.getJcbDescricao().setEnabled(true);
+        this.viewVendas.getJcbProduto().setEnabled(true);
         this.viewVendas.getJbtCancelar().setEnabled(true);
         this.viewVendas.getJbtExcluirProduto().setEnabled(true);
 
@@ -154,7 +153,7 @@ public class VendasController {
         this.viewVendas.getJtfDescontoFormaDePagamento().setText(null);
         this.viewVendas.getJcbCliente().setSelectedIndex(0);
         this.viewVendas.getJcbFuncionario().setSelectedIndex(0);
-        this.viewVendas.getJcbDescricao().setSelectedIndex(0);
+        this.viewVendas.getJcbProduto().setSelectedIndex(0);
         this.viewVendas.getJcbFormaDePagamento().setSelectedIndex(0);
         this.viewVendas.getJcbCliente().setSelectedIndex(0);
 
@@ -169,12 +168,11 @@ public class VendasController {
         this.viewVendas.getJtfDescontoFormaDePagamento().setEditable(false);
         this.viewVendas.getJbtConfirmar().setEnabled(false);
         this.viewVendas.getJbtAdicionarProduto().setEnabled(false);
-        this.viewVendas.getJbtAlterarProduto().setEnabled(false);
         this.viewVendas.getJbtExcluirProduto().setEnabled(false);
 
         this.viewVendas.getJtfDescontoProduto().setEditable(false);
         this.viewVendas.getJtfQuantidade().setEditable(false);
-        this.viewVendas.getJcbDescricao().setEnabled(false);
+        this.viewVendas.getJcbProduto().setEnabled(false);
 
         limparCampos();
         bloquearCampos();
