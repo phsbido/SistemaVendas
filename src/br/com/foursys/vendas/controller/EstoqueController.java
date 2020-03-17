@@ -2,7 +2,6 @@ package br.com.foursys.vendas.controller;
 
 import br.com.foursys.vendas.dao.EstoqueDAO;
 import br.com.foursys.vendas.model.Estoque;
-import br.com.foursys.vendas.model.Fornecedor;
 import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
