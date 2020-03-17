@@ -14,7 +14,6 @@ public class Main {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception ignored) {
         }
-//        new LoginPrincipal();
         new LoginPrincipal();
     }
 }
