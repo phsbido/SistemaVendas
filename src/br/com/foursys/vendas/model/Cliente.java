@@ -6,7 +6,7 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,6 +56,8 @@ public class Cliente implements Serializable {
     @JoinColumn(name = "pessoa_juridica_id_pessoa_juridica", referencedColumnName = "id_pessoa_juridica")
     @ManyToOne
     private PessoaJuridica pessoaJuridicaIdPessoaJuridica;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteIdCliente")
+    private List<Venda> vendaList;
 
     public Cliente() {
     }
@@ -117,6 +119,14 @@ public class Cliente implements Serializable {
         this.pessoaJuridicaIdPessoaJuridica = pessoaJuridicaIdPessoaJuridica;
     }
 
+    @XmlTransient
+    public List<Venda> getVendaList() {
+        return vendaList;
+    }
+
+    public void setVendaList(List<Venda> vendaList) {
+        this.vendaList = vendaList;
+    }
 
     @Override
     public int hashCode() {

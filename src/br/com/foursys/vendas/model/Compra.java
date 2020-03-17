@@ -6,7 +6,7 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Compra.findAll", query = "SELECT c FROM Compra c"),
     @NamedQuery(name = "Compra.findByIdCompra", query = "SELECT c FROM Compra c WHERE c.idCompra = :idCompra"),
     @NamedQuery(name = "Compra.findByDataCompra", query = "SELECT c FROM Compra c WHERE c.dataCompra = :dataCompra"),
-    @NamedQuery(name = "Compra.findByValorTotal", query = "SELECT c FROM Compra c WHERE c.valorTotal = :valorTotal")})
+    @NamedQuery(name = "Compra.findByValorTotal", query = "SELECT c FROM Compra c WHERE c.valorTotal = :valorTotal"),
+    @NamedQuery(name = "Compra.findByFormaPagamento", query = "SELECT c FROM Compra c WHERE c.formaPagamento = :formaPagamento")})
 public class Compra implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +49,19 @@ public class Compra implements Serializable {
     @Basic(optional = false)
     @Column(name = "valor_total")
     private String valorTotal;
+    @Basic(optional = false)
+    @Column(name = "forma_pagamento")
+    private String formaPagamento;
+    @JoinColumn(name = "fornecedor_id_fornecedor", referencedColumnName = "id_fornecedor")
+    @ManyToOne(optional = false)
+    private Fornecedor fornecedorIdFornecedor;
     @JoinColumn(name = "funcionario_id_funcionario", referencedColumnName = "id_funcionario")
     @ManyToOne(optional = false)
     private Funcionario funcionarioIdFuncionario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compraIdCompra")
+    private List<ItemCompra> itemCompraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compraIdCompra")
+    private List<ContasPagar> contasPagarList;
 
     public Compra() {
     }
@@ -60,10 +70,11 @@ public class Compra implements Serializable {
         this.idCompra = idCompra;
     }
 
-    public Compra(Integer idCompra, String dataCompra, String valorTotal) {
+    public Compra(Integer idCompra, String dataCompra, String valorTotal, String formaPagamento) {
         this.idCompra = idCompra;
         this.dataCompra = dataCompra;
         this.valorTotal = valorTotal;
+        this.formaPagamento = formaPagamento;
     }
 
     public Integer getIdCompra() {
@@ -90,12 +101,46 @@ public class Compra implements Serializable {
         this.valorTotal = valorTotal;
     }
 
+    public String getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setFormaPagamento(String formaPagamento) {
+        this.formaPagamento = formaPagamento;
+    }
+
+    public Fornecedor getFornecedorIdFornecedor() {
+        return fornecedorIdFornecedor;
+    }
+
+    public void setFornecedorIdFornecedor(Fornecedor fornecedorIdFornecedor) {
+        this.fornecedorIdFornecedor = fornecedorIdFornecedor;
+    }
+
     public Funcionario getFuncionarioIdFuncionario() {
         return funcionarioIdFuncionario;
     }
 
     public void setFuncionarioIdFuncionario(Funcionario funcionarioIdFuncionario) {
         this.funcionarioIdFuncionario = funcionarioIdFuncionario;
+    }
+
+    @XmlTransient
+    public List<ItemCompra> getItemCompraList() {
+        return itemCompraList;
+    }
+
+    public void setItemCompraList(List<ItemCompra> itemCompraList) {
+        this.itemCompraList = itemCompraList;
+    }
+
+    @XmlTransient
+    public List<ContasPagar> getContasPagarList() {
+        return contasPagarList;
+    }
+
+    public void setContasPagarList(List<ContasPagar> contasPagarList) {
+        this.contasPagarList = contasPagarList;
     }
 
     @Override
@@ -122,5 +167,5 @@ public class Compra implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Compra[ idCompra=" + idCompra + " ]";
     }
-
+    
 }

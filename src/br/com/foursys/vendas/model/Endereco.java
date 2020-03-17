@@ -6,7 +6,9 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,7 +39,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Endereco.findByBairro", query = "SELECT e FROM Endereco e WHERE e.bairro = :bairro"),
     @NamedQuery(name = "Endereco.findByCep", query = "SELECT e FROM Endereco e WHERE e.cep = :cep")})
 public class Endereco implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +62,12 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "cidade_id_cidade", referencedColumnName = "id_cidade")
     @ManyToOne(optional = false)
     private Cidade cidadeIdCidade;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoIdEndereco")
+    private List<Cliente> clienteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoIdEndereco")
+    private List<Fornecedor> fornecedorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoIdEndereco")
+    private List<Funcionario> funcionarioList;
 
     public Endereco() {
     }
@@ -131,6 +140,32 @@ public class Endereco implements Serializable {
         this.cidadeIdCidade = cidadeIdCidade;
     }
 
+    @XmlTransient
+    public List<Cliente> getClienteList() {
+        return clienteList;
+    }
+
+    public void setClienteList(List<Cliente> clienteList) {
+        this.clienteList = clienteList;
+    }
+
+    @XmlTransient
+    public List<Fornecedor> getFornecedorList() {
+        return fornecedorList;
+    }
+
+    public void setFornecedorList(List<Fornecedor> fornecedorList) {
+        this.fornecedorList = fornecedorList;
+    }
+
+    @XmlTransient
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
+    }
+
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
+    }
 
     @Override
     public int hashCode() {
@@ -156,5 +191,5 @@ public class Endereco implements Serializable {
     public String toString() {
         return "br.com.foursys.vendas.model.Endereco[ idEndereco=" + idEndereco + " ]";
     }
-
+    
 }

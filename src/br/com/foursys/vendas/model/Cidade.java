@@ -6,7 +6,7 @@
 package br.com.foursys.vendas.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,7 +47,8 @@ public class Cidade implements Serializable {
     @JoinColumn(name = "estado_id_estado", referencedColumnName = "id_estado")
     @ManyToOne(optional = false)
     private Estado estadoIdEstado;
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cidadeIdCidade")
+    private List<Endereco> enderecoList;
 
     public Cidade() {
     }
@@ -85,7 +86,14 @@ public class Cidade implements Serializable {
         this.estadoIdEstado = estadoIdEstado;
     }
 
+    @XmlTransient
+    public List<Endereco> getEnderecoList() {
+        return enderecoList;
+    }
 
+    public void setEnderecoList(List<Endereco> enderecoList) {
+        this.enderecoList = enderecoList;
+    }
 
     @Override
     public int hashCode() {
