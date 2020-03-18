@@ -542,11 +542,11 @@ public class VendasPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfDescontoFormaDePagamentoActionPerformed
 
     private void jbtIniciarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtIniciarVendaActionPerformed
-        this.vendaController.liberarCampos1();
+        this.vendaController.liberarCamposProduto();
     }//GEN-LAST:event_jbtIniciarVendaActionPerformed
 
     private void jbtAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAdicionarProdutoActionPerformed
-        this.vendaController.liberarCampos2();
+        this.vendaController.liberarCamposFormaPagamento();
     }//GEN-LAST:event_jbtAdicionarProdutoActionPerformed
 
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
