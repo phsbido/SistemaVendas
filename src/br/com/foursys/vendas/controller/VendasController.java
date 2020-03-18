@@ -1,6 +1,5 @@
 package br.com.foursys.vendas.controller;
 
-import br.com.foursys.vendas.dao.ProdutoDAO;
 import br.com.foursys.vendas.model.Cliente;
 import br.com.foursys.vendas.model.Funcionario;
 import br.com.foursys.vendas.model.Produto;
@@ -14,20 +13,20 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author ecioffi
+ * @author fcorrea
+ * 
  */
 public class VendasController {
 
     private VendasPrincipal viewVendas;
-    private Venda venda = new Venda();
+    private Venda Venda = new Venda();
     private List<Cliente> listaClientes;
     private List<Funcionario> listaFuncionarios;
     private List<Produto> listaProdutos;
     private List<Funcionario> listaFuncionario;
     private boolean alterar;
-    private double valorTotal;
 
-    public VendasController() {
+  public VendasController() {
 
     }
 
@@ -37,7 +36,7 @@ public class VendasController {
     
     
     
-// MÃ©todo  para excluir Produto
+// Método  para excluir Produto
 // public void excluirProduto() {
 //         DefaultTableModel modelo = (DefaultTableModel) this.viewVendas.getTabelaProduto().getModel();
 //         if (this.viewVendas.getTabelaProduto().getSelectedRow() < 0) {
@@ -62,7 +61,7 @@ public class VendasController {
 //     }
 
 
-//MÃ©todo para listar Produtos
+//Método para listar Produtos
 //     public void listarProdutos() {
 //         try {
 //             ProdutoDAO dao = new ProdutoDAO();
@@ -73,7 +72,7 @@ public class VendasController {
 //         }
 //     }
 
-//MÃ©todo que carrega a combo cliente
+//Método que carrega a combo cliente
     public void carregarComboCliente() {
         ClienteController controller = new ClienteController();
         try {
@@ -92,13 +91,13 @@ public class VendasController {
         }
     }
 
-    //mÃ©todo que carrega a combo FuncionÃ¡rio
+    //método que carrega a combo Funcionário
     public void carregarComboFuncionario() {
         FuncionarioController controller = new FuncionarioController();
         try {
-            listaFuncionario = controller.buscarTodos();
+            listaFuncionarios = controller.buscarTodos();
         } catch (Exception ex) {
-            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.viewVendas.getJcbFuncionario().removeAllItems();
         this.viewVendas.getJcbFuncionario().addItem(Mensagem.defaultComboFuncionario);
@@ -107,7 +106,7 @@ public class VendasController {
         }
     }
 
-    //MÃ©todo que carrega a combo Produto
+    //Método que carrega a combo Produto
     public void carregarComboProduto() {
         ProdutoController controller = new ProdutoController();
         try {
@@ -122,28 +121,8 @@ public class VendasController {
 
         }
     }
-
-    public void listarProdutos() {
-        try {
-            ProdutoDAO dao = new ProdutoDAO();
-            listaProdutos = dao.buscarTodos();
-            carregarTabela();
-        } catch (Exception ex) {
-            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    //Não tem porque carregar tabela nessa tela, favor verificar nome dos métodos.
-    public void carregarTabela() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewVendas.getTabelaProduto().getModel();
-        modelo.setRowCount(0);
-        for (Produto produto : listaProdutos) {
-            valorTotal = (produto.getValorVenda() * Integer.parseInt(this.viewVendas.getJtfQuantidade().getText())) - Integer.parseInt(this.viewVendas.getJtfDescontoProduto().getText());
-            modelo.addRow(new String[]{produto.getDescricao(), this.viewVendas.getJtfQuantidade().getText(), produto.getValorVenda() + "", this.viewVendas.getJtfDescontoProduto().getText(), valorTotal + ""});
-        }
-
-    }
-
+    
+    // método de bloqueio inicial da tela
     public void bloqueioInicial() {
         
         this.viewVendas.getJcbCliente().setEnabled(true);
@@ -154,12 +133,6 @@ public class VendasController {
         this.viewVendas.getJtfDescontoProduto().setEditable(false);
         this.viewVendas.getJtfQuantidade().setEditable(false);
         this.viewVendas.getJcbProduto().setEnabled(false);
-
-        bloquearCampos();
-    }
-
-    public void bloquearCampos() {
-
         this.viewVendas.getJcbFormaDePagamento().setEnabled(false);
         this.viewVendas.getJbtIncluirFormaDePagamento().setEnabled(false);
         this.viewVendas.getJbtExcluirFormaDePagamento().setEnabled(false);
@@ -172,8 +145,8 @@ public class VendasController {
 
     }
     
-    //mÃ©todo para liberar o campos de produto
-    public void liberarCamposProduto() {
+    //método para liberar o campos de produto
+    public void liberarCampoProduto() {
 
         this.viewVendas.getJcbProduto().setEnabled(true);
         this.viewVendas.getJcbProduto().grabFocus();
@@ -185,8 +158,8 @@ public class VendasController {
         this.viewVendas.getTabelaProduto().setEnabled(true);
     }
 
-    //mÃ©todo para liberar campos de forma de pagamento
-    public void liberarCamposFormaPagamento() {
+    //método para liberar campos de forma de pagamento
+    public void liberarCampoFormaPagamento() {
 
         this.viewVendas.getJcbFormaDePagamento().setEnabled(true);
         this.viewVendas.getJcbFormaDePagamento().grabFocus();
@@ -198,10 +171,27 @@ public class VendasController {
 
     }
     
+    //metodo para limpar todos os campos
+     public void limparCampos() {
+         this.viewVendas.getJcbCliente().setSelectedIndex(0);
+         this.viewVendas.getJcbFuncionario().setSelectedIndex(0);
+         this.viewVendas.getJcbProduto().setSelectedIndex(0);
+         this.viewVendas.getJtfQuantidade().setText(null);
+         this.viewVendas.getJtfDescontoProduto().setText(null);
+         DefaultTableModel modeloTelaProduto = (DefaultTableModel) this.viewVendas.getTabelaProduto().getModel();
+         modeloTelaProduto.setRowCount(0);
+         this.viewVendas.getJcbFormaDePagamento().setSelectedIndex(0);
+         this.viewVendas.getJtfDescontoFormaDePagamento().setText(null);
+         this.viewVendas.getJlbValorTotal().setText("0.00");
+         DefaultTableModel modeloTelaPagamento = (DefaultTableModel) this.viewVendas.getTabelaProduto().getModel();
+         modeloTelaPagamento.setRowCount(0);
+                 
+     }
     
-    //FIM DOS MÃ‰TODOS CHECADOS 
     
-    public void bloquearCamposFormaPagamento() {
+    //FIM DOS MÉTODOS CHECADOS 
+    
+    public void bloquearCampos() {
 
         this.viewVendas.getJcbFormaDePagamento().setEnabled(false);
         this.viewVendas.getJbtIncluirFormaDePagamento().setEnabled(false);
@@ -213,17 +203,6 @@ public class VendasController {
         
     }
     
-    public void limparCampos() {
-        this.viewVendas.getJtfQuantidade().setText(null);
-        this.viewVendas.getJtfDescontoProduto().setText(null);
-        this.viewVendas.getJtfDescontoFormaDePagamento().setText(null);
-        this.viewVendas.getJcbCliente().setSelectedIndex(0);
-        this.viewVendas.getJcbFuncionario().setSelectedIndex(0);
-        this.viewVendas.getJcbProduto().setSelectedIndex(0);
-        this.viewVendas.getJcbFormaDePagamento().setSelectedIndex(0);
-        this.viewVendas.getJcbCliente().setSelectedIndex(0);
-
-    }
 
     public void acaoBotaoCancelar() {
 

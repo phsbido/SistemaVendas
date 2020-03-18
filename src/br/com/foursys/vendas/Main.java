@@ -1,6 +1,7 @@
 package br.com.foursys.vendas;
 
 import br.com.foursys.vendas.view.LoginPrincipal;
+import br.com.foursys.vendas.view.VendasPrincipal;
 import javax.swing.UIManager;
 
 /**

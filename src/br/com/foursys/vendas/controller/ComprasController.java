@@ -1,8 +1,10 @@
 package br.com.foursys.vendas.controller;
 
+import br.com.foursys.vendas.dao.CompraDAO;
 import br.com.foursys.vendas.model.Compra;
 import br.com.foursys.vendas.model.Fornecedor;
 import br.com.foursys.vendas.model.Funcionario;
+import br.com.foursys.vendas.model.ItemCompra;
 import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.view.ComprasPrincipal;
@@ -25,7 +27,7 @@ public class ComprasController {
     private ComprasPrincipal viewCompras;
     private Compra compra = new Compra();
     private List<Produto> listaProdutos;
-    private List<Produto> listaProdutoSelecionado;
+    private List<ItemCompra> listaItemCompra;
     private List<Fornecedor> listaFornecedores;
     private List<Funcionario> listaFuncionarios;
 
@@ -113,12 +115,29 @@ public class ComprasController {
             DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
             modelo.setRowCount(0);
             modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString()});
-//            listaProdutoSelecionado.add(listaProdutos.get(this.viewCompras.getJcbProduto().getSelectedIndex() - 1));
+            ItemCompra itemCompra = new ItemCompra();
+            Produto produto = listaProdutos.get(this.viewCompras.getJcbProduto().getSelectedIndex() - 1);
+            int quantidade = Integer.parseInt(this.viewCompras.getJtfQuantidade() + "");
+            Double desconto = Double.parseDouble(this.viewCompras.getJtfDescontoProduto() + "");
+            Double valorTotal = ((produto.getValorCusto() * quantidade) - desconto);
+            itemCompra.setProdutoIdProduto(produto);
+            itemCompra.setCompraIdCompra(compra);
+            itemCompra.setQuantidadeProduto(quantidade + "");
+            itemCompra.setValorTotal(valorTotal);
+            listaItemCompra.add(itemCompra);
             habilitarFormaPagamento();
         } else {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
         }
     }
+
+//    public void salvarCompra() {
+//        CompraDAO dao = new CompraDAO();
+//        compra.set
+//        for (ItemCompra itemCompra : listaItemCompra) {
+//          
+//        }
+//    }
 
     //* assim como no inserir, o excluir deve remover o produto selecionado na tabela da lista na qual estamos
     //  salvando todos os produtos inseridos
@@ -165,10 +184,12 @@ public class ComprasController {
 
     public void acaoBotaoIniciarCompra() {
         this.viewCompras.getJcbProduto().setEnabled(true);
+        this.viewCompras.getJbtCancelar().setEnabled(true);
         this.viewCompras.getJtfQuantidade().setEditable(true);
         this.viewCompras.getJtfDescontoProduto().setEditable(true);
         this.viewCompras.getJbtAdicionarProduto().setEnabled(true);
         this.viewCompras.getJbtExcluirProduto().setEnabled(true);
         this.viewCompras.getTabelaProdutos().setEnabled(true);
+        compra = new Compra();
     }
 }

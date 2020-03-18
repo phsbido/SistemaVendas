@@ -25,6 +25,8 @@ public class Mensagem {
     public static String cepVazio = "Por favor, informe o CEP.\nCampo obrigatório!";
     public static String cidadeVazio = "Por favor, selecione a cidade.\nCampo obrigatório!";
     public static String estadoVazio = "Por favor, selecione o estado.\nCampo obrigatório!";
+    public static String erroEndereco  = "Erro ao salvar endereço!";
+    public static String erroExcluirEndereco ="Erro ao excluir endereço!";
     //mensagens email, loguin e senha
     public static String emailInvalido = "O email informado é inválido!";
     public static String loginVazio = "Por favor, informe o login.\nCampo obrigatório!";
@@ -54,7 +56,10 @@ public class Mensagem {
     public static String clienteInseridoSucesso = "Cliente inserido com sucesso.";
     public static String clienteInseridoErro = "Falha ao inserir cliente.";
     public static String clienteAlteradoSucesso = "Cliente alterado com sucesso.";
-    public static String clienteAlteradoErro = "Falha ao alterar cliente.";
+    public static String clienteAlteradoErro = "Falha ao alterar cliente.";  
+    //mensagens de contato
+    public static String erroContato ="Erro ao inserir contato!";
+    public static String erroExcluirContato ="Erro ao excluir endereço!";
     //mensagens cidade e estado
     public static String defaultComboCidade = "-Selecione uma cidade-";
     public static String defaultComboEstado = "-Selecione um estado-";
@@ -106,8 +111,5 @@ public class Mensagem {
     public static String confirmaEncerrar = "Deseja realmente encerrar o sistema?";
     public static String confirmaExclusao = "Confirma em excluir este registro?";
     public static String erro = "Erro!";
-    //Mensagens de contato
-    public static String erroContato = "Erro ao inserir contato!";
-    public static String erroExcluirContato = "Erro ao excluir endereço!";
     //Mensagens Compra
 }//fim da classe
