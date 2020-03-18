@@ -21,8 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * tela e tabela de funcionários do sistema de vendas
  *
  * @author pbido
- * @since 11/03/2020
- * @version 0.1
+ *
  */
 public class FuncionarioController {
 
@@ -40,27 +39,89 @@ public class FuncionarioController {
     public FuncionarioController(FuncionarioPrincipal viewFuncionario) {
         this.viewFuncionario = viewFuncionario;
     }
+// metodos responsaveis por salvar ,alterar e excluir funcionarios
 
-    public List<Funcionario> buscarTodos(String login) {
-        FuncionarioDAO dao = new FuncionarioDAO();
-        List<Funcionario> listaFuncionario = null;
-        try {
-            listaFuncionario = dao.buscarTodos(login);
-        } catch (Exception ex) {
-            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listaFuncionario;
-    }
+    public void salvarFuncionario() {
+        if (this.alterar == false) {
+            if (validarSalvar()) {
+                Funcionario funcionario = new Funcionario();
+                PessoaFisica pessoaFisica = new PessoaFisica();
+                Endereco endereco = new Endereco();
+                Cidade cidade;
+                Contato contato = new Contato();
+                pessoaFisica.setNome(this.viewFuncionario.getJtfNome().getText());
+                pessoaFisica.setCpf(this.viewFuncionario.getJtfCpf().getText());
+                pessoaFisica.setRg(this.viewFuncionario.getJtfRg().getText());
+                pessoaFisica.setDataNascimento(this.viewFuncionario.getJtfDataNascimento().getText());
+                funcionario.setPessoaFisicaIdPessoaFisica(pessoaFisica);
+                new PessoaFisicaController().salvarPessoaFisica(pessoaFisica);
+                endereco.setLogradouro(this.viewFuncionario.getJtfEndereco().getText());
+                endereco.setNumero(Integer.parseInt(this.viewFuncionario.getJtfNumero().getText()));
+                endereco.setComplemento(this.viewFuncionario.getJtfComplemento().getText());
+                endereco.setBairro(this.viewFuncionario.getJtfBairro().getText());
+                endereco.setCep(this.viewFuncionario.getJtfCep().getText());
+                cidade = listaCidades.get(this.viewFuncionario.getJcbCidade().getSelectedIndex() - 1);
+                endereco.setCidadeIdCidade(cidade);
+                funcionario.setEnderecoIdEndereco(endereco);
+                new EnderecoController().salvarEndereco(endereco);
+                contato.setTelefone(this.viewFuncionario.getJtfTelefone().getText());
+                contato.setCelular(this.viewFuncionario.getJtfCelular().getText());
+                contato.setEmail(this.viewFuncionario.getJtfEmail().getText());
+                funcionario.setContatoIdContato(contato);
+                funcionario.setLogin(this.viewFuncionario.getJtfLogin().getText());
+                funcionario.setSenha(this.viewFuncionario.getJtfSenha().getText());
+                new ContatoController().salvarContato(contato);
+                FuncionarioDAO dao = new FuncionarioDAO();
+                try {
+                    dao.salvar(funcionario);
+                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioInseridoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioInseridoErro);
+                    Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarFuncionarios();
+            }
+        } else {
+            if (validarSalvar()) {
+                funcionario.getPessoaFisicaIdPessoaFisica().setNome(this.viewFuncionario.getJtfNome().getText());
+                funcionario.getPessoaFisicaIdPessoaFisica().setCpf(this.viewFuncionario.getJtfCpf().getText());
+                funcionario.getPessoaFisicaIdPessoaFisica().setRg(this.viewFuncionario.getJtfRg().getText());
+                funcionario.getPessoaFisicaIdPessoaFisica().setDataNascimento(this.viewFuncionario.getJtfDataNascimento().getText());
+                new PessoaFisicaController().salvarPessoaFisica(funcionario.getPessoaFisicaIdPessoaFisica());
 
-    public List<Funcionario> buscarTodos() {
-        FuncionarioDAO dao = new FuncionarioDAO();
-        List<Funcionario> listaFuncionario = null;
-        try {
-            listaFuncionario = dao.buscarTodos();
-        } catch (Exception ex) {
-            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+                funcionario.setSenha(this.viewFuncionario.getJtfSenha().getText());
+                funcionario.setLogin(this.viewFuncionario.getJtfLogin().getText());
+
+                funcionario.getEnderecoIdEndereco().setLogradouro(this.viewFuncionario.getJtfEndereco().getText());
+                funcionario.getEnderecoIdEndereco().setNumero(Integer.parseInt(this.viewFuncionario.getJtfNumero().getText()));
+                funcionario.getEnderecoIdEndereco().setComplemento(this.viewFuncionario.getJtfComplemento().getText());
+                funcionario.getEnderecoIdEndereco().setBairro(this.viewFuncionario.getJtfBairro().getText());
+                funcionario.getEnderecoIdEndereco().setCep(this.viewFuncionario.getJtfCep().getText());
+
+                Cidade cidade;
+                cidade = listaCidades.get(this.viewFuncionario.getJcbCidade().getSelectedIndex() - 1);
+                funcionario.getEnderecoIdEndereco().setCidadeIdCidade(cidade);
+                new EnderecoController().salvarEndereco(funcionario.getEnderecoIdEndereco());
+                funcionario.getContatoIdContato().setTelefone(this.viewFuncionario.getJtfTelefone().getText());
+                funcionario.getContatoIdContato().setCelular(this.viewFuncionario.getJtfCelular().getText());
+                funcionario.getContatoIdContato().setEmail(this.viewFuncionario.getJtfEmail().getText());
+                new ContatoController().salvarContato(funcionario.getContatoIdContato());
+                FuncionarioDAO dao = new FuncionarioDAO();
+                try {
+                    dao.salvar(funcionario);
+                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioAlteradoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioAlteradoErro);
+                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarFuncionarios();
+
+            }
         }
-        return listaFuncionario;
     }
 
     public void excluirFuncionario() {
@@ -88,7 +149,33 @@ public class FuncionarioController {
             }
         }
     }
-
+    public void alterarFuncionario() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewFuncionario.getTabelaFuncionario().getModel();
+        if (this.viewFuncionario.getTabelaFuncionario().getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.funcionarioNaoSelecionado);
+        } else {
+            funcionario = listaFuncionarios.get(this.viewFuncionario.getTabelaFuncionario().getSelectedRow());
+            this.viewFuncionario.getJtfLogin().setText(funcionario.getLogin());
+            this.viewFuncionario.getJtfSenha().setText(funcionario.getSenha());
+            this.viewFuncionario.getJtfCpf().setText(funcionario.getPessoaFisicaIdPessoaFisica().getCpf());
+            this.viewFuncionario.getJtfRg().setText(funcionario.getPessoaFisicaIdPessoaFisica().getRg());
+            this.viewFuncionario.getJtfNome().setText(funcionario.getPessoaFisicaIdPessoaFisica().getNome());
+            this.viewFuncionario.getJtfDataNascimento().setText(funcionario.getPessoaFisicaIdPessoaFisica().getDataNascimento());
+            this.viewFuncionario.getJtfEndereco().setText(funcionario.getEnderecoIdEndereco().getLogradouro());
+            this.viewFuncionario.getJtfNumero().setText(funcionario.getEnderecoIdEndereco().getNumero() + "");
+            this.viewFuncionario.getJtfComplemento().setText(funcionario.getEnderecoIdEndereco().getComplemento());
+            this.viewFuncionario.getJtfBairro().setText(funcionario.getEnderecoIdEndereco().getBairro());
+            this.viewFuncionario.getJcbCidade().setSelectedItem(funcionario.getEnderecoIdEndereco().getCidadeIdCidade().getNome());
+            this.viewFuncionario.getJtfCep().setText(funcionario.getEnderecoIdEndereco().getCep());
+            this.viewFuncionario.getJcbEstado().setSelectedItem(funcionario.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getNome() + " - " + funcionario.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getUf());
+            this.viewFuncionario.getJtfTelefone().setText(funcionario.getContatoIdContato().getTelefone());
+            this.viewFuncionario.getJtfCelular().setText(funcionario.getContatoIdContato().getCelular());
+            this.viewFuncionario.getJtfEmail().setText(funcionario.getContatoIdContato().getEmail());
+            this.alterar = true;
+            acaoBotaoAlterar();
+        }
+    }
+//    Metodos responsaveis por listar, buscar e carregar tabela
     public void listarFuncionarios() {
         try {
             FuncionarioDAO dao = new FuncionarioDAO();
@@ -107,6 +194,28 @@ public class FuncionarioController {
         }
     }
 
+    public List<Funcionario> buscarTodos(String login) {
+        FuncionarioDAO dao = new FuncionarioDAO();
+        List<Funcionario> listaFuncionario = null;
+        try {
+            listaFuncionario = dao.buscarTodos(login);
+        } catch (Exception ex) {
+            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFuncionario;
+    }
+
+    public List<Funcionario> buscarTodos() {
+        FuncionarioDAO dao = new FuncionarioDAO();
+        List<Funcionario> listaFuncionario = null;
+        try {
+            listaFuncionario = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFuncionario;
+    }
+// metodos responsavel por popular as combos
     public void carregarComboCidade() {
         CidadeController controller = new CidadeController();
         try {
@@ -134,7 +243,7 @@ public class FuncionarioController {
             this.viewFuncionario.getJcbEstado().addItem(estados.getNome() + " - " + estados.getUf());
         }
     }
-
+// metodos responsavel por colocar ação na tela 
     public void bloqueioInicial() {
         this.viewFuncionario.getJbtNovo().setEnabled(true);
         this.viewFuncionario.getJbtAlterar().setEnabled(true);
@@ -234,7 +343,20 @@ public class FuncionarioController {
         liberarCampos();
         this.alterar = false;
     }
-
+       public void acaoBotaoAlterar() {
+        this.viewFuncionario.getJbtNovo().setEnabled(false);
+        this.viewFuncionario.getJbtAlterar().setEnabled(false);
+        this.viewFuncionario.getJbtExcluir().setEnabled(false);
+        this.viewFuncionario.getJbtSair().setEnabled(false);
+        this.viewFuncionario.getJbtSalvar().setEnabled(true);
+        this.viewFuncionario.getJbtCancelar().setEnabled(true);
+        liberarCampos();
+        this.viewFuncionario.getJtfCpf().setEditable(false);
+        this.viewFuncionario.getJtfRg().setEditable(false);
+        this.viewFuncionario.getJtfNome().setEditable(false);
+        this.viewFuncionario.getJtfDataNascimento().setEditable(false);
+    }
+// metodo responsavel por fazer as validações necessarias 
     public boolean validarSalvar() {
         if (Valida.verificarVazio(this.viewFuncionario.getJtfCpf().getText())) {
             JOptionPane.showMessageDialog(null, Mensagem.cpfVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
@@ -324,127 +446,7 @@ public class FuncionarioController {
         return true;
     }
 
-    public void salvarFuncionario() {
-        if (this.alterar == false) {
-            if (validarSalvar()) {
-                Funcionario funcionario = new Funcionario();
-                PessoaFisica pessoaFisica = new PessoaFisica();
-                Endereco endereco = new Endereco();
-                Cidade cidade;
-                Contato contato = new Contato();
-                pessoaFisica.setNome(this.viewFuncionario.getJtfNome().getText());
-                pessoaFisica.setCpf(this.viewFuncionario.getJtfCpf().getText());
-                pessoaFisica.setRg(this.viewFuncionario.getJtfRg().getText());
-                pessoaFisica.setDataNascimento(this.viewFuncionario.getJtfDataNascimento().getText());
-                funcionario.setPessoaFisicaIdPessoaFisica(pessoaFisica);
-                new PessoaFisicaController().salvarPessoaFisica(pessoaFisica);
-                endereco.setLogradouro(this.viewFuncionario.getJtfEndereco().getText());
-                endereco.setNumero(Integer.parseInt(this.viewFuncionario.getJtfNumero().getText()));
-                endereco.setComplemento(this.viewFuncionario.getJtfComplemento().getText());
-                endereco.setBairro(this.viewFuncionario.getJtfBairro().getText());
-                endereco.setCep(this.viewFuncionario.getJtfCep().getText());
-                cidade = listaCidades.get(this.viewFuncionario.getJcbCidade().getSelectedIndex() - 1);
-                endereco.setCidadeIdCidade(cidade);
-                funcionario.setEnderecoIdEndereco(endereco);
-                new EnderecoController().salvarEndereco(endereco);
-                contato.setTelefone(this.viewFuncionario.getJtfTelefone().getText());
-                contato.setCelular(this.viewFuncionario.getJtfCelular().getText());
-                contato.setEmail(this.viewFuncionario.getJtfEmail().getText());
-                funcionario.setContatoIdContato(contato);
-                funcionario.setLogin(this.viewFuncionario.getJtfLogin().getText());
-                funcionario.setSenha(this.viewFuncionario.getJtfSenha().getText());
-                new ContatoController().salvarContato(contato);
-                FuncionarioDAO dao = new FuncionarioDAO();
-                try {
-                    dao.salvar(funcionario);
-                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioInseridoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioInseridoErro);
-                    Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarFuncionarios();
-            }
-        } else {
-            if (validarSalvar()) {
-                funcionario.getPessoaFisicaIdPessoaFisica().setNome(this.viewFuncionario.getJtfNome().getText());
-                funcionario.getPessoaFisicaIdPessoaFisica().setCpf(this.viewFuncionario.getJtfCpf().getText());
-                funcionario.getPessoaFisicaIdPessoaFisica().setRg(this.viewFuncionario.getJtfRg().getText());
-                funcionario.getPessoaFisicaIdPessoaFisica().setDataNascimento(this.viewFuncionario.getJtfDataNascimento().getText());
-                new PessoaFisicaController().salvarPessoaFisica(funcionario.getPessoaFisicaIdPessoaFisica());
+ 
 
-                funcionario.setSenha(this.viewFuncionario.getJtfSenha().getText());
-                funcionario.setLogin(this.viewFuncionario.getJtfLogin().getText());
-
-                funcionario.getEnderecoIdEndereco().setLogradouro(this.viewFuncionario.getJtfEndereco().getText());
-                funcionario.getEnderecoIdEndereco().setNumero(Integer.parseInt(this.viewFuncionario.getJtfNumero().getText()));
-                funcionario.getEnderecoIdEndereco().setComplemento(this.viewFuncionario.getJtfComplemento().getText());
-                funcionario.getEnderecoIdEndereco().setBairro(this.viewFuncionario.getJtfBairro().getText());
-                funcionario.getEnderecoIdEndereco().setCep(this.viewFuncionario.getJtfCep().getText());
-
-                Cidade cidade;
-                cidade = listaCidades.get(this.viewFuncionario.getJcbCidade().getSelectedIndex() - 1);
-                funcionario.getEnderecoIdEndereco().setCidadeIdCidade(cidade);
-                new EnderecoController().salvarEndereco(funcionario.getEnderecoIdEndereco());
-                funcionario.getContatoIdContato().setTelefone(this.viewFuncionario.getJtfTelefone().getText());
-                funcionario.getContatoIdContato().setCelular(this.viewFuncionario.getJtfCelular().getText());
-                funcionario.getContatoIdContato().setEmail(this.viewFuncionario.getJtfEmail().getText());
-                new ContatoController().salvarContato(funcionario.getContatoIdContato());
-                FuncionarioDAO dao = new FuncionarioDAO();
-                try {
-                    dao.salvar(funcionario);
-                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioAlteradoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.funcionarioAlteradoErro);
-                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarFuncionarios();
-
-            }
-        }
-    }
-
-    public void acaoBotaoAlterar() {
-        this.viewFuncionario.getJbtNovo().setEnabled(false);
-        this.viewFuncionario.getJbtAlterar().setEnabled(false);
-        this.viewFuncionario.getJbtExcluir().setEnabled(false);
-        this.viewFuncionario.getJbtSair().setEnabled(false);
-        this.viewFuncionario.getJbtSalvar().setEnabled(true);
-        this.viewFuncionario.getJbtCancelar().setEnabled(true);
-        liberarCampos();
-        this.viewFuncionario.getJtfCpf().setEditable(false);
-        this.viewFuncionario.getJtfRg().setEditable(false);
-        this.viewFuncionario.getJtfNome().setEditable(false);
-        this.viewFuncionario.getJtfDataNascimento().setEditable(false);
-    }
-
-    public void alterarFuncionario() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewFuncionario.getTabelaFuncionario().getModel();
-        if (this.viewFuncionario.getTabelaFuncionario().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.funcionarioNaoSelecionado);
-        } else {
-            funcionario = listaFuncionarios.get(this.viewFuncionario.getTabelaFuncionario().getSelectedRow());
-            this.viewFuncionario.getJtfLogin().setText(funcionario.getLogin());
-            this.viewFuncionario.getJtfSenha().setText(funcionario.getSenha());
-            this.viewFuncionario.getJtfCpf().setText(funcionario.getPessoaFisicaIdPessoaFisica().getCpf());
-            this.viewFuncionario.getJtfRg().setText(funcionario.getPessoaFisicaIdPessoaFisica().getRg());
-            this.viewFuncionario.getJtfNome().setText(funcionario.getPessoaFisicaIdPessoaFisica().getNome());
-            this.viewFuncionario.getJtfDataNascimento().setText(funcionario.getPessoaFisicaIdPessoaFisica().getDataNascimento());
-            this.viewFuncionario.getJtfEndereco().setText(funcionario.getEnderecoIdEndereco().getLogradouro());
-            this.viewFuncionario.getJtfNumero().setText(funcionario.getEnderecoIdEndereco().getNumero() + "");
-            this.viewFuncionario.getJtfComplemento().setText(funcionario.getEnderecoIdEndereco().getComplemento());
-            this.viewFuncionario.getJtfBairro().setText(funcionario.getEnderecoIdEndereco().getBairro());
-            this.viewFuncionario.getJcbCidade().setSelectedItem(funcionario.getEnderecoIdEndereco().getCidadeIdCidade().getNome());
-            this.viewFuncionario.getJtfCep().setText(funcionario.getEnderecoIdEndereco().getCep());
-            this.viewFuncionario.getJcbEstado().setSelectedItem(funcionario.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getNome() + " - " + funcionario.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getUf());
-            this.viewFuncionario.getJtfTelefone().setText(funcionario.getContatoIdContato().getTelefone());
-            this.viewFuncionario.getJtfCelular().setText(funcionario.getContatoIdContato().getCelular());
-            this.viewFuncionario.getJtfEmail().setText(funcionario.getContatoIdContato().getEmail());
-            this.alterar = true;
-            acaoBotaoAlterar();
-        }
-    }
+    
 }

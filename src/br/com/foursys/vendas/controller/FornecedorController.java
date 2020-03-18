@@ -41,7 +41,111 @@ public class FornecedorController {
     public FornecedorController(FornecedorPrincipal viewFornecedor) {
         this.viewFornecedor = viewFornecedor;
     }
+// metodos responsaveis por salvar ,alterar e excluir Fornecedor
+     public void salvarFornecedor() {
+        if (this.alterar == false) {
+            if (validarSalvar()) {
+                Fornecedor fornecedor = new Fornecedor();
+                PessoaJuridica pessoaJuridica = new PessoaJuridica();
+                Endereco endereco = new Endereco();
+                Cidade cidade;
+                Contato contato = new Contato();
+                pessoaJuridica.setRazaoSocial(this.viewFornecedor.getJtfRazaoSocial().getText());
+                pessoaJuridica.setCnpj(this.viewFornecedor.getJtfCnpj().getText());
+                pessoaJuridica.setInscricaoEstadual(this.viewFornecedor.getJtfInscricaoEstadual().getText());
+                pessoaJuridica.setDataFundacao(this.viewFornecedor.getJtfDataFundacao().getText());
+                fornecedor.setPessoaJuridicaIdPessoaJuridica(pessoaJuridica);
+                new PessoaJuridicaController().salvarPessoaJuridica(pessoaJuridica);
+                endereco.setLogradouro(this.viewFornecedor.getJtfEndereco().getText());
+                endereco.setNumero(Integer.parseInt(this.viewFornecedor.getJtfNumero().getText()));
+                endereco.setComplemento(this.viewFornecedor.getJtfComplemento().getText());
+                endereco.setBairro(this.viewFornecedor.getJtfBairro().getText());
+                endereco.setCep(this.viewFornecedor.getJtfCep().getText());
+                cidade = listaCidades.get(this.viewFornecedor.getJcbCidade().getSelectedIndex() - 1);
+                endereco.setCidadeIdCidade(cidade);
+                fornecedor.setEnderecoIdEndereco(endereco);
+                new EnderecoController().salvarEndereco(endereco);
+                contato.setTelefone(this.viewFornecedor.getJtfTelefone().getText());
+                contato.setCelular(this.viewFornecedor.getJtfCelular().getText());
+                contato.setEmail(this.viewFornecedor.getJtfEmail().getText());
+                fornecedor.setContatoIdContato(contato);
+                new ContatoController().salvarContato(contato);
+                fornecedor.setContato(this.viewFornecedor.getJtfContato().getText());
+                FornecedorDAO dao = new FornecedorDAO();
+                try {
+                    dao.salvar(fornecedor);
+                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorInseridoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorInseridoErro);
+                    Logger.getLogger(FornecedorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarFornecedores();
+            }
+        } else {
+            if (validarSalvar()) {
+                fornecedor.getPessoaJuridicaIdPessoaJuridica().setRazaoSocial(this.viewFornecedor.getJtfRazaoSocial().getText());
+                fornecedor.getPessoaJuridicaIdPessoaJuridica().setCnpj(this.viewFornecedor.getJtfCnpj().getText());
+                fornecedor.getPessoaJuridicaIdPessoaJuridica().setInscricaoEstadual(this.viewFornecedor.getJtfInscricaoEstadual().getText());
+                fornecedor.getPessoaJuridicaIdPessoaJuridica().setDataFundacao(this.viewFornecedor.getJtfDataFundacao().getText());
+                new PessoaJuridicaController().salvarPessoaJuridica(fornecedor.getPessoaJuridicaIdPessoaJuridica());
 
+                fornecedor.getEnderecoIdEndereco().setLogradouro(this.viewFornecedor.getJtfEndereco().getText());
+                fornecedor.getEnderecoIdEndereco().setNumero(Integer.parseInt(this.viewFornecedor.getJtfNumero().getText()));
+                fornecedor.getEnderecoIdEndereco().setComplemento(this.viewFornecedor.getJtfComplemento().getText());
+                fornecedor.getEnderecoIdEndereco().setBairro(this.viewFornecedor.getJtfBairro().getText());
+                fornecedor.getEnderecoIdEndereco().setCep(this.viewFornecedor.getJtfCep().getText());
+
+                Cidade cidade;
+                cidade = listaCidades.get(this.viewFornecedor.getJcbCidade().getSelectedIndex() - 1);
+                fornecedor.getEnderecoIdEndereco().setCidadeIdCidade(cidade);
+                new EnderecoController().salvarEndereco(fornecedor.getEnderecoIdEndereco());
+                fornecedor.getContatoIdContato().setTelefone(this.viewFornecedor.getJtfTelefone().getText());
+                fornecedor.getContatoIdContato().setCelular(this.viewFornecedor.getJtfCelular().getText());
+                fornecedor.getContatoIdContato().setEmail(this.viewFornecedor.getJtfEmail().getText());
+                new ContatoController().salvarContato(fornecedor.getContatoIdContato());
+                fornecedor.setContato(this.viewFornecedor.getJtfContato().getText());
+                FornecedorDAO dao = new FornecedorDAO();
+                try {
+                    dao.salvar(fornecedor);
+                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorAlteradoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorAlteradoErro);
+                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarFornecedores();
+
+            }
+        }
+    }
+      public void alterarFornecedor() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewFornecedor.getTabelaFornecedor().getModel();
+        if (this.viewFornecedor.getTabelaFornecedor().getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.fornecedorNaoSelecionado);
+        } else {
+            fornecedor = listaFornecedores.get(this.viewFornecedor.getTabelaFornecedor().getSelectedRow());
+            this.viewFornecedor.getJtfCnpj().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getCnpj());
+            this.viewFornecedor.getJtfInscricaoEstadual().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getInscricaoEstadual());
+            this.viewFornecedor.getJtfRazaoSocial().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+            this.viewFornecedor.getJtfDataFundacao().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getDataFundacao());
+            this.viewFornecedor.getJtfEndereco().setText(fornecedor.getEnderecoIdEndereco().getLogradouro());
+            this.viewFornecedor.getJtfNumero().setText(fornecedor.getEnderecoIdEndereco().getNumero() + "");
+            this.viewFornecedor.getJtfComplemento().setText(fornecedor.getEnderecoIdEndereco().getComplemento());
+            this.viewFornecedor.getJtfBairro().setText(fornecedor.getEnderecoIdEndereco().getBairro());
+            this.viewFornecedor.getJcbCidade().setSelectedItem(fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getNome());
+            this.viewFornecedor.getJtfCep().setText(fornecedor.getEnderecoIdEndereco().getCep());
+            this.viewFornecedor.getJcbEstado().setSelectedItem(fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getNome() + " - " + fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getUf());
+            this.viewFornecedor.getJtfTelefone().setText(fornecedor.getContatoIdContato().getTelefone());
+            this.viewFornecedor.getJtfCelular().setText(fornecedor.getContatoIdContato().getCelular());
+            this.viewFornecedor.getJtfEmail().setText(fornecedor.getContatoIdContato().getEmail());
+            this.viewFornecedor.getJtfContato().setText(fornecedor.getContato());
+            this.alterar = true;
+            acaoBotaoAlterar();
+        }
+    }
     public void excluirFornecedor() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewFornecedor.getTabelaFornecedor().getModel();
         if (this.viewFornecedor.getTabelaFornecedor().getSelectedRow() < 0) {
@@ -76,7 +180,7 @@ public class FornecedorController {
             Logger.getLogger(ContatoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+//    Metodos responsaveis por listar, buscar e carregar tabela
     public void listarFornecedores() {
         try {
             FornecedorDAO dao = new FornecedorDAO();
@@ -94,7 +198,12 @@ public class FornecedorController {
             modelo.addRow(new String[]{fornecedor.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getNome(), fornecedor.getContatoIdContato().getTelefone(), fornecedor.getContatoIdContato().getCelular()});
         }
     }
-
+     public ArrayList<Fornecedor> buscarTodos() throws Exception {
+        FornecedorDAO dao = new FornecedorDAO();
+        ArrayList<Fornecedor> lista = dao.buscarTodos();
+        return lista;
+    }
+// metodos responsavel por popular as combos 
     public void carregarComboCidade() {
         CidadeController controller = new CidadeController();
         try {
@@ -122,7 +231,7 @@ public class FornecedorController {
             this.viewFornecedor.getJcbEstado().addItem(estados.getNome() + " - " + estados.getUf());
         }
     }
-
+// metodos responsavel por colocar ação na tela 
     public void bloqueioInicial() {
         this.viewFornecedor.getJbtNovo().setEnabled(true);
         this.viewFornecedor.getJbtAlterar().setEnabled(true);
@@ -223,7 +332,7 @@ public class FornecedorController {
         liberarCampos();
         this.alterar = false;
     }
-
+// metodo responsavel por fazer as validações necessarias
     public boolean validarSalvar() {
         if (Valida.verificarVazio(this.viewFornecedor.getJtfCnpj().getText())) {
             JOptionPane.showMessageDialog(null, Mensagem.cnpjVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
@@ -305,85 +414,7 @@ public class FornecedorController {
         return true;
     }
 
-    public void salvarFornecedor() {
-        if (this.alterar == false) {
-            if (validarSalvar()) {
-                Fornecedor fornecedor = new Fornecedor();
-                PessoaJuridica pessoaJuridica = new PessoaJuridica();
-                Endereco endereco = new Endereco();
-                Cidade cidade;
-                Contato contato = new Contato();
-                pessoaJuridica.setRazaoSocial(this.viewFornecedor.getJtfRazaoSocial().getText());
-                pessoaJuridica.setCnpj(this.viewFornecedor.getJtfCnpj().getText());
-                pessoaJuridica.setInscricaoEstadual(this.viewFornecedor.getJtfInscricaoEstadual().getText());
-                pessoaJuridica.setDataFundacao(this.viewFornecedor.getJtfDataFundacao().getText());
-                fornecedor.setPessoaJuridicaIdPessoaJuridica(pessoaJuridica);
-                new PessoaJuridicaController().salvarPessoaJuridica(pessoaJuridica);
-                endereco.setLogradouro(this.viewFornecedor.getJtfEndereco().getText());
-                endereco.setNumero(Integer.parseInt(this.viewFornecedor.getJtfNumero().getText()));
-                endereco.setComplemento(this.viewFornecedor.getJtfComplemento().getText());
-                endereco.setBairro(this.viewFornecedor.getJtfBairro().getText());
-                endereco.setCep(this.viewFornecedor.getJtfCep().getText());
-                cidade = listaCidades.get(this.viewFornecedor.getJcbCidade().getSelectedIndex() - 1);
-                endereco.setCidadeIdCidade(cidade);
-                fornecedor.setEnderecoIdEndereco(endereco);
-                new EnderecoController().salvarEndereco(endereco);
-                contato.setTelefone(this.viewFornecedor.getJtfTelefone().getText());
-                contato.setCelular(this.viewFornecedor.getJtfCelular().getText());
-                contato.setEmail(this.viewFornecedor.getJtfEmail().getText());
-                fornecedor.setContatoIdContato(contato);
-                new ContatoController().salvarContato(contato);
-                fornecedor.setContato(this.viewFornecedor.getJtfContato().getText());
-                FornecedorDAO dao = new FornecedorDAO();
-                try {
-                    dao.salvar(fornecedor);
-                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorInseridoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorInseridoErro);
-                    Logger.getLogger(FornecedorController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarFornecedores();
-            }
-        } else {
-            if (validarSalvar()) {
-                fornecedor.getPessoaJuridicaIdPessoaJuridica().setRazaoSocial(this.viewFornecedor.getJtfRazaoSocial().getText());
-                fornecedor.getPessoaJuridicaIdPessoaJuridica().setCnpj(this.viewFornecedor.getJtfCnpj().getText());
-                fornecedor.getPessoaJuridicaIdPessoaJuridica().setInscricaoEstadual(this.viewFornecedor.getJtfInscricaoEstadual().getText());
-                fornecedor.getPessoaJuridicaIdPessoaJuridica().setDataFundacao(this.viewFornecedor.getJtfDataFundacao().getText());
-                new PessoaJuridicaController().salvarPessoaJuridica(fornecedor.getPessoaJuridicaIdPessoaJuridica());
-
-                fornecedor.getEnderecoIdEndereco().setLogradouro(this.viewFornecedor.getJtfEndereco().getText());
-                fornecedor.getEnderecoIdEndereco().setNumero(Integer.parseInt(this.viewFornecedor.getJtfNumero().getText()));
-                fornecedor.getEnderecoIdEndereco().setComplemento(this.viewFornecedor.getJtfComplemento().getText());
-                fornecedor.getEnderecoIdEndereco().setBairro(this.viewFornecedor.getJtfBairro().getText());
-                fornecedor.getEnderecoIdEndereco().setCep(this.viewFornecedor.getJtfCep().getText());
-
-                Cidade cidade;
-                cidade = listaCidades.get(this.viewFornecedor.getJcbCidade().getSelectedIndex() - 1);
-                fornecedor.getEnderecoIdEndereco().setCidadeIdCidade(cidade);
-                new EnderecoController().salvarEndereco(fornecedor.getEnderecoIdEndereco());
-                fornecedor.getContatoIdContato().setTelefone(this.viewFornecedor.getJtfTelefone().getText());
-                fornecedor.getContatoIdContato().setCelular(this.viewFornecedor.getJtfCelular().getText());
-                fornecedor.getContatoIdContato().setEmail(this.viewFornecedor.getJtfEmail().getText());
-                new ContatoController().salvarContato(fornecedor.getContatoIdContato());
-                fornecedor.setContato(this.viewFornecedor.getJtfContato().getText());
-                FornecedorDAO dao = new FornecedorDAO();
-                try {
-                    dao.salvar(fornecedor);
-                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorAlteradoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.fornecedorAlteradoErro);
-                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarFornecedores();
-
-            }
-        }
-    }
+   
 
     public void acaoBotaoAlterar() {
         this.viewFornecedor.getJbtNovo().setEnabled(false);
@@ -399,35 +430,7 @@ public class FornecedorController {
         this.viewFornecedor.getJtfDataFundacao().setEditable(false);
     }
 
-    public void alterarFornecedor() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewFornecedor.getTabelaFornecedor().getModel();
-        if (this.viewFornecedor.getTabelaFornecedor().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.fornecedorNaoSelecionado);
-        } else {
-            fornecedor = listaFornecedores.get(this.viewFornecedor.getTabelaFornecedor().getSelectedRow());
-            this.viewFornecedor.getJtfCnpj().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getCnpj());
-            this.viewFornecedor.getJtfInscricaoEstadual().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getInscricaoEstadual());
-            this.viewFornecedor.getJtfRazaoSocial().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
-            this.viewFornecedor.getJtfDataFundacao().setText(fornecedor.getPessoaJuridicaIdPessoaJuridica().getDataFundacao());
-            this.viewFornecedor.getJtfEndereco().setText(fornecedor.getEnderecoIdEndereco().getLogradouro());
-            this.viewFornecedor.getJtfNumero().setText(fornecedor.getEnderecoIdEndereco().getNumero() + "");
-            this.viewFornecedor.getJtfComplemento().setText(fornecedor.getEnderecoIdEndereco().getComplemento());
-            this.viewFornecedor.getJtfBairro().setText(fornecedor.getEnderecoIdEndereco().getBairro());
-            this.viewFornecedor.getJcbCidade().setSelectedItem(fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getNome());
-            this.viewFornecedor.getJtfCep().setText(fornecedor.getEnderecoIdEndereco().getCep());
-            this.viewFornecedor.getJcbEstado().setSelectedItem(fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getNome() + " - " + fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getUf());
-            this.viewFornecedor.getJtfTelefone().setText(fornecedor.getContatoIdContato().getTelefone());
-            this.viewFornecedor.getJtfCelular().setText(fornecedor.getContatoIdContato().getCelular());
-            this.viewFornecedor.getJtfEmail().setText(fornecedor.getContatoIdContato().getEmail());
-            this.viewFornecedor.getJtfContato().setText(fornecedor.getContato());
-            this.alterar = true;
-            acaoBotaoAlterar();
-        }
-    }
+   
 
-    public ArrayList<Fornecedor> buscarTodos() throws Exception {
-        FornecedorDAO dao = new FornecedorDAO();
-        ArrayList<Fornecedor> lista = dao.buscarTodos();
-        return lista;
-    }
+   
 }

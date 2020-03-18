@@ -106,5 +106,8 @@ public class Mensagem {
     public static String confirmaEncerrar = "Deseja realmente encerrar o sistema?";
     public static String confirmaExclusao = "Confirma em excluir este registro?";
     public static String erro = "Erro!";
+    //Mensagens de contato
+    public static String erroContato = "Erro ao inserir contato!";
+    public static String erroExcluirContato = "Erro ao excluir endereço!";
     //Mensagens Compra
 }//fim da classe

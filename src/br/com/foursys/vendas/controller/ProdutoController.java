@@ -36,19 +36,64 @@ public class ProdutoController {
     public ProdutoController(ProdutoPrincipal viewProduto) {
         this.viewProduto = viewProduto;
     }
+// metodos responsaveis por salvar ,alterar e excluir produto
+    public void salvarProduto() {
+        if (this.alterar == false) {
+            if (validarSalvar()) {
+                Produto produto = new Produto();
+                produto.setDescricao(this.viewProduto.getJtfDescricao().getText());
+                Fornecedor fornecedor = listaFornecedores.get(this.viewProduto.getJcbFornecedor().getSelectedIndex() - 1);
+                produto.setFornecedorIdFornecedor(fornecedor);
+                produto.setValorCusto(Double.parseDouble(this.viewProduto.getJtfValorCusto().getText()));
+                produto.setValorVenda(Double.parseDouble(this.viewProduto.getJtfValorVenda().getText()));
+                ProdutoDAO dao = new ProdutoDAO();
+                try {
+                    dao.salvar(produto);
+                    JOptionPane.showMessageDialog(null, Mensagem.produtoInseridoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.produtoInseridoErro);
+                    Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarProdutos();
+            }
+        } else {
+            if (validarSalvar()) {
+                produto.setDescricao(this.viewProduto.getJtfDescricao().getText());
+                Fornecedor fornecedor;
+                fornecedor = listaFornecedores.get(this.viewProduto.getJcbFornecedor().getSelectedIndex() - 1);
+                produto.getFornecedorIdFornecedor().setIdFornecedor(fornecedor.getIdFornecedor());
+                produto.setValorCusto(Double.parseDouble(this.viewProduto.getJtfValorCusto().getText()));
+                produto.setValorVenda(Double.parseDouble(this.viewProduto.getJtfValorVenda().getText()));
+                ProdutoDAO dao = new ProdutoDAO();
+                try {
+                    dao.salvar(produto);
+                    JOptionPane.showMessageDialog(null, Mensagem.produtoAlteradoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.produtoAlteradoErro);
+                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarProdutos();
 
-    public List<Produto> buscarProdutos() {
-
-        ProdutoDAO dao = new ProdutoDAO();
-        List<Produto> listaProdutos = new ArrayList<Produto>();
-
-        try {
-            listaProdutos = dao.buscarTodos();
-        } catch (Exception ex) {
-            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
-        return listaProdutos;
+    }
+     public void alterarProduto() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewProduto.getTabelaProduto().getModel();
+        if (this.viewProduto.getTabelaProduto().getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
+        } else {
+            produto = listaProdutos.get(this.viewProduto.getTabelaProduto().getSelectedRow());
+            this.viewProduto.getJtfDescricao().setText(produto.getDescricao());
+            this.viewProduto.getJtfValorCusto().setText(produto.getValorCusto() + "");
+            this.viewProduto.getJtfValorVenda().setText(produto.getValorVenda() + "");
+            this.viewProduto.getJcbFornecedor().setSelectedItem(produto.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+            this.alterar = true;
+            acaoBotaoAlterar();
+        }
     }
 
     public void excluirProduto() {
@@ -73,6 +118,20 @@ public class ProdutoController {
             }
         }
     }
+//    Metodos responsaveis por listar, buscar e carregar tabela
+    public List<Produto> buscarProdutos() {
+
+        ProdutoDAO dao = new ProdutoDAO();
+        List<Produto> listaProdutos = new ArrayList<Produto>();
+
+        try {
+            listaProdutos = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listaProdutos;
+    }
 
     public void listarProdutos() {
         try {
@@ -91,7 +150,7 @@ public class ProdutoController {
             modelo.addRow(new String[]{produto.getDescricao(), produto.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), produto.getValorCusto() + "", produto.getValorVenda() + ""});
         }
     }
-
+// metodos responsavel por popular as combos 
     public void carregarComboFornecedor() {
         FornecedorController controller = new FornecedorController();
         try {
@@ -105,7 +164,7 @@ public class ProdutoController {
             this.viewProduto.getJcbFornecedor().addItem(fornecedor.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
         }
     }
-
+// metodos responsavel por colocar ação na tela 
     public void bloqueioInicial() {
         this.viewProduto.getJbtNovo().setEnabled(true);
         this.viewProduto.getJbtAlterar().setEnabled(true);
@@ -166,7 +225,18 @@ public class ProdutoController {
         liberarCampos();
         this.alterar = false;
     }
+     public void acaoBotaoAlterar() {
+        this.viewProduto.getJbtNovo().setEnabled(false);
+        this.viewProduto.getJbtAlterar().setEnabled(false);
+        this.viewProduto.getJbtExcluir().setEnabled(false);
+        this.viewProduto.getJbtSair().setEnabled(false);
+        this.viewProduto.getJbtSalvar().setEnabled(true);
+        this.viewProduto.getJbtCancelar().setEnabled(true);
+        liberarCampos();
+        this.viewProduto.getJtfDescricao().setEditable(false);
 
+    }
+// metodo responsavel por fazer as validações necessarias  
     public boolean validarSalvar() {
         if (Valida.verificarVazio(this.viewProduto.getJtfDescricao().getText())) {
             JOptionPane.showMessageDialog(null, Mensagem.produtoDescricaoVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
@@ -196,75 +266,9 @@ public class ProdutoController {
         return true;
     }
 
-    public void salvarProduto() {
-        if (this.alterar == false) {
-            if (validarSalvar()) {
-                Produto produto = new Produto();
-                produto.setDescricao(this.viewProduto.getJtfDescricao().getText());
-                Fornecedor fornecedor = listaFornecedores.get(this.viewProduto.getJcbFornecedor().getSelectedIndex() - 1);
-                produto.setFornecedorIdFornecedor(fornecedor);
-                produto.setValorCusto(Double.parseDouble(this.viewProduto.getJtfValorCusto().getText()));
-                produto.setValorVenda(Double.parseDouble(this.viewProduto.getJtfValorVenda().getText()));
-                ProdutoDAO dao = new ProdutoDAO();
-                try {
-                    dao.salvar(produto);
-                    JOptionPane.showMessageDialog(null, Mensagem.produtoInseridoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.produtoInseridoErro);
-                    Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarProdutos();
-            }
-        } else {
-            if (validarSalvar()) {
-                produto.setDescricao(this.viewProduto.getJtfDescricao().getText());
-                Fornecedor fornecedor;
-                fornecedor = listaFornecedores.get(this.viewProduto.getJcbFornecedor().getSelectedIndex() - 1);
-                produto.getFornecedorIdFornecedor().setIdFornecedor(fornecedor.getIdFornecedor());
-                produto.setValorCusto(Double.parseDouble(this.viewProduto.getJtfValorCusto().getText()));
-                produto.setValorVenda(Double.parseDouble(this.viewProduto.getJtfValorVenda().getText()));
-                ProdutoDAO dao = new ProdutoDAO();
-                try {
-                    dao.salvar(produto);
-                    JOptionPane.showMessageDialog(null, Mensagem.produtoAlteradoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.produtoAlteradoErro);
-                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarProdutos();
+    
 
-            }
-        }
-    }
+   
 
-    public void acaoBotaoAlterar() {
-        this.viewProduto.getJbtNovo().setEnabled(false);
-        this.viewProduto.getJbtAlterar().setEnabled(false);
-        this.viewProduto.getJbtExcluir().setEnabled(false);
-        this.viewProduto.getJbtSair().setEnabled(false);
-        this.viewProduto.getJbtSalvar().setEnabled(true);
-        this.viewProduto.getJbtCancelar().setEnabled(true);
-        liberarCampos();
-        this.viewProduto.getJtfDescricao().setEditable(false);
-
-    }
-
-    public void alterarProduto() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewProduto.getTabelaProduto().getModel();
-        if (this.viewProduto.getTabelaProduto().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
-        } else {
-            produto = listaProdutos.get(this.viewProduto.getTabelaProduto().getSelectedRow());
-            this.viewProduto.getJtfDescricao().setText(produto.getDescricao());
-            this.viewProduto.getJtfValorCusto().setText(produto.getValorCusto() + "");
-            this.viewProduto.getJtfValorVenda().setText(produto.getValorVenda() + "");
-            this.viewProduto.getJcbFornecedor().setSelectedItem(produto.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
-            this.alterar = true;
-            acaoBotaoAlterar();
-        }
-    }
+   
 }
