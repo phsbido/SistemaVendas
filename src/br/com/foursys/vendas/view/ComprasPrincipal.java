@@ -330,6 +330,11 @@ public class ComprasPrincipal extends javax.swing.JFrame {
 
         jbtConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/venda.gif"))); // NOI18N
         jbtConfirmar.setText("Confirmar");
+        jbtConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtConfirmarActionPerformed(evt);
+            }
+        });
 
         jbtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/cancelar.png"))); // NOI18N
         jbtCancelar.setText("Cancelar");
@@ -471,6 +476,10 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
         this.comprasController.acaoBotaoCancelar();
     }//GEN-LAST:event_jbtCancelarActionPerformed
+
+    private void jbtConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtConfirmarActionPerformed
+        this.comprasController.salvar();
+    }//GEN-LAST:event_jbtConfirmarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
