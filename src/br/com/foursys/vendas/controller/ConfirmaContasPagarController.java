@@ -18,7 +18,7 @@ public class ConfirmaContasPagarController {
     private ConfirmarContasPagar viewContasPagar;
 
     public ConfirmaContasPagarController(ConfirmarContasPagar viewContasPagar) {
-        viewContasPagar = this.viewContasPagar;
+        this.viewContasPagar = viewContasPagar;
     }
 
     public void acaoBotaoConfirmar() {
@@ -33,7 +33,7 @@ public class ConfirmaContasPagarController {
         ContasPagarDAO contasPagarDAO = new ContasPagarDAO();
         ContasPagar conta = new ContasPagar();
         conta.setCompraIdCompra(compra);
-        conta.setDataPagamento(LocalDate.now() + "");
+        conta.setDataPagamento(formataData(LocalDate.now() + ""));
         conta.setDataVencimento(this.viewContasPagar.getJtfDataVencimento().getText());
         conta.setPagamento(this.viewContasPagar.getJcbPagamento().getSelectedItem().toString());
         conta.setVencida(this.viewContasPagar.getJcbVencimento().getSelectedItem().toString());
@@ -49,15 +49,25 @@ public class ConfirmaContasPagarController {
 
     public void carregaDadosCompra(Compra compra) {
         this.compra = compra;
-//        this.viewContasPagar.getJlbValorCompra().setText(compra.getValorTotal());
-//        this.viewContasPagar.getJlbFormaPagamento().setText(compra.getFormaPagamento());
-//        this.viewContasPagar.getJlbFuncionario().setText(compra.getFuncionarioIdFuncionario().getPessoaFisicaIdPessoaFisica().getNome());
-//        this.viewContasPagar.getJlbFornecedor().setText(compra.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+        this.viewContasPagar.getJlbValorCompra().setText(compra.getValorTotal());
+        this.viewContasPagar.getJlbFormaPagamento().setText(compra.getFormaPagamento());
+        this.viewContasPagar.getJlbFuncionario().setText(compra.getFuncionarioIdFuncionario().getPessoaFisicaIdPessoaFisica().getNome());
+        this.viewContasPagar.getJlbFornecedor().setText(compra.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
     }
 
     public void carregaContaPagar() {
-        this.viewContasPagar.getJtfDataCompra().setText(LocalDate.now() + "");
-        this.viewContasPagar.getJtfDataCompra().setEditable(false);
+        this.viewContasPagar.getJtfDataCompra().setText(formataData(LocalDate.now() + ""));
+        this.viewContasPagar.getJtfDataCompra().setEnabled(false);
+        this.viewContasPagar.getJcbPagamento().setSelectedIndex(2);
+        this.viewContasPagar.getJcbPagamento().setEnabled(false);
+        this.viewContasPagar.getJcbVencimento().setSelectedIndex(2);
+        this.viewContasPagar.getJcbVencimento().setEnabled(false);
+    }
+
+    public String formataData(String data) {
+        String datas[] = data.split("-");
+        data = datas[2] + datas[1] + datas[0];
+        return data;
     }
 
 }

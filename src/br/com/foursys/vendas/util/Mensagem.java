@@ -25,6 +25,8 @@ public class Mensagem {
     public static String cepVazio = "Por favor, informe o CEP.\nCampo obrigatório!";
     public static String cidadeVazio = "Por favor, selecione a cidade.\nCampo obrigatório!";
     public static String estadoVazio = "Por favor, selecione o estado.\nCampo obrigatório!";
+    public static String erroEndereco = "Erro ao salvar endereço!";
+    public static String erroExcluirEndereco = "Erro ao excluir endereço!";
     //mensagens email, loguin e senha
     public static String emailInvalido = "O email informado é inválido!";
     public static String loginVazio = "Por favor, informe o login.\nCampo obrigatório!";
@@ -55,6 +57,9 @@ public class Mensagem {
     public static String clienteInseridoErro = "Falha ao inserir cliente.";
     public static String clienteAlteradoSucesso = "Cliente alterado com sucesso.";
     public static String clienteAlteradoErro = "Falha ao alterar cliente.";
+    //mensagens de contato
+    public static String erroContato = "Erro ao inserir contato!";
+    public static String erroExcluirContato = "Erro ao excluir endereço!";
     //mensagens cidade e estado
     public static String defaultComboCidade = "-Selecione uma cidade-";
     public static String defaultComboEstado = "-Selecione um estado-";
@@ -88,6 +93,12 @@ public class Mensagem {
     public static String produtoAlteradoSucesso = "Produto alterado com sucesso.";
     public static String produtoAlteradoErro = "Falha ao alterar produto.";
     public static String produtoInsuficiente = "Quantidade menor que a quantidade mínima";
+    public static String produtoQuantidadeVazia = "Por favor, informe a quantidade do produto.\nCampo obrigatório!";
+    public static String produtoQuantidadeInvalida = "Quantidade de produto inválida.";
+    public static String produtoDescontoInvalido = "Desconto inválido.";
+    public static String produtoValorTotalInvalido = "Valor total inválido.\nFavor verificar sua compra.";
+    public static String pagamentoNaoSelecionado = "Selecione uma forma de pagamento.";
+
     //mensagens Estoque
     public static String estoqueExcluidoSucesso = "Estoque excluído com sucesso!";
     public static String estoqueExcluidoErro = "Falha ao excluir estoque!";
@@ -106,5 +117,13 @@ public class Mensagem {
     public static String confirmaEncerrar = "Deseja realmente encerrar o sistema?";
     public static String confirmaExclusao = "Confirma em excluir este registro?";
     public static String erro = "Erro!";
+    public static String confirmaCancelar = "Deseja realmente cancelar?";
     //Mensagens Compra
+    public static String valorMenorQueZero = "O valor não pode ser menor que zero!";
+    public static String descontoMenorQueZero = "O desconto não pode ser menor que zero!";
+    public static String confirmaCompra = "Deseja realmente confirmar esta compra?";
+    public static String erroSalvarContaPagar = "Erro ao salvar conta a pagar";
+    public static String erroSalvarCompra = "Erro ao salvar compra.";
+    public static String sucessoSalvarContaPagar = "Conta a pagar salva com sucesso!";
+    public static String sucessoSalvarCompra = "Compra salva com sucesso!";
 }//fim da classe

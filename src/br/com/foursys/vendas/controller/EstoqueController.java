@@ -17,8 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * tela e tabela de estoque do sistema de vendas
  *
  * @author pbido
- * @since 12/03/2020
- * @version 0.1
+ *
  */
 public class EstoqueController {
 
@@ -34,6 +33,73 @@ public class EstoqueController {
 
     public EstoqueController(EstoquePrincipal viewEstoque) {
         this.viewEstoque = viewEstoque;
+    }
+// metodos responsaveis por salvar ,alterar e excluir estoque
+
+    public void salvarEstoque() {
+        if (this.alterar == false) {
+//            salvar 
+            if (validarSalvar()) {
+                Estoque estoque = new Estoque();
+
+                estoque.setQuantidadeEstoque(Integer.parseInt(this.viewEstoque.getJtfQtde().getText()));
+                estoque.setQuantidadeMinima(Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()));
+                Produto produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
+                estoque.setProdutoIdProduto(produto);
+
+                EstoqueDAO dao = new EstoqueDAO();
+                try {
+                    dao.salvar(estoque);
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueInseridoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueInseridoErro);
+                    Logger.getLogger(EstoqueController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarEstoque();
+            }
+        } else {
+//            alterar
+            if (validarSalvar()) {
+
+                Produto produto;
+                produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
+                estoque.getProdutoIdProduto().setIdProduto(produto.getIdProduto());
+                estoque.setQuantidadeEstoque(Integer.parseInt(this.viewEstoque.getJtfQtde().getText()));
+                estoque.setQuantidadeMinima(Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()));
+                EstoqueDAO dao = new EstoqueDAO();
+                try {
+                    dao.salvar(estoque);
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueAlteradoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueAlteradoErro);
+                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarEstoque();
+
+            }
+        }
+    }
+
+    public void alterarEstoque() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewEstoque.getTabelaEstoque().getModel();
+        if (this.viewEstoque.getTabelaEstoque().getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueNaoSelecionado);
+        } else {
+            estoque = listaEstoques.get(this.viewEstoque.getTabelaEstoque().getSelectedRow());
+            this.viewEstoque.getJcbProduto().setSelectedItem(estoque.getProdutoIdProduto().getDescricao());
+            this.viewEstoque.getJtfQtde().setText(estoque.getQuantidadeEstoque() + "");
+            this.viewEstoque.getJlbDescricao().setText(estoque.getProdutoIdProduto().getDescricao() + "");
+            this.viewEstoque.getJlbFornecedor().setText(estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+            this.viewEstoque.getJlbValorVenda().setText(estoque.getProdutoIdProduto().getValorVenda() + "");
+            this.viewEstoque.getJlbValorCusto().setText(estoque.getProdutoIdProduto().getValorCusto() + "");
+            this.viewEstoque.getJtfQtdeMin().setText(estoque.getQuantidadeMinima() + "");
+            this.alterar = true;
+            acaoBotaoAlterar();
+        }
     }
 
     public void excluirEstoque() {
@@ -59,6 +125,7 @@ public class EstoqueController {
         }
     }
 
+//    Metodos responsaveis por listar, buscar e carregar tabela
     public void listarEstoque() {
         try {
             EstoqueDAO dao = new EstoqueDAO();
@@ -76,8 +143,8 @@ public class EstoqueController {
             modelo.addRow(new String[]{estoque.getProdutoIdProduto().getDescricao(), estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), estoque.getQuantidadeEstoque() + "", estoque.getQuantidadeMinima() + ""});
         }
     }
+// metodos responsavel por popular as combos 
 
-// carregar combo de produto
     public void carregarComboProduto() {
         ProdutoController controller = new ProdutoController();
         listaProdutos = controller.buscarProdutos();
@@ -88,6 +155,7 @@ public class EstoqueController {
         }
 
     }
+// metodos responsavel por colocar ação na tela 
 
     public void bloqueioInicial() {
         this.viewEstoque.getJbtNovo().setEnabled(true);
@@ -149,6 +217,28 @@ public class EstoqueController {
         this.alterar = false;
     }
 
+    public void acaoBotaoAlterar() {
+        this.viewEstoque.getJbtNovo().setEnabled(false);
+        this.viewEstoque.getJbtAlterar().setEnabled(false);
+        this.viewEstoque.getJbtExcluir().setEnabled(false);
+        this.viewEstoque.getJbtSair().setEnabled(false);
+        this.viewEstoque.getJbtSalvar().setEnabled(true);
+        this.viewEstoque.getJbtCancelar().setEnabled(true);
+        liberarCampos();
+        this.viewEstoque.getJcbProduto().setEnabled(false);
+        this.viewEstoque.getJbtSelecionar().setEnabled(false);
+    }
+
+    public void carregarInformacoes() {
+
+        Produto produto = null;
+        produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
+        this.viewEstoque.getJlbDescricao().setText(produto.getDescricao());
+        this.viewEstoque.getJlbFornecedor().setText(produto.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+        this.viewEstoque.getJlbValorVenda().setText(produto.getValorVenda() + "");
+        this.viewEstoque.getJlbValorCusto().setText(produto.getValorCusto() + "");
+    }
+// metodo responsavel por fazer as validações necessarias
     public boolean validarSalvar() {
         if (Valida.verificarCombo(this.viewEstoque.getJcbProduto().getSelectedIndex())) {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
@@ -170,101 +260,12 @@ public class EstoqueController {
             JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewEstoque.getJtfQtde().grabFocus();
             return false;
-        }  else if (Integer.parseInt(this.viewEstoque.getJtfQtde().getText()) < (Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()))) {
+        } else if (Integer.parseInt(this.viewEstoque.getJtfQtde().getText()) < (Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()))) {
             JOptionPane.showMessageDialog(null, Mensagem.produtoInsuficiente, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
         }
         return true;
     }
-
-    public void salvarEstoque() {
-        if (this.alterar == false) {
-//            salvar 
-            if (validarSalvar()) {
-                Estoque estoque = new Estoque();
-
-                estoque.setQuantidadeEstoque(Integer.parseInt(this.viewEstoque.getJtfQtde().getText()));
-                estoque.setQuantidadeMinima(Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()));
-                Produto produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
-                estoque.setProdutoIdProduto(produto);
-
-                EstoqueDAO dao = new EstoqueDAO();
-                try {
-                    dao.salvar(estoque);
-                    JOptionPane.showMessageDialog(null, Mensagem.estoqueInseridoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.estoqueInseridoErro);
-                    Logger.getLogger(EstoqueController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarEstoque();
-            }
-        } else {
-//            alterar
-            if (validarSalvar()) {
-
-                Produto produto;
-                produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
-                estoque.getProdutoIdProduto().setIdProduto(produto.getIdProduto());
-                estoque.setQuantidadeEstoque(Integer.parseInt(this.viewEstoque.getJtfQtde().getText()));
-                estoque.setQuantidadeMinima(Integer.parseInt(this.viewEstoque.getJtfQtdeMin().getText()));
-                EstoqueDAO dao = new EstoqueDAO();
-                try {
-                    dao.salvar(estoque);
-                    JOptionPane.showMessageDialog(null, Mensagem.estoqueAlteradoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.estoqueAlteradoErro);
-                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarEstoque();
-
-            }
-        }
-    }
-
-    public void acaoBotaoAlterar() {
-        this.viewEstoque.getJbtNovo().setEnabled(false);
-        this.viewEstoque.getJbtAlterar().setEnabled(false);
-        this.viewEstoque.getJbtExcluir().setEnabled(false);
-        this.viewEstoque.getJbtSair().setEnabled(false);
-        this.viewEstoque.getJbtSalvar().setEnabled(true);
-        this.viewEstoque.getJbtCancelar().setEnabled(true);
-        liberarCampos();
-        this.viewEstoque.getJcbProduto().setEnabled(false);
-        this.viewEstoque.getJbtSelecionar().setEnabled(false);
-    }
-
-    public void alterarEstoque() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewEstoque.getTabelaEstoque().getModel();
-        if (this.viewEstoque.getTabelaEstoque().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueNaoSelecionado);
-        } else {
-            estoque = listaEstoques.get(this.viewEstoque.getTabelaEstoque().getSelectedRow());
-            this.viewEstoque.getJcbProduto().setSelectedItem(estoque.getProdutoIdProduto().getDescricao());
-            this.viewEstoque.getJtfQtde().setText(estoque.getQuantidadeEstoque() + "");
-            this.viewEstoque.getJlbDescricao().setText(estoque.getProdutoIdProduto().getDescricao() + "");
-            this.viewEstoque.getJlbFornecedor().setText(estoque.getProdutoIdProduto().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
-            this.viewEstoque.getJlbValorVenda().setText(estoque.getProdutoIdProduto().getValorVenda() + "");
-            this.viewEstoque.getJlbValorCusto().setText(estoque.getProdutoIdProduto().getValorCusto() + "");
-            this.viewEstoque.getJtfQtdeMin().setText(estoque.getQuantidadeMinima() + "");
-            this.alterar = true;
-            acaoBotaoAlterar();
-        }
-    }
-
-    public void carregarInformacoes() {
-
-        Produto produto = null;
-        produto = listaProdutos.get(this.viewEstoque.getJcbProduto().getSelectedIndex() - 1);
-        this.viewEstoque.getJlbDescricao().setText(produto.getDescricao());
-        this.viewEstoque.getJlbFornecedor().setText(produto.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
-        this.viewEstoque.getJlbValorVenda().setText(produto.getValorVenda() + "");
-        this.viewEstoque.getJlbValorCusto().setText(produto.getValorCusto() + "");
-
-    }//fim carregarInformacoes
 
 }

@@ -10,7 +10,8 @@ import br.com.foursys.vendas.model.Estado;
 import java.util.ArrayList;
 
 /**
- *
+ *Classe responsável por controlar todo o processamento de dados relacionados à
+ * combo de estado
  * @author pbido
  */
 public class EstadoController {

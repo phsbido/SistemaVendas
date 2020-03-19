@@ -10,7 +10,8 @@ import br.com.foursys.vendas.model.Cidade;
 import java.util.ArrayList;
 
 /**
- *
+ *Classe responsável por controlar todo o processamento de dados relacionados à
+ * combo de cidade
  * @author pbido
  */
 public class CidadeController {

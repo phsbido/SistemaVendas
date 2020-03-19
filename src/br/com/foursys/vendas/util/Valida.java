@@ -110,4 +110,12 @@ public class Valida {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    public static boolean vereficaNaoZero(String total) {
+        if (total.equals(0.00)) {
+            return false;
+        }
+        return true;
+    }
+
 }
