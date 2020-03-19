@@ -7,12 +7,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *Classe responsável por controlar todo o processamento de dados relacionados à
- * salvar, excluir e buscar Pessoa Juridica
+ *
  * @author dmunhoz
  */
 public class PessoaJuridicaController {
-// metodos responsaveis por salvar, buscar por código e excluir contato 
+
     public PessoaJuridica buscarPorCodigo(int id) {
         PessoaJuridicaDAO dao = new PessoaJuridicaDAO();
         PessoaJuridica pessoaJuridica = new PessoaJuridica();

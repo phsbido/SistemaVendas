@@ -43,140 +43,16 @@ public class ClienteController {
     public ClienteController(ClientePrincipal viewCliente) {
         this.viewCliente = viewCliente;
     }
-// metodos responsaveis por salvar ,alterar e excluir cliente
-
-    public void salvarCliente() {
-        if (this.alterar == false) {
-            if (validarSalvar()) {
-                Cliente cliente = new Cliente();
-                PessoaFisica pessoaFisica = new PessoaFisica();
-                PessoaJuridica pessoaJuridica = new PessoaJuridica();
-                Endereco endereco = new Endereco();
-                Cidade cidade = new Cidade();
-                Contato contato = new Contato();
-
-                if (this.viewCliente.getJrbFisico().isSelected()) {
-                    pessoaFisica.setNome(this.viewCliente.getJtfNome().getText());
-                    pessoaFisica.setCpf(this.viewCliente.getJtfCpf().getText());
-                    pessoaFisica.setRg(this.viewCliente.getJtfRg().getText());
-                    pessoaFisica.setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
-                    cliente.setTipoPessoa("F");
-                    cliente.setPessoaFisicaIdPessoaFisica(pessoaFisica);
-                    new PessoaFisicaController().salvarPessoaFisica(pessoaFisica);
-                } else {
-                    pessoaJuridica.setRazaoSocial(this.viewCliente.getJtfNome().getText());
-                    pessoaJuridica.setCnpj(this.viewCliente.getJtfCpf().getText());
-                    pessoaJuridica.setInscricaoEstadual(this.viewCliente.getJtfRg().getText());
-                    pessoaJuridica.setDataFundacao(this.viewCliente.getJtfDataNascimento().getText());
-                    cliente.setTipoPessoa("J");
-                    cliente.setPessoaJuridicaIdPessoaJuridica(pessoaJuridica);
-                    new PessoaJuridicaController().salvarPessoaJuridica(pessoaJuridica);
-                }
-                endereco.setLogradouro(this.viewCliente.getJtfEndereco().getText());
-                endereco.setNumero(Integer.parseInt(this.viewCliente.getJtfNumero().getText()));
-                endereco.setComplemento(this.viewCliente.getJtfComplemento().getText());
-                endereco.setBairro(this.viewCliente.getJtfBairro().getText());
-                endereco.setCep(this.viewCliente.getJtfCep().getText());
-
-                cidade = listaCidades.get(this.viewCliente.getJcbCidade().getSelectedIndex() - 1);
-                endereco.setCidadeIdCidade(cidade);
-                cliente.setEnderecoIdEndereco(endereco);
-                new EnderecoController().salvarEndereco(endereco);
-                contato.setTelefone(this.viewCliente.getJtfTelefone().getText());
-                contato.setEmail(this.viewCliente.getJtfEmail().getText());
-                contato.setCelular(this.viewCliente.getJtfCelular().getText());
-                cliente.setContatoIdContato(contato);
-                new ContatoController().salvarContato(contato);
-                ClienteDAO dao = new ClienteDAO();
-                try {
-                    dao.salvar(cliente);
-                    JOptionPane.showMessageDialog(null, Mensagem.clienteInseridoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.clienteInseridoErro);
-                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarClientes();
-            }
-        } else {
-            if (validarSalvar()) {
-                if (this.viewCliente.getJrbFisico().isSelected()) {
-                    cliente.getPessoaFisicaIdPessoaFisica().setNome(this.viewCliente.getJtfNome().getText());
-                    cliente.getPessoaFisicaIdPessoaFisica().setCpf(this.viewCliente.getJtfCpf().getText());
-                    cliente.getPessoaFisicaIdPessoaFisica().setRg(this.viewCliente.getJtfRg().getText());
-                    cliente.getPessoaFisicaIdPessoaFisica().setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
-                    cliente.setTipoPessoa("F");
-                    new PessoaFisicaController().salvarPessoaFisica(cliente.getPessoaFisicaIdPessoaFisica());
-                } else {
-                    cliente.getPessoaJuridicaIdPessoaJuridica().setRazaoSocial(this.viewCliente.getJtfNome().getText());
-                    cliente.getPessoaJuridicaIdPessoaJuridica().setCnpj(this.viewCliente.getJtfCpf().getText());
-                    cliente.getPessoaJuridicaIdPessoaJuridica().setInscricaoEstadual(this.viewCliente.getJtfRg().getText());
-                    cliente.getPessoaJuridicaIdPessoaJuridica().setDataFundacao(this.viewCliente.getJtfDataNascimento().getText());
-                    cliente.setTipoPessoa("J");
-                    new PessoaJuridicaController().salvarPessoaJuridica(cliente.getPessoaJuridicaIdPessoaJuridica());
-                }
-                cliente.getEnderecoIdEndereco().setLogradouro(this.viewCliente.getJtfEndereco().getText());
-                cliente.getEnderecoIdEndereco().setNumero(Integer.parseInt(this.viewCliente.getJtfNumero().getText()));
-                cliente.getEnderecoIdEndereco().setComplemento(this.viewCliente.getJtfComplemento().getText());
-                cliente.getEnderecoIdEndereco().setBairro(this.viewCliente.getJtfBairro().getText());
-                cliente.getEnderecoIdEndereco().setCep(this.viewCliente.getJtfCep().getText());
-
-                Cidade cidade = new Cidade();
-                cidade = listaCidades.get(this.viewCliente.getJcbCidade().getSelectedIndex() - 1);
-                cliente.getEnderecoIdEndereco().setCidadeIdCidade(cidade);
-                new EnderecoController().salvarEndereco(cliente.getEnderecoIdEndereco());
-                cliente.getContatoIdContato().setTelefone(this.viewCliente.getJtfTelefone().getText());
-                cliente.getContatoIdContato().setEmail(this.viewCliente.getJtfEmail().getText());
-                cliente.getContatoIdContato().setCelular(this.viewCliente.getJtfCelular().getText());
-                new ContatoController().salvarContato(cliente.getContatoIdContato());
-                ClienteDAO dao = new ClienteDAO();
-                try {
-                    dao.salvar(cliente);
-                    JOptionPane.showMessageDialog(null, Mensagem.clienteAlteradoSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.clienteAlteradoErro);
-                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloqueioInicial();
-                listarClientes();
-            }
+    
+    public List<Cliente> buscarTodos() {
+        ClienteDAO dao = new ClienteDAO();
+        List<Cliente> listaFuncionario = null;
+        try {
+            listaFuncionario = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void alterarCliente() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewCliente.getTabelaCliente().getModel();
-        if (this.viewCliente.getTabelaCliente().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.clienteNaoSelecionado);
-        } else {
-            cliente = listaClientes.get(this.viewCliente.getTabelaCliente().getSelectedRow());
-            if (cliente.getTipoPessoa().equals("F")) {
-                this.viewCliente.getJrbFisico().setSelected(true);
-                this.viewCliente.getJtfCpf().setText(cliente.getPessoaFisicaIdPessoaFisica().getCpf());
-                this.viewCliente.getJtfRg().setText(cliente.getPessoaFisicaIdPessoaFisica().getRg());
-                this.viewCliente.getJtfNome().setText(cliente.getPessoaFisicaIdPessoaFisica().getNome());
-                this.viewCliente.getJtfDataNascimento().setText(cliente.getPessoaFisicaIdPessoaFisica().getDataNascimento());
-            } else {
-                this.viewCliente.getJrbJuridico().setSelected(true);
-                this.viewCliente.getJtfCpf().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getCnpj());
-                this.viewCliente.getJtfRg().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getInscricaoEstadual());
-                this.viewCliente.getJtfNome().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
-                this.viewCliente.getJtfDataNascimento().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getDataFundacao());
-            }
-            this.viewCliente.getJtfEndereco().setText(cliente.getEnderecoIdEndereco().getLogradouro());
-            this.viewCliente.getJtfNumero().setText(cliente.getEnderecoIdEndereco().getNumero() + "");
-            this.viewCliente.getJtfComplemento().setText(cliente.getEnderecoIdEndereco().getComplemento());
-            this.viewCliente.getJtfBairro().setText(cliente.getEnderecoIdEndereco().getBairro());
-            this.viewCliente.getJcbCidade().setSelectedItem(cliente.getEnderecoIdEndereco().getCidadeIdCidade().getNome());
-            this.viewCliente.getJtfCep().setText(cliente.getEnderecoIdEndereco().getCep());
-            this.viewCliente.getJcbEstado().setSelectedItem(cliente.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getNome() + " - " + cliente.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getUf());
-            this.viewCliente.getJtfTelefone().setText(cliente.getContatoIdContato().getTelefone());
-            this.viewCliente.getJtfCelular().setText(cliente.getContatoIdContato().getCelular());
-            this.viewCliente.getJtfEmail().setText(cliente.getContatoIdContato().getEmail());
-            this.alterar = true;
-            acaoBotaoAlterar();
-        }
+        return listaFuncionario;
     }
 
     public void excluirCliente() {
@@ -208,18 +84,6 @@ public class ClienteController {
             }
         }
     }
-//    Metodos responsaveis por listar, buscar e carregar tabela
-
-    public List<Cliente> buscarTodos() {
-        ClienteDAO dao = new ClienteDAO();
-        List<Cliente> listaFuncionario = null;
-        try {
-            listaFuncionario = dao.buscarTodos();
-        } catch (Exception ex) {
-            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listaFuncionario;
-    }
 
     public void listarClientes() {
         try {
@@ -242,7 +106,6 @@ public class ClienteController {
             }
         }
     }
-// metodos responsavel por popular as combos 
 
     public void carregarComboCidade() {
         CidadeController controller = new CidadeController();
@@ -271,7 +134,6 @@ public class ClienteController {
             this.viewCliente.getJcbEstado().addItem(estados.getNome() + " - " + estados.getUf());
         }
     }
-// metodos responsavel por colocar ação na tela 
 
     public void bloqueioInicial() {
         this.viewCliente.getJbtNovo().setEnabled(true);
@@ -369,68 +231,6 @@ public class ClienteController {
         this.alterar = false;
     }
 
-    public void acaoBotaoAlterar() {
-        this.viewCliente.getJbtNovo().setEnabled(false);
-        this.viewCliente.getJbtAlterar().setEnabled(false);
-        this.viewCliente.getJbtExcluir().setEnabled(false);
-        this.viewCliente.getJbtSair().setEnabled(false);
-        this.viewCliente.getJbtSalvar().setEnabled(true);
-        this.viewCliente.getJbtCancelar().setEnabled(true);
-        liberarCampos();
-        this.viewCliente.getJrbFisico().setEnabled(false);
-        this.viewCliente.getJrbJuridico().setEnabled(false);
-        this.viewCliente.getJtfCpf().setEditable(false);
-        this.viewCliente.getJtfRg().setEditable(false);
-        this.viewCliente.getJtfNome().setEditable(false);
-        this.viewCliente.getJtfDataNascimento().setEditable(false);
-    }
-
-    public void selecionaJuridico() {
-        this.viewCliente.getJlbCpf().setText("CNPJ:");
-        try {
-            this.viewCliente.getJtfCpf().setValue(null);
-            MaskFormatter cnpj = new MaskFormatter("##.###.###/####-##");
-            this.viewCliente.getJtfCpf().setFormatterFactory(
-                    new DefaultFormatterFactory(cnpj));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        this.viewCliente.getJlbRg().setText("IE:");
-        try {
-            this.viewCliente.getJtfRg().setValue(null);
-            MaskFormatter ie = new MaskFormatter("###.###.###.###");
-            this.viewCliente.getJtfRg().setFormatterFactory(
-                    new DefaultFormatterFactory(ie));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        this.viewCliente.getJlbNome().setText("Razão Social:");
-        this.viewCliente.getJlbDataNascimento().setText("Data da Fundação:");
-    }
-
-    public void selecionaFisico() {
-        this.viewCliente.getJlbCpf().setText("CPF:");
-        try {
-            this.viewCliente.getJtfCpf().setValue(null);
-            MaskFormatter cpf = new MaskFormatter("###.###.###-##");
-            this.viewCliente.getJtfCpf().setFormatterFactory(
-                    new DefaultFormatterFactory(cpf));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        this.viewCliente.getJlbRg().setText("RG:");
-        try {
-            this.viewCliente.getJtfRg().setValue(null);
-            MaskFormatter rg = new MaskFormatter("##.###.###");
-            this.viewCliente.getJtfRg().setFormatterFactory(
-                    new DefaultFormatterFactory(rg));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        this.viewCliente.getJlbNome().setText("Nome:");
-        this.viewCliente.getJlbDataNascimento().setText("Data de Nascimento:");
-    }
-// metodo responsavel por fazer as validações necessarias 
     public boolean validarSalvar() {
         if (this.viewCliente.getJrbFisico().isSelected()) {
             if (Valida.verificarVazio(this.viewCliente.getJtfCpf().getText())) {
@@ -556,4 +356,199 @@ public class ClienteController {
         return true;
     }
 
+    public void selecionaJuridico() {
+        this.viewCliente.getJlbCpf().setText("CNPJ:");
+        try {
+            this.viewCliente.getJtfCpf().setValue(null);
+            MaskFormatter cnpj = new MaskFormatter("##.###.###/####-##");
+            this.viewCliente.getJtfCpf().setFormatterFactory(
+                    new DefaultFormatterFactory(cnpj));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.viewCliente.getJlbRg().setText("IE:");
+        try {
+            this.viewCliente.getJtfRg().setValue(null);
+            MaskFormatter ie = new MaskFormatter("###.###.###.###");
+            this.viewCliente.getJtfRg().setFormatterFactory(
+                    new DefaultFormatterFactory(ie));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.viewCliente.getJlbNome().setText("Razão Social:");
+        this.viewCliente.getJlbDataNascimento().setText("Data da Fundação:");
+    }
+
+    public void selecionaFisico() {
+        this.viewCliente.getJlbCpf().setText("CPF:");
+        try {
+            this.viewCliente.getJtfCpf().setValue(null);
+            MaskFormatter cpf = new MaskFormatter("###.###.###-##");
+            this.viewCliente.getJtfCpf().setFormatterFactory(
+                    new DefaultFormatterFactory(cpf));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.viewCliente.getJlbRg().setText("RG:");
+        try {
+            this.viewCliente.getJtfRg().setValue(null);
+            MaskFormatter rg = new MaskFormatter("##.###.###");
+            this.viewCliente.getJtfRg().setFormatterFactory(
+                    new DefaultFormatterFactory(rg));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.viewCliente.getJlbNome().setText("Nome:");
+        this.viewCliente.getJlbDataNascimento().setText("Data de Nascimento:");
+    }
+
+    public void salvarCliente() {
+        if (this.alterar == false) {
+            if (validarSalvar()) {
+                Cliente cliente = new Cliente();
+                PessoaFisica pessoaFisica = new PessoaFisica();
+                PessoaJuridica pessoaJuridica = new PessoaJuridica();
+                Endereco endereco = new Endereco();
+                Cidade cidade = new Cidade();
+                Contato contato = new Contato();
+
+                if (this.viewCliente.getJrbFisico().isSelected()) {
+                    pessoaFisica.setNome(this.viewCliente.getJtfNome().getText());
+                    pessoaFisica.setCpf(this.viewCliente.getJtfCpf().getText());
+                    pessoaFisica.setRg(this.viewCliente.getJtfRg().getText());
+                    pessoaFisica.setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
+                    cliente.setTipoPessoa("F");
+                    cliente.setPessoaFisicaIdPessoaFisica(pessoaFisica);
+                    new PessoaFisicaController().salvarPessoaFisica(pessoaFisica);
+                } else {
+                    pessoaJuridica.setRazaoSocial(this.viewCliente.getJtfNome().getText());
+                    pessoaJuridica.setCnpj(this.viewCliente.getJtfCpf().getText());
+                    pessoaJuridica.setInscricaoEstadual(this.viewCliente.getJtfRg().getText());
+                    pessoaJuridica.setDataFundacao(this.viewCliente.getJtfDataNascimento().getText());
+                    cliente.setTipoPessoa("J");
+                    cliente.setPessoaJuridicaIdPessoaJuridica(pessoaJuridica);
+                    new PessoaJuridicaController().salvarPessoaJuridica(pessoaJuridica);
+                }
+                endereco.setLogradouro(this.viewCliente.getJtfEndereco().getText());
+                endereco.setNumero(Integer.parseInt(this.viewCliente.getJtfNumero().getText()));
+                endereco.setComplemento(this.viewCliente.getJtfComplemento().getText());
+                endereco.setBairro(this.viewCliente.getJtfBairro().getText());
+                endereco.setCep(this.viewCliente.getJtfCep().getText());
+
+                cidade = listaCidades.get(this.viewCliente.getJcbCidade().getSelectedIndex() - 1);
+                endereco.setCidadeIdCidade(cidade);
+                cliente.setEnderecoIdEndereco(endereco);
+                new EnderecoController().salvarEndereco(endereco);
+                contato.setTelefone(this.viewCliente.getJtfTelefone().getText());
+                contato.setEmail(this.viewCliente.getJtfEmail().getText());
+                contato.setCelular(this.viewCliente.getJtfCelular().getText());
+                cliente.setContatoIdContato(contato);
+                new ContatoController().salvarContato(contato);
+                ClienteDAO dao = new ClienteDAO();
+                try {
+                    dao.salvar(cliente);
+                    JOptionPane.showMessageDialog(null, Mensagem.clienteInseridoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.clienteInseridoErro);
+                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarClientes();
+            }
+        } else {
+            if (validarSalvar()) {
+                if (this.viewCliente.getJrbFisico().isSelected()) {
+                    cliente.getPessoaFisicaIdPessoaFisica().setNome(this.viewCliente.getJtfNome().getText());
+                    cliente.getPessoaFisicaIdPessoaFisica().setCpf(this.viewCliente.getJtfCpf().getText());
+                    cliente.getPessoaFisicaIdPessoaFisica().setRg(this.viewCliente.getJtfRg().getText());
+                    cliente.getPessoaFisicaIdPessoaFisica().setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
+                    cliente.setTipoPessoa("F");
+                    new PessoaFisicaController().salvarPessoaFisica(cliente.getPessoaFisicaIdPessoaFisica());
+                } else {
+                    cliente.getPessoaJuridicaIdPessoaJuridica().setRazaoSocial(this.viewCliente.getJtfNome().getText());
+                    cliente.getPessoaJuridicaIdPessoaJuridica().setCnpj(this.viewCliente.getJtfCpf().getText());
+                    cliente.getPessoaJuridicaIdPessoaJuridica().setInscricaoEstadual(this.viewCliente.getJtfRg().getText());
+                    cliente.getPessoaJuridicaIdPessoaJuridica().setDataFundacao(this.viewCliente.getJtfDataNascimento().getText());
+                    cliente.setTipoPessoa("J");
+                    new PessoaJuridicaController().salvarPessoaJuridica(cliente.getPessoaJuridicaIdPessoaJuridica());
+                }
+                cliente.getEnderecoIdEndereco().setLogradouro(this.viewCliente.getJtfEndereco().getText());
+                cliente.getEnderecoIdEndereco().setNumero(Integer.parseInt(this.viewCliente.getJtfNumero().getText()));
+                cliente.getEnderecoIdEndereco().setComplemento(this.viewCliente.getJtfComplemento().getText());
+                cliente.getEnderecoIdEndereco().setBairro(this.viewCliente.getJtfBairro().getText());
+                cliente.getEnderecoIdEndereco().setCep(this.viewCliente.getJtfCep().getText());
+
+                Cidade cidade = new Cidade();
+                cidade = listaCidades.get(this.viewCliente.getJcbCidade().getSelectedIndex() - 1);
+                cliente.getEnderecoIdEndereco().setCidadeIdCidade(cidade);
+                new EnderecoController().salvarEndereco(cliente.getEnderecoIdEndereco());
+                cliente.getContatoIdContato().setTelefone(this.viewCliente.getJtfTelefone().getText());
+                cliente.getContatoIdContato().setEmail(this.viewCliente.getJtfEmail().getText());
+                cliente.getContatoIdContato().setCelular(this.viewCliente.getJtfCelular().getText());
+                new ContatoController().salvarContato(cliente.getContatoIdContato());
+                ClienteDAO dao = new ClienteDAO();
+                try {
+                    dao.salvar(cliente);
+                    JOptionPane.showMessageDialog(null, Mensagem.clienteAlteradoSucesso);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Mensagem.clienteAlteradoErro);
+                    Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                limparCampos();
+                bloqueioInicial();
+                listarClientes();
+            }
+        }
+    }
+
+    public void acaoBotaoAlterar() {
+        this.viewCliente.getJbtNovo().setEnabled(false);
+        this.viewCliente.getJbtAlterar().setEnabled(false);
+        this.viewCliente.getJbtExcluir().setEnabled(false);
+        this.viewCliente.getJbtSair().setEnabled(false);
+        this.viewCliente.getJbtSalvar().setEnabled(true);
+        this.viewCliente.getJbtCancelar().setEnabled(true);
+        liberarCampos();
+        this.viewCliente.getJrbFisico().setEnabled(false);
+        this.viewCliente.getJrbJuridico().setEnabled(false);
+        this.viewCliente.getJtfCpf().setEditable(false);
+        this.viewCliente.getJtfRg().setEditable(false);
+        this.viewCliente.getJtfNome().setEditable(false);
+        this.viewCliente.getJtfDataNascimento().setEditable(false);
+    }
+
+    public void alterarCliente() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewCliente.getTabelaCliente().getModel();
+        if (this.viewCliente.getTabelaCliente().getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.clienteNaoSelecionado);
+        } else {
+            cliente = listaClientes.get(this.viewCliente.getTabelaCliente().getSelectedRow());
+            if (cliente.getTipoPessoa().equals("F")) {
+                this.viewCliente.getJrbFisico().setSelected(true);
+                this.viewCliente.getJtfCpf().setText(cliente.getPessoaFisicaIdPessoaFisica().getCpf());
+                this.viewCliente.getJtfRg().setText(cliente.getPessoaFisicaIdPessoaFisica().getRg());
+                this.viewCliente.getJtfNome().setText(cliente.getPessoaFisicaIdPessoaFisica().getNome());
+                this.viewCliente.getJtfDataNascimento().setText(cliente.getPessoaFisicaIdPessoaFisica().getDataNascimento());
+            } else {
+                this.viewCliente.getJrbJuridico().setSelected(true);
+                this.viewCliente.getJtfCpf().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getCnpj());
+                this.viewCliente.getJtfRg().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getInscricaoEstadual());
+                this.viewCliente.getJtfNome().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+                this.viewCliente.getJtfDataNascimento().setText(cliente.getPessoaJuridicaIdPessoaJuridica().getDataFundacao());
+            }
+            this.viewCliente.getJtfEndereco().setText(cliente.getEnderecoIdEndereco().getLogradouro());
+            this.viewCliente.getJtfNumero().setText(cliente.getEnderecoIdEndereco().getNumero() + "");
+            this.viewCliente.getJtfComplemento().setText(cliente.getEnderecoIdEndereco().getComplemento());
+            this.viewCliente.getJtfBairro().setText(cliente.getEnderecoIdEndereco().getBairro());
+            this.viewCliente.getJcbCidade().setSelectedItem(cliente.getEnderecoIdEndereco().getCidadeIdCidade().getNome());
+            this.viewCliente.getJtfCep().setText(cliente.getEnderecoIdEndereco().getCep());
+            this.viewCliente.getJcbEstado().setSelectedItem(cliente.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getNome() + " - " + cliente.getEnderecoIdEndereco().getCidadeIdCidade().getEstadoIdEstado().getUf());
+            this.viewCliente.getJtfTelefone().setText(cliente.getContatoIdContato().getTelefone());
+            this.viewCliente.getJtfCelular().setText(cliente.getContatoIdContato().getCelular());
+            this.viewCliente.getJtfEmail().setText(cliente.getContatoIdContato().getEmail());
+            this.alterar = true;
+            acaoBotaoAlterar();
+        }
+    }
 }
