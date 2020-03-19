@@ -93,6 +93,13 @@ public class Mensagem {
     public static String produtoAlteradoSucesso = "Produto alterado com sucesso.";
     public static String produtoAlteradoErro = "Falha ao alterar produto.";
     public static String produtoInsuficiente = "Quantidade menor que a quantidade mínima";
+    public static String produtoQuantidadeVazia = "Por favor, informe a quantidade do produto.\nCampo obrigatório!";
+    public static String produtoQuantidadeInvalida = "Quantidade de produto inválida.";
+    public static String produtoDescontoInvalido = "Desconto inválido.";
+    public static String produtoValorTotalInvalido = "Valor total inválido.\nFavor verificar sua compra.";
+    public static String pagamentoNaoSelecionado = "Selecione uma forma de pagamento.";
+    
+    
     //mensagens Estoque
     public static String estoqueExcluidoSucesso = "Estoque excluído com sucesso!";
     public static String estoqueExcluidoErro = "Falha ao excluir estoque!";
