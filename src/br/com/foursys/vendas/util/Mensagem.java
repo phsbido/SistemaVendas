@@ -98,8 +98,7 @@ public class Mensagem {
     public static String produtoDescontoInvalido = "Desconto inválido.";
     public static String produtoValorTotalInvalido = "Valor total inválido.\nFavor verificar sua compra.";
     public static String pagamentoNaoSelecionado = "Selecione uma forma de pagamento.";
-    
-    
+
     //mensagens Estoque
     public static String estoqueExcluidoSucesso = "Estoque excluído com sucesso!";
     public static String estoqueExcluidoErro = "Falha ao excluir estoque!";
@@ -122,4 +121,9 @@ public class Mensagem {
     //Mensagens Compra
     public static String valorMenorQueZero = "O valor não pode ser menor que zero!";
     public static String descontoMenorQueZero = "O desconto não pode ser menor que zero!";
+    public static String confirmaCompra = "Deseja realmente confirmar esta compra?";
+    public static String erroSalvarContaPagar = "Erro ao salvar conta a pagar";
+    public static String erroSalvarCompra = "Erro ao salvar compra.";
+    public static String sucessoSalvarContaPagar = "Conta a pagar salva com sucesso!";
+    public static String sucessoSalvarCompra = "Compra salva com sucesso!";
 }//fim da classe
