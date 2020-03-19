@@ -7,7 +7,10 @@ import br.com.foursys.vendas.model.Funcionario;
 import br.com.foursys.vendas.model.ItemCompra;
 import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
+import br.com.foursys.vendas.util.Valida;
 import br.com.foursys.vendas.view.ComprasPrincipal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +30,7 @@ public class ComprasController {
     private ComprasPrincipal viewCompras;
     private Compra compra = new Compra();
     private List<Produto> listaProdutos;
-    private List<ItemCompra> listaItemCompra;
+    private List<ItemCompra> listaItemCompra = new ArrayList<>();
     private List<Fornecedor> listaFornecedores;
     private List<Funcionario> listaFuncionarios;
 
@@ -72,8 +75,8 @@ public class ComprasController {
         listaProdutos = controller.buscarProdutos();
         this.viewCompras.getJcbProduto().removeAllItems();
         this.viewCompras.getJcbProduto().addItem(Mensagem.defaultComboProduto);
-        for (Produto listaProduto : listaProdutos) {
-            this.viewCompras.getJcbProduto().addItem(listaProduto.getDescricao());
+        for (Produto produto : listaProdutos) {
+            this.viewCompras.getJcbProduto().addItem(produto.getDescricao());
         }
     }
 
@@ -105,6 +108,11 @@ public class ComprasController {
     public void liberaIniciarCompra() {
         if ((this.viewCompras.getJcbFuncionario().getSelectedIndex() != 0) && this.viewCompras.getJcbFornecedor().getSelectedIndex() != 0) {
             this.viewCompras.getJbtIniciarCompra().setEnabled(true);
+        } else {
+            this.viewCompras.getJbtIniciarCompra().setEnabled(false);
+        }
+        if (!this.viewCompras.getJbtIniciarCompra().isEnabled()) {
+            desabilitaProduto();
         }
     }
 
@@ -112,32 +120,31 @@ public class ComprasController {
     //  no banco de dados posteriormente
     public void inserirProduto() {
         if (this.viewCompras.getJcbProduto().getSelectedIndex() != 0) {
-            DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
-            modelo.setRowCount(0);
-            modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString()});
-            ItemCompra itemCompra = new ItemCompra();
             Produto produto = listaProdutos.get(this.viewCompras.getJcbProduto().getSelectedIndex() - 1);
-            int quantidade = Integer.parseInt(this.viewCompras.getJtfQuantidade() + "");
-            Double desconto = Double.parseDouble(this.viewCompras.getJtfDescontoProduto() + "");
+            int quantidade = 0;
+            if (!Valida.verificarVazio(this.viewCompras.getJtfQuantidade().getText())) {
+                quantidade = Integer.parseInt(this.viewCompras.getJtfQuantidade().getText());
+            }
+            Double desconto = 0.0;
+            if (!Valida.verificarVazio(this.viewCompras.getJtfDescontoProduto().getText())) {
+                desconto = Double.parseDouble(this.viewCompras.getJtfDescontoProduto().getText());
+            }
             Double valorTotal = ((produto.getValorCusto() * quantidade) - desconto);
+            DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
+            modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString(), quantidade + " UN", "R$ " + produto.getValorCusto(), "R$ " + this.viewCompras.getJtfDescontoProduto().getText(), "R$ " + valorTotal});
+            ItemCompra itemCompra = new ItemCompra();
+            itemCompra.setIdItemCompra(compra.getIdCompra());
             itemCompra.setProdutoIdProduto(produto);
             itemCompra.setCompraIdCompra(compra);
             itemCompra.setQuantidadeProduto(quantidade + "");
             itemCompra.setValorTotal(valorTotal);
             listaItemCompra.add(itemCompra);
             habilitarFormaPagamento();
+            campoValorTotal();
         } else {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
         }
     }
-
-//    public void salvarCompra() {
-//        CompraDAO dao = new CompraDAO();
-//        compra.set
-//        for (ItemCompra itemCompra : listaItemCompra) {
-//          
-//        }
-//    }
 
     //* assim como no inserir, o excluir deve remover o produto selecionado na tabela da lista na qual estamos
     //  salvando todos os produtos inseridos
@@ -148,8 +155,10 @@ public class ComprasController {
         if (this.viewCompras.getTabelaProdutos().getSelectedRow() < 0) {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
         } else {
+            listaItemCompra.remove(this.viewCompras.getTabelaProdutos().getSelectedRow());
             modelo.removeRow(this.viewCompras.getTabelaProdutos().getSelectedRow());
             desabilitarFormaPagamento();
+            campoValorTotal();
         }
 
     }
@@ -176,13 +185,51 @@ public class ComprasController {
 
     //* ideia: aqui como podemos adicionar um unico registro à tabela, ela pode ser apenas visual enquanto usamos
     //  o que está selecionado na combobox para salvar
+    // inserir forma de pagamento
     public void inserirFormaPagamento() {
-        DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
-        modelo.setRowCount(0);
-        modelo.addRow(new String[]{this.viewCompras.getJcbFormaPagamento().getSelectedItem() + ""});
+        if (this.viewCompras.getJcbProduto().getSelectedIndex() != 0) {
+            DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
+            modelo.setRowCount(0);
+            modelo.addRow(new String[]{this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString()});
+        } else {
+            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
+        }
     }
 
+    public void removerFormaPagamento() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
+        if (this.viewCompras.getTabelaFormaPagamento().getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
+        } else {
+            modelo.removeRow(this.viewCompras.getTabelaFormaPagamento().getSelectedRow());
+        }
+
+    }
+
+    //* o botão iniciar compra não pode ser pressionado mais de uma vez em uma compra já que ele gera um registro no banco
+    //  nao podemos dar essa permissão pro usuário.
     public void acaoBotaoIniciarCompra() {
+        desabilitaDados();
+        habilitaProduto();
+        Fornecedor fornecedor = listaFornecedores.get(this.viewCompras.getJcbFornecedor().getSelectedIndex() - 1);
+        Funcionario funcionario = listaFuncionarios.get(this.viewCompras.getJcbFuncionario().getSelectedIndex() - 1);
+        compra = new Compra();
+        compra.setDataCompra(LocalDate.now() + "");
+        compra.setValorTotal("0");
+        compra.setFormaPagamento("0");
+        compra.setFornecedorIdFornecedor(fornecedor);
+        compra.setFuncionarioIdFuncionario(funcionario);
+        CompraDAO compraDAO = new CompraDAO();
+        compraDAO.salvar(compra);
+    }
+
+    public void desabilitaDados() {
+        this.viewCompras.getJcbFornecedor().setEnabled(false);
+        this.viewCompras.getJcbFuncionario().setEnabled(false);
+        this.viewCompras.getJbtIniciarCompra().setEnabled(false);
+    }
+
+    public void habilitaProduto() {
         this.viewCompras.getJcbProduto().setEnabled(true);
         this.viewCompras.getJbtCancelar().setEnabled(true);
         this.viewCompras.getJtfQuantidade().setEditable(true);
@@ -190,6 +237,77 @@ public class ComprasController {
         this.viewCompras.getJbtAdicionarProduto().setEnabled(true);
         this.viewCompras.getJbtExcluirProduto().setEnabled(true);
         this.viewCompras.getTabelaProdutos().setEnabled(true);
-        compra = new Compra();
+    }
+
+    public void desabilitaProduto() {
+        this.viewCompras.getJcbProduto().setEnabled(false);
+        this.viewCompras.getJbtCancelar().setEnabled(false);
+        this.viewCompras.getJtfQuantidade().setEditable(false);
+        this.viewCompras.getJtfDescontoProduto().setEditable(false);
+        this.viewCompras.getJbtAdicionarProduto().setEnabled(false);
+        this.viewCompras.getJbtExcluirProduto().setEnabled(false);
+        this.viewCompras.getTabelaProdutos().setEnabled(false);
+    }
+
+    public void campoValorTotal() {
+        Double valorTotal = 0.0;
+        Double desconto = 0.0;
+        desconto = Double.parseDouble(this.viewCompras.getJtfDescontoPagamento().getText());
+        if (desconto < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.descontoMenorQueZero);
+        }
+        for (ItemCompra itemCompra : listaItemCompra) {
+            valorTotal += itemCompra.getValorTotal();
+        }
+        if ((valorTotal - desconto) < 0) {
+            JOptionPane.showMessageDialog(null, Mensagem.valorMenorQueZero);
+        } else {
+            this.viewCompras.getJlbValorTotal().setText("R$ " + (valorTotal - desconto));
+        }
+    }
+
+    public void acaoBotaoCancelar() {
+        int x = JOptionPane.showConfirmDialog(null, Mensagem.confirmaCancelar, Mensagem.atencao,
+                JOptionPane.YES_NO_OPTION);
+        if ((x == JOptionPane.YES_OPTION)) {
+            //* limpar os campos do painel forma de pagamento, produto e dados da compra
+            limparDados();
+            limparProduto();
+            limparFormaPagamento();
+            //* excluir a compra gerada pelo botão iniciar compra
+            cancelarCompra();
+            //* voltar a tela ao estado inicial igual quando foi aberta
+            bloqueioInicial();
+        }
+    }
+
+    public void limparDados() {
+        carregarComboFornecedor();
+        carregarComboFuncionario();
+    }
+
+    public void limparProduto() {
+        carregarComboProduto();
+        this.viewCompras.getJtfQuantidade().setText("0");
+        this.viewCompras.getJtfDescontoProduto().setText("0.0");
+        DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
+        modelo.setRowCount(0);
+        listaItemCompra.clear();
+    }
+
+    public void limparFormaPagamento() {
+        this.viewCompras.getJcbFormaPagamento().setSelectedIndex(0);
+        this.viewCompras.getJtfDescontoPagamento().setText("0.0");
+        DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
+        modelo.setRowCount(0);
+    }
+
+    public void cancelarCompra() {
+        CompraDAO dao = new CompraDAO();
+        try {
+            dao.excluir(compra);
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
