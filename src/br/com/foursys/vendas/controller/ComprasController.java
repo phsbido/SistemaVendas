@@ -1,7 +1,10 @@
 package br.com.foursys.vendas.controller;
 
 import br.com.foursys.vendas.dao.CompraDAO;
+import br.com.foursys.vendas.dao.ContasPagarDAO;
+import br.com.foursys.vendas.dao.ItemCompraDAO;
 import br.com.foursys.vendas.model.Compra;
+import br.com.foursys.vendas.model.ContasPagar;
 import br.com.foursys.vendas.model.Fornecedor;
 import br.com.foursys.vendas.model.Funcionario;
 import br.com.foursys.vendas.model.ItemCompra;
@@ -9,11 +12,13 @@ import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
 import br.com.foursys.vendas.view.ComprasPrincipal;
+import br.com.foursys.vendas.view.ConfirmarContasPagar;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -133,12 +138,13 @@ public class ComprasController {
             DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
             modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString(), quantidade + " UN", "R$ " + produto.getValorCusto(), "R$ " + this.viewCompras.getJtfDescontoProduto().getText(), "R$ " + valorTotal});
             ItemCompra itemCompra = new ItemCompra();
-            itemCompra.setIdItemCompra(compra.getIdCompra());
             itemCompra.setProdutoIdProduto(produto);
             itemCompra.setCompraIdCompra(compra);
             itemCompra.setQuantidadeProduto(quantidade + "");
             itemCompra.setValorTotal(valorTotal);
             listaItemCompra.add(itemCompra);
+            ItemCompraDAO itemCompraDAO = new ItemCompraDAO();
+            itemCompraDAO.salvar(itemCompra);
             habilitarFormaPagamento();
             campoValorTotal();
         } else {
@@ -191,6 +197,7 @@ public class ComprasController {
             DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
             modelo.setRowCount(0);
             modelo.addRow(new String[]{this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString()});
+            habilitaConfirmar();
         } else {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
         }
@@ -202,6 +209,7 @@ public class ComprasController {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
         } else {
             modelo.removeRow(this.viewCompras.getTabelaFormaPagamento().getSelectedRow());
+            habilitaConfirmar();
         }
 
     }
@@ -252,7 +260,11 @@ public class ComprasController {
     public void campoValorTotal() {
         Double valorTotal = 0.0;
         Double desconto = 0.0;
-        desconto = Double.parseDouble(this.viewCompras.getJtfDescontoPagamento().getText());
+        try {
+            desconto = Double.parseDouble(this.viewCompras.getJtfDescontoPagamento().getText());
+        } catch (NumberFormatException e) {
+            this.viewCompras.getJtfDescontoPagamento().setText("0.0");
+        }
         if (desconto < 0) {
             JOptionPane.showMessageDialog(null, Mensagem.descontoMenorQueZero);
         }
@@ -304,10 +316,46 @@ public class ComprasController {
 
     public void cancelarCompra() {
         CompraDAO dao = new CompraDAO();
+        new ItemCompraController().excluirItemCompra(compra);
         try {
             dao.excluir(compra);
         } catch (Exception ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void habilitaConfirmar() {
+        if (this.viewCompras.getTabelaFormaPagamento().getRowCount() > 0) {
+            this.viewCompras.getJbtConfirmar().setEnabled(true);
+        } else {
+            this.viewCompras.getJbtConfirmar().setEnabled(false);
+        }
+
+    }
+
+    public void salvar() {
+        if ((this.viewCompras.getJcbFormaPagamento().getSelectedItem().equals("Dinheiro")) || (this.viewCompras.getJcbFormaPagamento().getSelectedItem().equals("Débito"))) {
+            ItemCompraDAO dao = new ItemCompraDAO();
+            CompraDAO compraDAO = new CompraDAO();
+            ContasPagarDAO contasPagarDAO = new ContasPagarDAO();
+            ContasPagar conta = new ContasPagar();
+            conta.setCompraIdCompra(compra);
+            conta.setDataPagamento(LocalDate.now() + "");
+            conta.setDataVencimento(LocalDate.now() + "");
+            conta.setPagamento("Sim");
+            conta.setVencida("Não");
+            contasPagarDAO.salvar(conta);
+            compra.setFormaPagamento(this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString());
+            compra.setValorTotal(this.viewCompras.getJlbValorTotal().getText());
+            compraDAO.salvar(compra);
+        } else if ((this.viewCompras.getJcbFormaPagamento().getSelectedItem().equals("Cheque")) || (this.viewCompras.getJcbFormaPagamento().getSelectedItem().equals("Crédito"))) {
+            ItemCompraDAO dao = new ItemCompraDAO();
+            CompraDAO compraDAO = new CompraDAO();
+            compra.setFormaPagamento(this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString());
+            compra.setValorTotal(this.viewCompras.getJlbValorTotal().getText());
+            compraDAO.salvar(compra);
+            new ConfirmarContasPagar(compra);
+            this.viewCompras.dispose();
         }
     }
 }
