@@ -186,6 +186,11 @@ public class ComprasPrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabelaProdutos);
 
         jtfQuantidade.setText("0");
@@ -480,6 +485,10 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     private void jbtConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtConfirmarActionPerformed
         this.comprasController.salvar();
     }//GEN-LAST:event_jbtConfirmarActionPerformed
+
+    private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaProdutosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

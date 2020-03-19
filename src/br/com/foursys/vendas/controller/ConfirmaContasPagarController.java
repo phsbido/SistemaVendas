@@ -4,6 +4,7 @@ import br.com.foursys.vendas.dao.ContasPagarDAO;
 import br.com.foursys.vendas.model.Compra;
 import br.com.foursys.vendas.model.ContasPagar;
 import br.com.foursys.vendas.util.Mensagem;
+import br.com.foursys.vendas.util.Valida;
 import br.com.foursys.vendas.view.ConfirmarContasPagar;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
@@ -33,7 +34,7 @@ public class ConfirmaContasPagarController {
         ContasPagarDAO contasPagarDAO = new ContasPagarDAO();
         ContasPagar conta = new ContasPagar();
         conta.setCompraIdCompra(compra);
-        conta.setDataPagamento(formataData(LocalDate.now() + ""));
+        conta.setDataPagamento(Valida.formataData(LocalDate.now() + ""));
         conta.setDataVencimento(this.viewContasPagar.getJtfDataVencimento().getText());
         conta.setPagamento(this.viewContasPagar.getJcbPagamento().getSelectedItem().toString());
         conta.setVencida(this.viewContasPagar.getJcbVencimento().getSelectedItem().toString());
@@ -56,18 +57,12 @@ public class ConfirmaContasPagarController {
     }
 
     public void carregaContaPagar() {
-        this.viewContasPagar.getJtfDataCompra().setText(formataData(LocalDate.now() + ""));
+        this.viewContasPagar.getJtfDataCompra().setText(Valida.formataData(LocalDate.now() + ""));
         this.viewContasPagar.getJtfDataCompra().setEnabled(false);
         this.viewContasPagar.getJcbPagamento().setSelectedIndex(2);
         this.viewContasPagar.getJcbPagamento().setEnabled(false);
         this.viewContasPagar.getJcbVencimento().setSelectedIndex(2);
         this.viewContasPagar.getJcbVencimento().setEnabled(false);
-    }
-
-    public String formataData(String data) {
-        String datas[] = data.split("-");
-        data = datas[2] + datas[1] + datas[0];
-        return data;
     }
 
 }

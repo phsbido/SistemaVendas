@@ -235,7 +235,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Controle de Vendas");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Cliente "));

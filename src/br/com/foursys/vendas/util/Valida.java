@@ -118,4 +118,10 @@ public class Valida {
         return true;
     }
 
+    public static String formataData(String data) {
+        String datas[] = data.split("-");
+        data = datas[2] + datas[1] + datas[0];
+        return data;
+    }
+
 }

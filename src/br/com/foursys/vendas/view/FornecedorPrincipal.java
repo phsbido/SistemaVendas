@@ -74,7 +74,7 @@ public class FornecedorPrincipal extends javax.swing.JFrame {
         jbtSair = new javax.swing.JButton();
         jbtNovo = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Cadastro de Fornecedor");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dados do Forncedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
