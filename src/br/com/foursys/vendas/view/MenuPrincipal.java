@@ -122,11 +122,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmenuCompras = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
-        jMenu7 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu9 = new javax.swing.JMenu();
+        jMenu11 = new javax.swing.JMenu();
+        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -402,21 +400,25 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jmenuCompras);
 
-        jMenu2.setText("Relatórios");
+        jMenu11.setText("Contas");
 
-        jMenu6.setText("Clientes");
-        jMenu2.add(jMenu6);
+        jMenuItem13.setText("A Pagar");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu11.add(jMenuItem13);
 
-        jMenu7.setText("Fornecedor");
-        jMenu2.add(jMenu7);
+        jMenuItem14.setText("A Receber");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu11.add(jMenuItem14);
 
-        jMenu8.setText("Estoque");
-        jMenu2.add(jMenu8);
-
-        jMenu9.setText("Vendas");
-        jMenu2.add(jMenu9);
-
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(jMenu11);
 
         jMenu4.setText("Sistema");
 
@@ -544,6 +546,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
         new ComprasPrincipal();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        new ContasPagarPrincipal();
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        new ContasReceberPrincipal();
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -553,19 +563,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem2;
