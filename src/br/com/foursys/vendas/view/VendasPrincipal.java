@@ -235,7 +235,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Controle de Vendas");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Cliente "));
@@ -386,6 +386,11 @@ public class VendasPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jtfDescontoPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfDescontoPagamentoActionPerformed(evt);
+            }
+        });
         jtfDescontoPagamento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jtfDescontoPagamentoKeyReleased(evt);
@@ -445,6 +450,11 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
         jbtConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/venda.gif"))); // NOI18N
         jbtConfirmar.setText("Confirmar");
+        jbtConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtConfirmarActionPerformed(evt);
+            }
+        });
 
         jbtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/cancelar.png"))); // NOI18N
         jbtCancelar.setText("Cancelar");
@@ -464,7 +474,7 @@ public class VendasPrincipal extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Valor Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        jlbValorTotal.setText("0.00");
+        jlbValorTotal.setText("0.0");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -643,6 +653,14 @@ public class VendasPrincipal extends javax.swing.JFrame {
     private void jbtExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirProdutoActionPerformed
          this.vendaController.excluirProduto();
     }//GEN-LAST:event_jbtExcluirProdutoActionPerformed
+
+    private void jbtConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtConfirmarActionPerformed
+        this.vendaController.salvar();
+    }//GEN-LAST:event_jbtConfirmarActionPerformed
+
+    private void jtfDescontoPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDescontoPagamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfDescontoPagamentoActionPerformed
 
     
 

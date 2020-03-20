@@ -5,6 +5,8 @@
  */
 package br.com.foursys.vendas.view;
 
+import br.com.foursys.vendas.controller.ConfirmaContasReceberController;
+import br.com.foursys.vendas.model.Venda;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -17,12 +19,16 @@ import javax.swing.JPanel;
  */
 public class ConfirmarContasReceber extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ContasPagar
-     */
-    public ConfirmarContasReceber() {
+     ConfirmaContasReceberController controller = new ConfirmaContasReceberController(ConfirmarContasReceber.this);
+
+    public ConfirmarContasReceber(Venda venda) {
         initComponents();
-    }
+        setLocationRelativeTo(null);
+        this.controller.carregaDadosVenda(venda);
+        this.controller.carregaContaReceber();
+        setVisible(true);
+    }/**
+     * Creates new form ContasReceber
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,7 +52,7 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
         jlbValorVenda = new javax.swing.JLabel();
         jlbFormaPgtoText = new javax.swing.JLabel();
         jlbFuncionarioText = new javax.swing.JLabel();
-        jlbFornecedorText = new javax.swing.JLabel();
+        jlbCliente = new javax.swing.JLabel();
         jlbValorCompra = new javax.swing.JLabel();
         jlbFormaPagamento = new javax.swing.JLabel();
         jlbFuncionario = new javax.swing.JLabel();
@@ -131,7 +137,7 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
 
         jlbFuncionarioText.setText("Funcionário:");
 
-        jlbFornecedorText.setText("Cliente:");
+        jlbCliente.setText("Cliente:");
 
         jlbValorCompra.setText("R$ 37986,77");
 
@@ -153,7 +159,7 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnCompraLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jpnCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbFornecedorText, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jlbCliente, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlbFuncionarioText, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlbFormaPgtoText, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -181,13 +187,18 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
                     .addComponent(jlbFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpnCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbFornecedorText)
+                    .addComponent(jlbCliente)
                     .addComponent(jlbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jbtConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/salvar.png"))); // NOI18N
         jbtConfirmar.setText("Confirmar");
+        jbtConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtConfirmarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -217,6 +228,10 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtConfirmarActionPerformed
+        this.controller.acaoBotaoConfirmar();
+    }//GEN-LAST:event_jbtConfirmarActionPerformed
 
     public JButton getJbtConfirmar() {
         return jbtConfirmar;
@@ -282,12 +297,12 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
         this.jlbFornecedor = jlbFornecedor;
     }
 
-    public JLabel getJlbFornecedorText() {
-        return jlbFornecedorText;
+    public JLabel getJlbCliente() {
+        return jlbCliente;
     }
 
-    public void setJlbFornecedorText(JLabel jlbFornecedorText) {
-        this.jlbFornecedorText = jlbFornecedorText;
+    public void setJlbCliente(JLabel jlbCliente) {
+        this.jlbCliente = jlbCliente;
     }
 
     public JLabel getJlbFuncionario() {
@@ -374,12 +389,12 @@ public class ConfirmarContasReceber extends javax.swing.JFrame {
     private javax.swing.JButton jbtConfirmar;
     private javax.swing.JComboBox jcbPagamento;
     private javax.swing.JComboBox jcbVencimento;
+    private javax.swing.JLabel jlbCliente;
     private javax.swing.JLabel jlbDataLancamento;
     private javax.swing.JLabel jlbDataVencimento;
     private javax.swing.JLabel jlbFormaPagamento;
     private javax.swing.JLabel jlbFormaPgtoText;
     private javax.swing.JLabel jlbFornecedor;
-    private javax.swing.JLabel jlbFornecedorText;
     private javax.swing.JLabel jlbFuncionario;
     private javax.swing.JLabel jlbFuncionarioText;
     private javax.swing.JLabel jlbPagamento;

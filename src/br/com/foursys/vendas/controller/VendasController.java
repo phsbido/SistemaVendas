@@ -1,13 +1,17 @@
 package br.com.foursys.vendas.controller;
 
+import br.com.foursys.vendas.dao.ContasReceberDAO;
+import br.com.foursys.vendas.dao.ItemVendaDAO;
 import br.com.foursys.vendas.dao.VendaDAO;
 import br.com.foursys.vendas.model.Cliente;
+import br.com.foursys.vendas.model.ContasReceber;
 import br.com.foursys.vendas.model.Funcionario;
 import br.com.foursys.vendas.model.ItemVenda;
 import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.model.Venda;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
+import br.com.foursys.vendas.view.ConfirmarContasReceber;
 import br.com.foursys.vendas.view.VendasPrincipal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -312,6 +316,39 @@ public class VendasController {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
+    public void habilitaConfirmar() {
+        if (this.viewVendas.getTabelaPagamento().getRowCount() > 0) {
+            this.viewVendas.getJbtConfirmar().setEnabled(true);
+        } else {
+            this.viewVendas.getJbtConfirmar().setEnabled(false);
+        }
+
+    }
+
+    public void salvar() {
+        if ((this.viewVendas.getJcbFormaDePagamento().getSelectedItem().equals("Dinheiro")) || (this.viewVendas.getJcbFormaDePagamento().getSelectedItem().equals("Débito"))) {
+            ItemVendaDAO dao = new ItemVendaDAO();
+            VendaDAO vendaDAO = new VendaDAO();
+            ContasReceberDAO contasReceberDAO = new ContasReceberDAO();
+            ContasReceber conta = new ContasReceber();
+            conta.setVendaIdVenda(venda);
+            conta.setDataPagamento(LocalDate.now() + "");
+            conta.setDataVencimento(LocalDate.now() + "");
+            conta.setPagamento("Sim");
+            conta.setVencida("Não");
+            contasReceberDAO.salvar(conta);
+            venda.setFormaPagamento(this.viewVendas.getJcbFormaDePagamento().getSelectedItem().toString());
+            venda.setValorTotal (Double.parseDouble(this.viewVendas.getJlbValorTotal().getText()));
+            vendaDAO.salvar(venda);
+        } else if ((this.viewVendas.getJcbFormaDePagamento().getSelectedItem().equals("Cheque")) || (this.viewVendas.getJcbFormaDePagamento().getSelectedItem().equals("Crédito"))) {
+            ItemVendaDAO dao = new ItemVendaDAO();
+            VendaDAO vendaDAO = new VendaDAO();
+            venda.setFormaPagamento(this.viewVendas.getJcbFormaDePagamento().getSelectedItem().toString());
+            venda.setValorTotal(Double.parseDouble(this.viewVendas.getJlbValorTotal().getText()));
+            vendaDAO.salvar(venda);
+            new ConfirmarContasReceber(venda);
+            this.viewVendas.dispose();
+        }
+    }
 
 }//fim da classe

@@ -131,8 +131,12 @@ public class Mensagem {
     public static String valorMenorQueZero = "O valor não pode ser menor que zero!";
     public static String descontoMenorQueZero = "O desconto não pode ser menor que zero!";
     public static String confirmaCompra = "Deseja realmente confirmar esta compra?";
+    public static String confirmaVenda = "Deseja realmente confirmar esta Venda?";
     public static String erroSalvarContaPagar = "Erro ao salvar conta a pagar";
+    public static String erroSalvarContaReceber = "Erro ao salvar conta a receber";
     public static String erroSalvarCompra = "Erro ao salvar compra.";
     public static String sucessoSalvarContaPagar = "Conta a pagar salva com sucesso!";
+    public static String sucessoSalvarContaReceber = "Conta a receber salva com sucesso!";
     public static String sucessoSalvarCompra = "Compra salva com sucesso!";
+    public static String sucessoSalvarVenda = "Venda salva com sucesso!";
 }//fim da classe
