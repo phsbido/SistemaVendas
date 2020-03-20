@@ -31,29 +31,34 @@ public class ConfirmaContasPagarController {
     }
 
     private void salvarContaPagar() {
-        ContasPagarDAO contasPagarDAO = new ContasPagarDAO();
-        ContasPagar conta = new ContasPagar();
-        conta.setCompraIdCompra(compra);
-        conta.setDataPagamento(Valida.formataData(LocalDate.now() + ""));
-        conta.setDataVencimento(this.viewContasPagar.getJtfDataVencimento().getText());
-        conta.setPagamento(this.viewContasPagar.getJcbPagamento().getSelectedItem().toString());
-        conta.setVencida(this.viewContasPagar.getJcbVencimento().getSelectedItem().toString());
-        try {
-            contasPagarDAO.salvar(conta);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, Mensagem.erroSalvarContaPagar);
+        if (validarSalvar()) {
+            ContasPagarDAO contasPagarDAO = new ContasPagarDAO();
+            ContasPagar conta = new ContasPagar();
+            conta.setCompraIdCompra(compra);
+            conta.setDataPagamento(Valida.formataData(LocalDate.now() + ""));
+            conta.setDataVencimento(this.viewContasPagar.getJtfDataVencimento().getText());
+            conta.setPagamento(this.viewContasPagar.getJcbPagamento().getSelectedItem().toString());
+            conta.setVencida(this.viewContasPagar.getJcbVencimento().getSelectedItem().toString());
+            try {
+                contasPagarDAO.salvar(conta);
+                LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaContasPagar);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, Mensagem.erroSalvarContaPagar);
+            }
+
+            JOptionPane.showMessageDialog(null, Mensagem.sucessoSalvarContaPagar);
+            JOptionPane.showMessageDialog(null, Mensagem.sucessoSalvarCompra);
+            this.viewContasPagar.dispose();
         }
-        JOptionPane.showMessageDialog(null, Mensagem.sucessoSalvarContaPagar);
-        JOptionPane.showMessageDialog(null, Mensagem.sucessoSalvarCompra);
-        this.viewContasPagar.dispose();
     }
 
     public void carregaDadosCompra(Compra compra) {
         this.compra = compra;
-        this.viewContasPagar.getJlbValorCompra().setText(compra.getValorTotal());
+        this.viewContasPagar.getJlbValorCompra().setText("R$ " + compra.getValorTotal());
         this.viewContasPagar.getJlbFormaPagamento().setText(compra.getFormaPagamento());
         this.viewContasPagar.getJlbFuncionario().setText(compra.getFuncionarioIdFuncionario().getPessoaFisicaIdPessoaFisica().getNome());
         this.viewContasPagar.getJlbFornecedor().setText(compra.getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+
     }
 
     public void carregaContaPagar() {
@@ -65,4 +70,12 @@ public class ConfirmaContasPagarController {
         this.viewContasPagar.getJcbVencimento().setEnabled(false);
     }
 
+    public boolean validarSalvar() {
+        if (!Valida.validarDataVencimento(this.viewContasPagar.getJtfDataVencimento().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.dataInvalida);
+            this.viewContasPagar.getJtfDataVencimento().grabFocus();
+            return false;
+        }
+        return true;
+    }
 }

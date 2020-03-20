@@ -90,6 +90,7 @@ public class ClienteController {
                 ClienteDAO dao = new ClienteDAO();
                 try {
                     dao.salvar(cliente);
+                    LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaClientes);
                     JOptionPane.showMessageDialog(null, Mensagem.clienteInseridoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.clienteInseridoErro);
@@ -133,6 +134,7 @@ public class ClienteController {
                 ClienteDAO dao = new ClienteDAO();
                 try {
                     dao.salvar(cliente);
+                    LoginController.verificaLog(Mensagem.alterar, Mensagem.tabelaClientes);
                     JOptionPane.showMessageDialog(null, Mensagem.clienteAlteradoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.clienteAlteradoErro);
@@ -199,6 +201,7 @@ public class ClienteController {
                     } else {
                         new PessoaJuridicaController().excluirPessoaJuridica(cliente.getPessoaJuridicaIdPessoaJuridica());
                     }
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaClientes);
                     JOptionPane.showMessageDialog(null, Mensagem.clienteExcluidoSucesso);
                     listarClientes();
                 } catch (Exception ex) {

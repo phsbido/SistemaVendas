@@ -19,6 +19,7 @@ public class EnderecoController {
     public void salvarEndereco(Object objeto) {
         try {
             new EnderecoDAO().salvar(objeto);
+            LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaEndereco);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Mensagem.erroEndereco);
             Logger.getLogger(EnderecoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -28,6 +29,7 @@ public class EnderecoController {
     public void excluirEndereco(Object objeto) {
         try {
             new EnderecoDAO().excluir(objeto);
+            LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaEndereco);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Mensagem.erroExcluirEndereco);
             Logger.getLogger(EnderecoController.class.getName()).log(Level.SEVERE, null, ex);

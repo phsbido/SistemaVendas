@@ -28,6 +28,7 @@ public class ItemVendaController {
             for (ItemVenda itemVenda : listaExcluir) {
                 if (itemVenda.getVendaIdVenda().getIdVenda()== venda.getIdVenda()) {
                     dao.excluir(itemVenda);
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaItemVenda);
                 }
             }
         } catch (Exception ex) {

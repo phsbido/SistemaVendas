@@ -49,6 +49,7 @@ public class ProdutoController {
                 ProdutoDAO dao = new ProdutoDAO();
                 try {
                     dao.salvar(produto);
+                    LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaProduto);
                     JOptionPane.showMessageDialog(null, Mensagem.produtoInseridoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.produtoInseridoErro);
@@ -69,6 +70,7 @@ public class ProdutoController {
                 ProdutoDAO dao = new ProdutoDAO();
                 try {
                     dao.salvar(produto);
+                    LoginController.verificaLog(Mensagem.alterar, Mensagem.tabelaProduto);
                     JOptionPane.showMessageDialog(null, Mensagem.produtoAlteradoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.produtoAlteradoErro);
@@ -109,6 +111,7 @@ public class ProdutoController {
                 ProdutoDAO dao = new ProdutoDAO();
                 try {
                     dao.excluir(produto);
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaProduto);
                     JOptionPane.showMessageDialog(null, Mensagem.produtoExcluidoSucesso);
                     listarProdutos();
                 } catch (Exception ex) {

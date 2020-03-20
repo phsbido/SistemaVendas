@@ -2,6 +2,7 @@ package br.com.foursys.vendas.controller;
 
 import br.com.foursys.vendas.dao.PessoaFisicaDAO;
 import br.com.foursys.vendas.model.PessoaFisica;
+import br.com.foursys.vendas.util.Mensagem;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,6 +19,7 @@ public class PessoaFisicaController {
     public void salvarPessoaFisica(Object objeto) {
         try {
             new PessoaFisicaDAO().salvar(objeto);
+            LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaPessoaFisica);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar pessoa fisica!");
             Logger.getLogger(PessoaFisicaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -27,6 +29,7 @@ public class PessoaFisicaController {
     public void excluirPessoaFisica(Object objeto) {
         try {
             new PessoaFisicaDAO().excluir(objeto);
+            LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaPessoaFisica);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir pessoa fisica!");
             Logger.getLogger(PessoaFisicaController.class.getName()).log(Level.SEVERE, null, ex);

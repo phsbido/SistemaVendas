@@ -29,6 +29,7 @@ public class ConfirmarContasPagar extends javax.swing.JFrame {
         setVisible(true);
     }
 
+
     public ConfirmaContasPagarController getController() {
         return controller;
     }
@@ -214,7 +215,8 @@ public class ConfirmarContasPagar extends javax.swing.JFrame {
         jbtConfirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Lançamento de Contas a Pagar");
+        setTitle("Contas a Pagar");
+        setResizable(false);
 
         jpnContasPagar.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Contas a Pagar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 

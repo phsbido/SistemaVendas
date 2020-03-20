@@ -74,6 +74,7 @@ public class FuncionarioController {
                 FuncionarioDAO dao = new FuncionarioDAO();
                 try {
                     dao.salvar(funcionario);
+                    LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaFuncionario);
                     JOptionPane.showMessageDialog(null, Mensagem.funcionarioInseridoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.funcionarioInseridoErro);
@@ -111,6 +112,7 @@ public class FuncionarioController {
                 FuncionarioDAO dao = new FuncionarioDAO();
                 try {
                     dao.salvar(funcionario);
+                    LoginController.verificaLog(Mensagem.alterar, Mensagem.tabelaFuncionario);
                     JOptionPane.showMessageDialog(null, Mensagem.funcionarioAlteradoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.funcionarioAlteradoErro);
@@ -137,6 +139,7 @@ public class FuncionarioController {
                 FuncionarioDAO dao = new FuncionarioDAO();
                 try {
                     dao.excluir(funcionario);
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaFuncionario);
                     new ContatoController().excluirContato(funcionario.getContatoIdContato());
                     new EnderecoController().excluirEndereco(funcionario.getEnderecoIdEndereco());
                     new PessoaFisicaController().excluirPessoaFisica(funcionario.getPessoaFisicaIdPessoaFisica());

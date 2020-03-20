@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * Classe responsavel pelo controle da View ContasPagarPrincipal
+ *
  * @author fcorrea
  * @since 19/03/2020
  */
@@ -29,48 +30,47 @@ public class ContasPagarController {
     public ContasPagarController(ContasPagarPrincipal viewContasPagar) {
         this.viewContasPagar = viewContasPagar;
     }
-    
+
     //Metodo que salva as alteracoes do banco de dados
-    public void salvarAlteracoes(){
-         if (validarSalvar()) {
-                conta.setPagamento(this.viewContasPagar.getJcbPagamento().getSelectedItem().toString());
-                conta.setVencida(this.viewContasPagar.getJcbVencimento().getSelectedItem().toString());
-                conta.setDataPagamento(this.viewContasPagar.getJtfDataPagamento().getText());
-                ContasPagarDAO dao = new ContasPagarDAO();
-                try {
-                    dao.salvar(conta);
-                    JOptionPane.showMessageDialog(null, Mensagem.contaAlteradaSucesso);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, Mensagem.contaAlteradaErro);
-                    Logger.getLogger(ContasPagarController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                limparCampos();
-                bloquearCampos();
-                listarContas();
-            }    
+    public void salvarAlteracoes() {
+        if (validarSalvar()) {
+            conta.setPagamento(this.viewContasPagar.getJcbPagamento().getSelectedItem().toString());
+            conta.setVencida(this.viewContasPagar.getJcbVencimento().getSelectedItem().toString());
+            conta.setDataPagamento(this.viewContasPagar.getJtfDataPagamento().getText());
+            ContasPagarDAO dao = new ContasPagarDAO();
+            try {
+                dao.salvar(conta);
+                LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaContasPagar);
+                JOptionPane.showMessageDialog(null, Mensagem.contaAlteradaSucesso);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, Mensagem.contaAlteradaErro);
+                Logger.getLogger(ContasPagarController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            limparCampos();
+            bloquearCampos();
+            listarContas();
+        }
     }
 
     //Metodo captura os dados do item selecionado da tabela, coloca eles em seus campos respectivos
     //e habilita o botão alterar
-    public void selecionarItemTabela(){
-         DefaultTableModel modelo = (DefaultTableModel) this.viewContasPagar.getTabelaContas().getModel();
-            
-            this.viewContasPagar.getJbtEditar().setEnabled(true);
-            conta = listaContas.get(this.viewContasPagar.getTabelaContas().getSelectedRow());
-            this.viewContasPagar.getJlbFuncionarioResponsavel().setText(conta.getCompraIdCompra().getFuncionarioIdFuncionario().getPessoaFisicaIdPessoaFisica().getNome());
-            this.viewContasPagar.getJlbNomeFornecedor().setText(conta.getCompraIdCompra().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
-            this.viewContasPagar.getJlbValorVenda().setText(conta.getCompraIdCompra().getValorTotal());
-            this.viewContasPagar.getJlbFormaPagamento().setText(conta.getCompraIdCompra().getFormaPagamento());
-            this.viewContasPagar.getJlbDataVencimento().setText(conta.getDataVencimento());
-            this.viewContasPagar.getJlbDataLancamento().setText(conta.getCompraIdCompra().getDataCompra());
-            this.viewContasPagar.getJcbPagamento().setSelectedItem(conta.getPagamento());
-            this.viewContasPagar.getJcbVencimento().setSelectedItem(conta.getVencida());  
-            this.viewContasPagar.getJtfDataPagamento().setText(conta.getDataPagamento()); 
-            
-            
-        
+    public void selecionarItemTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) this.viewContasPagar.getTabelaContas().getModel();
+
+        this.viewContasPagar.getJbtEditar().setEnabled(true);
+        conta = listaContas.get(this.viewContasPagar.getTabelaContas().getSelectedRow());
+        this.viewContasPagar.getJlbFuncionarioResponsavel().setText(conta.getCompraIdCompra().getFuncionarioIdFuncionario().getPessoaFisicaIdPessoaFisica().getNome());
+        this.viewContasPagar.getJlbNomeFornecedor().setText(conta.getCompraIdCompra().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial());
+        this.viewContasPagar.getJlbValorVenda().setText(conta.getCompraIdCompra().getValorTotal() + "");
+        this.viewContasPagar.getJlbFormaPagamento().setText(conta.getCompraIdCompra().getFormaPagamento());
+        this.viewContasPagar.getJlbDataVencimento().setText(conta.getDataVencimento());
+        this.viewContasPagar.getJlbDataLancamento().setText(conta.getCompraIdCompra().getDataCompra());
+        this.viewContasPagar.getJcbPagamento().setSelectedItem(conta.getPagamento());
+        this.viewContasPagar.getJcbVencimento().setSelectedItem(conta.getVencida());
+        this.viewContasPagar.getJtfDataPagamento().setText(conta.getDataPagamento());
+
     }
-    
+
     //Metodo de validação do salvar
     public boolean validarSalvar() {
         if (Valida.verificarCombo(this.viewContasPagar.getJcbPagamento().getSelectedIndex())) {
@@ -109,16 +109,16 @@ public class ContasPagarController {
         DefaultTableModel modelo = (DefaultTableModel) this.viewContasPagar.getTabelaContas().getModel();
         modelo.setRowCount(0);
         for (ContasPagar conta : listaContas) {
-            if (conta.getPagamento().equals("Não")){
-            if (conta.getCompraIdCompra().getFormaPagamento().equals("Cheque")) {
-                modelo.addRow(new String[]{conta.getCompraIdCompra().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), 
-                    conta.getCompraIdCompra().getValorTotal(), conta.getCompraIdCompra().getDataCompra(), conta.getDataVencimento(), conta.getVencida(), conta.getPagamento()});
-            }else if(conta.getCompraIdCompra().getFormaPagamento().equals("Crédito")){
-                modelo.addRow(new String[]{conta.getCompraIdCompra().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), 
-                    conta.getCompraIdCompra().getValorTotal(), conta.getCompraIdCompra().getDataCompra(), conta.getDataVencimento(), conta.getVencida(), conta.getPagamento()});
+            if (conta.getPagamento().equals("Não")) {
+                if (conta.getCompraIdCompra().getFormaPagamento().equals("Cheque")) {
+                    modelo.addRow(new String[]{conta.getCompraIdCompra().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(),
+                        conta.getCompraIdCompra().getValorTotal() + "", conta.getCompraIdCompra().getDataCompra(), conta.getDataVencimento(), conta.getVencida(), conta.getPagamento()});
+                } else if (conta.getCompraIdCompra().getFormaPagamento().equals("Crédito")) {
+                    modelo.addRow(new String[]{conta.getCompraIdCompra().getFornecedorIdFornecedor().getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(),
+                        conta.getCompraIdCompra().getValorTotal() + "", conta.getCompraIdCompra().getDataCompra(), conta.getDataVencimento(), conta.getVencida(), conta.getPagamento()});
+                }
             }
         }
-      }
     }
 
     //Metodo para bloquear campos da tela
@@ -130,7 +130,7 @@ public class ContasPagarController {
         this.viewContasPagar.getJbtEditar().setEnabled(false);
         this.viewContasPagar.getJbtSalvar().setEnabled(false);
         this.viewContasPagar.getJbtCancelar().setEnabled(false);
-        
+
         limparCampos();
     }
 
@@ -140,12 +140,10 @@ public class ContasPagarController {
         this.viewContasPagar.getJbtSair().setEnabled(false);
         this.viewContasPagar.getJcbPagamento().setEnabled(true);
         this.viewContasPagar.getJcbVencimento().setEnabled(true);
-        this.viewContasPagar.getJtfDataPagamento().setEditable(true);   
+        this.viewContasPagar.getJtfDataPagamento().setEditable(true);
         this.viewContasPagar.getJbtSalvar().setEnabled(true);
         this.viewContasPagar.getJbtCancelar().setEnabled(true);
     }
-    
-    
 
     //Metodo de limpar campos
     public void limparCampos() {

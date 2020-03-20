@@ -42,7 +42,8 @@ public class FornecedorController {
         this.viewFornecedor = viewFornecedor;
     }
 // metodos responsaveis por salvar ,alterar e excluir Fornecedor
-     public void salvarFornecedor() {
+
+    public void salvarFornecedor() {
         if (this.alterar == false) {
             if (validarSalvar()) {
                 Fornecedor fornecedor = new Fornecedor();
@@ -74,6 +75,7 @@ public class FornecedorController {
                 FornecedorDAO dao = new FornecedorDAO();
                 try {
                     dao.salvar(fornecedor);
+                    LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaFornecedor);
                     JOptionPane.showMessageDialog(null, Mensagem.fornecedorInseridoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.fornecedorInseridoErro);
@@ -109,6 +111,7 @@ public class FornecedorController {
                 FornecedorDAO dao = new FornecedorDAO();
                 try {
                     dao.salvar(fornecedor);
+                    LoginController.verificaLog(Mensagem.alterar, Mensagem.tabelaFornecedor);
                     JOptionPane.showMessageDialog(null, Mensagem.fornecedorAlteradoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.fornecedorAlteradoErro);
@@ -121,7 +124,8 @@ public class FornecedorController {
             }
         }
     }
-      public void alterarFornecedor() {
+
+    public void alterarFornecedor() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewFornecedor.getTabelaFornecedor().getModel();
         if (this.viewFornecedor.getTabelaFornecedor().getSelectedRow() < 0) {
             JOptionPane.showMessageDialog(null, Mensagem.fornecedorNaoSelecionado);
@@ -146,6 +150,7 @@ public class FornecedorController {
             acaoBotaoAlterar();
         }
     }
+
     public void excluirFornecedor() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewFornecedor.getTabelaFornecedor().getModel();
         if (this.viewFornecedor.getTabelaFornecedor().getSelectedRow() < 0) {
@@ -159,6 +164,7 @@ public class FornecedorController {
                 FornecedorDAO dao = new FornecedorDAO();
                 try {
                     dao.excluir(fornecedor);
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaFornecedor);
                     new ContatoController().excluirContato(fornecedor.getContatoIdContato());
                     new EnderecoController().excluirEndereco(fornecedor.getEnderecoIdEndereco());
                     new PessoaJuridicaController().excluirPessoaJuridica(fornecedor.getPessoaJuridicaIdPessoaJuridica());
@@ -181,6 +187,7 @@ public class FornecedorController {
         }
     }
 //    Metodos responsaveis por listar, buscar e carregar tabela
+
     public void listarFornecedores() {
         try {
             FornecedorDAO dao = new FornecedorDAO();
@@ -195,15 +202,17 @@ public class FornecedorController {
         DefaultTableModel modelo = (DefaultTableModel) this.viewFornecedor.getTabelaFornecedor().getModel();
         modelo.setRowCount(0);
         for (Fornecedor fornecedor : listaFornecedores) {
-            modelo.addRow(new String[]{fornecedor.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getNome(), fornecedor.getContatoIdContato().getTelefone(), fornecedor.getContatoIdContato().getCelular()});
+            modelo.addRow(new String[]{fornecedor.getPessoaJuridicaIdPessoaJuridica().getRazaoSocial(), fornecedor.getContatoIdContato().getTelefone(), fornecedor.getContato(), fornecedor.getEnderecoIdEndereco().getCidadeIdCidade().getNome()});
         }
     }
-     public ArrayList<Fornecedor> buscarTodos() throws Exception {
+
+    public ArrayList<Fornecedor> buscarTodos() throws Exception {
         FornecedorDAO dao = new FornecedorDAO();
         ArrayList<Fornecedor> lista = dao.buscarTodos();
         return lista;
     }
 // metodos responsavel por popular as combos 
+
     public void carregarComboCidade() {
         CidadeController controller = new CidadeController();
         try {
@@ -232,6 +241,7 @@ public class FornecedorController {
         }
     }
 // metodos responsavel por colocar ação na tela 
+
     public void bloqueioInicial() {
         this.viewFornecedor.getJbtNovo().setEnabled(true);
         this.viewFornecedor.getJbtAlterar().setEnabled(true);
@@ -333,6 +343,7 @@ public class FornecedorController {
         this.alterar = false;
     }
 // metodo responsavel por fazer as validações necessarias
+
     public boolean validarSalvar() {
         if (Valida.verificarVazio(this.viewFornecedor.getJtfCnpj().getText())) {
             JOptionPane.showMessageDialog(null, Mensagem.cnpjVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
@@ -365,11 +376,11 @@ public class FornecedorController {
             this.viewFornecedor.getJtfDataFundacao().grabFocus();
             return false;
         } else if (Valida.verificarVazio(this.viewFornecedor.getJtfRazaoSocial().getText().trim())) {
-            JOptionPane.showMessageDialog(null, Mensagem.nomeVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, Mensagem.razaoSocialVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewFornecedor.getJtfRazaoSocial().grabFocus();
             return false;
         } else if (Valida.validarNome(this.viewFornecedor.getJtfRazaoSocial().getText().trim())) {
-            JOptionPane.showMessageDialog(null, Mensagem.nomeInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, Mensagem.razaoSocialInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewFornecedor.getJtfRazaoSocial().setText("");
             this.viewFornecedor.getJtfRazaoSocial().grabFocus();
             return false;
@@ -414,8 +425,6 @@ public class FornecedorController {
         return true;
     }
 
-   
-
     public void acaoBotaoAlterar() {
         this.viewFornecedor.getJbtNovo().setEnabled(false);
         this.viewFornecedor.getJbtAlterar().setEnabled(false);
@@ -430,7 +439,4 @@ public class FornecedorController {
         this.viewFornecedor.getJtfDataFundacao().setEditable(false);
     }
 
-   
-
-   
 }

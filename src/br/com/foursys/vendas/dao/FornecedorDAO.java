@@ -20,12 +20,14 @@ public class FornecedorDAO extends GenericDAO {
         Criteria criteria = sessao.createCriteria(Fornecedor.class);
         criteria.addOrder(Order.asc("idFornecedor"));
         listaRetorno = (ArrayList<Fornecedor>) criteria.list();
+        sessao.close();
         return listaRetorno;
     }
 
     public Fornecedor buscarPorCodigo(int codigo) throws Exception {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Fornecedor fornecedor = (Fornecedor) sessao.get(Fornecedor.class, codigo);
+        sessao.close();
         return fornecedor;
     }
 }

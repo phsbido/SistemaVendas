@@ -153,6 +153,11 @@ public class ComprasPrincipal extends javax.swing.JFrame {
         jLabel7.setText("Desconto:");
 
         jcbProduto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione um Produto-" }));
+        jcbProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbProdutoActionPerformed(evt);
+            }
+        });
 
         jbtAdicionarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/vendas/img/salvar.png"))); // NOI18N
         jbtAdicionarProduto.setText("Adicionar Produto");
@@ -194,6 +199,11 @@ public class ComprasPrincipal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tabelaProdutos);
 
         jtfQuantidade.setText("0");
+        jtfQuantidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfQuantidadeKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -287,6 +297,12 @@ public class ComprasPrincipal extends javax.swing.JFrame {
 
         jtfDescontoPagamento.setText("0.0");
         jtfDescontoPagamento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfDescontoPagamentoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfDescontoPagamentoKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jtfDescontoPagamentoKeyTyped(evt);
             }
@@ -489,6 +505,22 @@ public class ComprasPrincipal extends javax.swing.JFrame {
     private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tabelaProdutosMouseClicked
+
+    private void jcbProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbProdutoActionPerformed
+        this.comprasController.liberarAdicionarProduto();
+    }//GEN-LAST:event_jcbProdutoActionPerformed
+
+    private void jtfQuantidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfQuantidadeKeyReleased
+        this.comprasController.campoValorTotal();
+    }//GEN-LAST:event_jtfQuantidadeKeyReleased
+
+    private void jtfDescontoPagamentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfDescontoPagamentoKeyReleased
+        this.comprasController.campoValorTotal();
+    }//GEN-LAST:event_jtfDescontoPagamentoKeyReleased
+
+    private void jtfDescontoPagamentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfDescontoPagamentoKeyPressed
+        
+    }//GEN-LAST:event_jtfDescontoPagamentoKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

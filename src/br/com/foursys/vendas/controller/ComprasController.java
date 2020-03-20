@@ -5,6 +5,7 @@ import br.com.foursys.vendas.dao.ContasPagarDAO;
 import br.com.foursys.vendas.dao.ItemCompraDAO;
 import br.com.foursys.vendas.model.Compra;
 import br.com.foursys.vendas.model.ContasPagar;
+import br.com.foursys.vendas.model.Estoque;
 import br.com.foursys.vendas.model.Fornecedor;
 import br.com.foursys.vendas.model.Funcionario;
 import br.com.foursys.vendas.model.ItemCompra;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,10 +34,12 @@ public class ComprasController {
 
     private ComprasPrincipal viewCompras;
     private Compra compra = new Compra();
+    private List<Estoque> listaEstoque;
     private List<Produto> listaProdutos;
     private List<ItemCompra> listaItemCompra = new ArrayList<>();
     private List<Fornecedor> listaFornecedores;
     private List<Funcionario> listaFuncionarios;
+    private int quantidade = 0;
 
     public ComprasController() {
 
@@ -76,12 +78,12 @@ public class ComprasController {
     }
 
     public void carregarComboProduto() {
-        ProdutoController controller = new ProdutoController();
-        listaProdutos = controller.buscarProdutos();
+        EstoqueController controller = new EstoqueController();
+        listaEstoque = controller.buscarEstoque();
         this.viewCompras.getJcbProduto().removeAllItems();
         this.viewCompras.getJcbProduto().addItem(Mensagem.defaultComboProduto);
-        for (Produto produto : listaProdutos) {
-            this.viewCompras.getJcbProduto().addItem(produto.getDescricao());
+        for (Estoque estoque : listaEstoque) {
+            this.viewCompras.getJcbProduto().addItem(estoque.getProdutoIdProduto().getDescricao());
         }
     }
 
@@ -120,42 +122,73 @@ public class ComprasController {
             desabilitaProduto();
         }
     }
+//Metodo para liberar o Adicionar produto
+
+    public void liberarAdicionarProduto() {
+        if (!Valida.verificarCombo(this.viewCompras.getJcbProduto().getSelectedIndex()) && (!Valida.verificarVazio(this.viewCompras.getJtfQuantidade().getText())) && (!Valida.verificarVazio(this.viewCompras.getJtfDescontoProduto().getText()))) {
+            this.viewCompras.getJbtAdicionarProduto().setEnabled(true);
+        } else {
+            this.viewCompras.getJbtAdicionarProduto().setEnabled(false);
+        }
+        if (!this.viewCompras.getJbtAdicionarProduto().isEnabled()) {
+            desabilitarFormaPagamento();
+        }
+    }
+
+    public void liberarFormaPagamento() {
+        if (!Valida.verificarCombo(this.viewCompras.getJcbFormaPagamento().getSelectedIndex())) {
+            this.viewCompras.getJbtIncluirFormaPagamento().setEnabled(true);
+        } else {
+            this.viewCompras.getJbtIncluirFormaPagamento().setEnabled(false);
+        }
+    }
 
     //* Quando inserir um produto na tabela, adicionar o produto numa lista para poder salvar essa lista de produtos
     //  no banco de dados posteriormente
     public void inserirProduto() {
         if (this.viewCompras.getJcbProduto().getSelectedIndex() != 0) {
-            Produto produto = listaProdutos.get(this.viewCompras.getJcbProduto().getSelectedIndex() - 1);
-            int quantidade = 0;
-            if (!Valida.verificarVazio(this.viewCompras.getJtfQuantidade().getText())) {
-                quantidade = Integer.parseInt(this.viewCompras.getJtfQuantidade().getText());
+            if (validarProduto()) {
+                Estoque estoque = listaEstoque.get(this.viewCompras.getJcbProduto().getSelectedIndex() - 1);
+
+                if (!Valida.verificarVazio(this.viewCompras.getJtfQuantidade().getText())) {
+                    quantidade = Integer.parseInt(this.viewCompras.getJtfQuantidade().getText());
+                }
+                Double desconto = 0.0;
+                if (!Valida.verificarVazio(this.viewCompras.getJtfDescontoProduto().getText())) {
+                    desconto = Double.parseDouble(this.viewCompras.getJtfDescontoProduto().getText());
+                }
+                if (Valida.quantidadeEstoque(Integer.parseInt(this.viewCompras.getJtfQuantidade().getText()), estoque)) {
+                    JOptionPane.showMessageDialog(null, Mensagem.estoqueIndisponivel);
+                    this.viewCompras.getJtfQuantidade().grabFocus();
+                } else {
+                    Double valorTotal = ((estoque.getProdutoIdProduto().getValorCusto() * quantidade) - desconto);
+                    if (valorTotal > 0) {
+                        DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
+                        modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString(), quantidade + " UN", "R$ " + estoque.getProdutoIdProduto().getValorCusto(), "R$ " + this.viewCompras.getJtfDescontoProduto().getText(), "R$ " + valorTotal});
+                        ItemCompra itemCompra = new ItemCompra();
+                        itemCompra.setProdutoIdProduto(estoque.getProdutoIdProduto());
+                        itemCompra.setCompraIdCompra(compra);
+                        itemCompra.setQuantidadeProduto(quantidade + "");
+                        itemCompra.setValorTotal(valorTotal);
+                        listaItemCompra.add(itemCompra);
+                        ItemCompraDAO itemCompraDAO = new ItemCompraDAO();
+                        itemCompraDAO.salvar(itemCompra);
+                        habilitarFormaPagamento();
+                        campoValorTotal();
+                    } else {
+                        JOptionPane.showMessageDialog(null, Mensagem.valorMenorQueZero);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
             }
-            Double desconto = 0.0;
-            if (!Valida.verificarVazio(this.viewCompras.getJtfDescontoProduto().getText())) {
-                desconto = Double.parseDouble(this.viewCompras.getJtfDescontoProduto().getText());
-            }
-            Double valorTotal = ((produto.getValorCusto() * quantidade) - desconto);
-            DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
-            modelo.addRow(new String[]{this.viewCompras.getJcbProduto().getSelectedItem().toString(), quantidade + " UN", "R$ " + produto.getValorCusto(), "R$ " + this.viewCompras.getJtfDescontoProduto().getText(), "R$ " + valorTotal});
-            ItemCompra itemCompra = new ItemCompra();
-            itemCompra.setProdutoIdProduto(produto);
-            itemCompra.setCompraIdCompra(compra);
-            itemCompra.setQuantidadeProduto(quantidade + "");
-            itemCompra.setValorTotal(valorTotal);
-            listaItemCompra.add(itemCompra);
-            ItemCompraDAO itemCompraDAO = new ItemCompraDAO();
-            itemCompraDAO.salvar(itemCompra);
-            habilitarFormaPagamento();
-            campoValorTotal();
-        } else {
-            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
         }
     }
-
-    //* assim como no inserir, o excluir deve remover o produto selecionado na tabela da lista na qual estamos
+        //* assim como no inserir, o excluir deve remover o produto selecionado na tabela da lista na qual estamos
     //  salvando todos os produtos inseridos
     //* ideia: o método deveria se chamar remover produto já que não estamos fazendo uma exclusão, mas apenas removendo
     //  da tabela para que ele não seja constado na compra
+
     public void excluirProduto() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
         if (this.viewCompras.getTabelaProdutos().getSelectedRow() < 0) {
@@ -172,6 +205,7 @@ public class ComprasController {
     public void habilitarFormaPagamento() {
         if (this.viewCompras.getTabelaProdutos().getRowCount() > 0) {
             this.viewCompras.getJcbFormaPagamento().setEnabled(true);
+            this.viewCompras.getJcbFormaPagamento().grabFocus();
             this.viewCompras.getJtfDescontoPagamento().setEditable(true);
             this.viewCompras.getJbtIncluirFormaPagamento().setEnabled(true);
             this.viewCompras.getJbtExcluirFormaPagamento().setEnabled(true);
@@ -193,20 +227,20 @@ public class ComprasController {
     //  o que está selecionado na combobox para salvar
     // inserir forma de pagamento
     public void inserirFormaPagamento() {
-        if (this.viewCompras.getJcbProduto().getSelectedIndex() != 0) {
+        if (this.viewCompras.getJcbFormaPagamento().getSelectedIndex() != 0) {
             DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
             modelo.setRowCount(0);
             modelo.addRow(new String[]{this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString()});
             habilitaConfirmar();
         } else {
-            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
+            JOptionPane.showMessageDialog(null, Mensagem.pagamentoNaoSelecionado);
         }
     }
 
     public void removerFormaPagamento() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaFormaPagamento().getModel();
         if (this.viewCompras.getTabelaFormaPagamento().getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado);
+            JOptionPane.showMessageDialog(null, Mensagem.pagamentoNaoSelecionado);
         } else {
             modelo.removeRow(this.viewCompras.getTabelaFormaPagamento().getSelectedRow());
             habilitaConfirmar();
@@ -223,12 +257,13 @@ public class ComprasController {
         Funcionario funcionario = listaFuncionarios.get(this.viewCompras.getJcbFuncionario().getSelectedIndex() - 1);
         compra = new Compra();
         compra.setDataCompra(LocalDate.now() + "");
-        compra.setValorTotal("0");
+        compra.setValorTotal(0.0);
         compra.setFormaPagamento("0");
         compra.setFornecedorIdFornecedor(fornecedor);
         compra.setFuncionarioIdFuncionario(funcionario);
         CompraDAO compraDAO = new CompraDAO();
         compraDAO.salvar(compra);
+        liberarAdicionarProduto();
     }
 
     public void desabilitaDados() {
@@ -305,6 +340,7 @@ public class ComprasController {
         DefaultTableModel modelo = (DefaultTableModel) this.viewCompras.getTabelaProdutos().getModel();
         modelo.setRowCount(0);
         listaItemCompra.clear();
+        this.viewCompras.getJlbValorTotal().setText("0.0");
     }
 
     public void limparFormaPagamento() {
@@ -320,7 +356,7 @@ public class ComprasController {
         try {
             dao.excluir(compra);
         } catch (Exception ex) {
-            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FornecedorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -334,6 +370,7 @@ public class ComprasController {
     }
 
     public void salvar() {
+        EstoqueController estoqueController = new EstoqueController();
         if ((this.viewCompras.getJcbFormaPagamento().getSelectedItem().equals("Dinheiro")) || (this.viewCompras.getJcbFormaPagamento().getSelectedItem().equals("Débito"))) {
             ItemCompraDAO dao = new ItemCompraDAO();
             CompraDAO compraDAO = new CompraDAO();
@@ -345,10 +382,15 @@ public class ComprasController {
             conta.setPagamento("Sim");
             conta.setVencida("Não");
             contasPagarDAO.salvar(conta);
+            for (Estoque estoque : listaEstoque) {
+                estoque.setQuantidadeEstoque(estoque.getQuantidadeEstoque() + quantidade);
+                estoqueController.salvarEstoqueDAO(estoque);
+            }
             compra.setFormaPagamento(this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString());
-            compra.setValorTotal(this.viewCompras.getJlbValorTotal().getText());
+            compra.setValorTotal(Double.parseDouble(this.viewCompras.getJlbValorTotal().getText().replace("R$ ", "")));
             try {
                 compraDAO.salvar(compra);
+                LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaCompras);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, Mensagem.erroSalvarCompra);
             }
@@ -361,10 +403,39 @@ public class ComprasController {
             ItemCompraDAO dao = new ItemCompraDAO();
             CompraDAO compraDAO = new CompraDAO();
             compra.setFormaPagamento(this.viewCompras.getJcbFormaPagamento().getSelectedItem().toString());
-            compra.setValorTotal(this.viewCompras.getJlbValorTotal().getText());
-            compraDAO.salvar(compra);
+            compra.setValorTotal(Double.parseDouble(this.viewCompras.getJlbValorTotal().getText().replace("R$ ", "")));
+            for (Estoque estoque : listaEstoque) {
+                estoque.setQuantidadeEstoque(estoque.getQuantidadeEstoque() + quantidade);
+                estoqueController.salvarEstoqueDAO(estoque);
+            }
+            try {
+                compraDAO.salvar(compra);
+                LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaCompras);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, Mensagem.erroSalvarCompra);
+            }
             new ConfirmarContasPagar(compra);
             this.viewCompras.dispose();
         }
     }
-}
+
+    public boolean validarProduto() {
+        if (!Valida.validarNumero(this.viewCompras.getJtfQuantidade().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.numeroInvalido);
+            this.viewCompras.getJtfQuantidade().grabFocus();
+            return false;
+        } else if (Valida.verificarVazio(this.viewCompras.getJtfQuantidade().getText())) {
+            JOptionPane.showMessageDialog(null, Mensagem.numeroInvalido);
+            this.viewCompras.getJtfQuantidade().grabFocus();
+            return false;
+        } else if (Valida.verificaQuantidade(Integer.parseInt(this.viewCompras.getJtfQuantidade().getText()))) {
+            JOptionPane.showMessageDialog(null, Mensagem.numeroInvalido);
+            this.viewCompras.getJtfQuantidade().grabFocus();
+            return false;
+
+        }
+
+        return true;
+    }
+
+}//fim da classe

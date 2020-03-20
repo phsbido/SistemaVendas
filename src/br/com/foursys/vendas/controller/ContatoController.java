@@ -19,6 +19,7 @@ public class ContatoController {
     public void salvarContato(Object objeto) {
         try {
             new ContatoDAO().salvar(objeto);
+            LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaContato);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Mensagem.erroContato);
             Logger.getLogger(ContatoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -28,6 +29,7 @@ public class ContatoController {
     public void excluirContato(Object objeto) {
         try {
             new ContatoDAO().excluir(objeto);
+            LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaContato);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Mensagem.erroExcluirContato);
             Logger.getLogger(ContatoController.class.getName()).log(Level.SEVERE, null, ex);

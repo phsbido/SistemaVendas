@@ -2,6 +2,7 @@ package br.com.foursys.vendas.controller;
 
 import br.com.foursys.vendas.dao.PessoaJuridicaDAO;
 import br.com.foursys.vendas.model.PessoaJuridica;
+import br.com.foursys.vendas.util.Mensagem;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,6 +28,7 @@ public class PessoaJuridicaController {
     public void salvarPessoaJuridica(Object objeto) {
         try {
             new PessoaJuridicaDAO().salvar(objeto);
+            LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaPessoaFisica);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao inserir pessoa jurídica!");
             Logger.getLogger(PessoaJuridicaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -36,6 +38,7 @@ public class PessoaJuridicaController {
     public void excluirPessoaJuridica(Object objeto) {
         try {
             new PessoaJuridicaDAO().excluir(objeto);
+            LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaPessoaFisica);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir pessoa jurídica!");
             Logger.getLogger(PessoaJuridicaController.class.getName()).log(Level.SEVERE, null, ex);

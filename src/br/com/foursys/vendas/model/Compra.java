@@ -48,7 +48,7 @@ public class Compra implements Serializable {
     private String dataCompra;
     @Basic(optional = false)
     @Column(name = "valor_total")
-    private String valorTotal;
+    private double valorTotal;
     @Basic(optional = false)
     @Column(name = "forma_pagamento")
     private String formaPagamento;
@@ -70,7 +70,7 @@ public class Compra implements Serializable {
         this.idCompra = idCompra;
     }
 
-    public Compra(Integer idCompra, String dataCompra, String valorTotal, String formaPagamento) {
+    public Compra(Integer idCompra, String dataCompra, double valorTotal, String formaPagamento) {
         this.idCompra = idCompra;
         this.dataCompra = dataCompra;
         this.valorTotal = valorTotal;
@@ -93,11 +93,11 @@ public class Compra implements Serializable {
         this.dataCompra = dataCompra;
     }
 
-    public String getValorTotal() {
+    public double getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(String valorTotal) {
+    public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
 

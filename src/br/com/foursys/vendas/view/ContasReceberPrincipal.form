@@ -3,6 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
+    <Property name="title" type="java.lang.String" value="Contas a Receber"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -30,11 +31,11 @@
                   <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jbtEditar" min="-2" pref="170" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="jbtCancelar" min="-2" pref="170" max="-2" attributes="0"/>
-                      <EmptySpace pref="33" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="jbtSalvar" min="-2" pref="170" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbtCancelar" min="-2" pref="170" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="jbtSair" min="-2" pref="170" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
@@ -90,17 +91,20 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jlbFuncionario" pref="139" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="jlbValorTotal" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jcbPagamento" alignment="0" min="-2" pref="82" max="-2" attributes="0"/>
-                                      <Component id="jlbDataVencimento" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jlbValorTotal" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="jlbDataVencimento" max="32767" attributes="0"/>
+                                      <Component id="jcbPagamento" pref="82" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jlbFuncionario" min="-2" pref="248" max="-2" attributes="0"/>
+                                  <EmptySpace pref="15" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="1" attributes="0">
@@ -109,14 +113,14 @@
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlbDataVenda" min="-2" max="-2" attributes="0"/>
                               <Component id="jcbVencimento" min="-2" pref="90" max="-2" attributes="0"/>
-                              <Component id="jlbFormaPagamento" alignment="0" min="-2" pref="129" max="-2" attributes="0"/>
-                              <Component id="jlbNomeCliente" min="-2" pref="207" max="-2" attributes="0"/>
+                              <Component id="jlbDataVenda" min="-2" pref="90" max="-2" attributes="0"/>
+                              <Component id="jlbFormaPagamento" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
+                              <Component id="jlbNomeCliente" min="-2" pref="217" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Component id="jtfDataPagamento" min="-2" pref="82" max="-2" attributes="0"/>
@@ -135,12 +139,12 @@
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jlbFuncionario" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                          <Component id="jLabel8" alignment="3" max="32767" attributes="0"/>
-                          <Component id="jlbNomeCliente" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="jlbNomeCliente" alignment="0" min="-2" pref="16" max="-2" attributes="0"/>
+                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -148,21 +152,21 @@
                               <Component id="jLabel9" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlbDataVenda" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel1" max="32767" attributes="0"/>
+                              <Component id="jlbDataVenda" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlbValorTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="jLabel7" max="32767" attributes="0"/>
+                              <Component id="jlbValorTotal" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlbDataVencimento" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jlbDataVencimento" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                       </Group>
@@ -194,9 +198,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbDataVencimento">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="  /  /    "/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
@@ -204,9 +205,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbValorTotal">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="R$ 0,00"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
@@ -214,9 +212,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbFuncionario">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Nome funcion&#xe1;rio"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
@@ -224,9 +219,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbNomeCliente">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Nome do cliente"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
@@ -234,9 +226,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbFormaPagamento">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cheque ou Cr&#xe9;dito"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -244,9 +233,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbDataVenda">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="  /  /    "/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlbPagamento">
           <Properties>
@@ -359,12 +345,12 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="0">
-                    <Column editable="true" title="Cliente" type="java.lang.Object"/>
-                    <Column editable="true" title="Valor Total" type="java.lang.Object"/>
-                    <Column editable="true" title="Data da venda" type="java.lang.Object"/>
-                    <Column editable="true" title="Data de vencimento" type="java.lang.Object"/>
-                    <Column editable="true" title="Vencida" type="java.lang.Object"/>
-                    <Column editable="true" title="Pagamento" type="java.lang.Object"/>
+                    <Column editable="false" title="Cliente" type="java.lang.Object"/>
+                    <Column editable="false" title="Valor Total" type="java.lang.Object"/>
+                    <Column editable="false" title="Data da venda" type="java.lang.Object"/>
+                    <Column editable="false" title="Data de vencimento" type="java.lang.Object"/>
+                    <Column editable="false" title="Vencida" type="java.lang.Object"/>
+                    <Column editable="false" title="Pagamento" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

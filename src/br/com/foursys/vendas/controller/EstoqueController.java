@@ -6,6 +6,7 @@ import br.com.foursys.vendas.model.Produto;
 import br.com.foursys.vendas.util.Mensagem;
 import br.com.foursys.vendas.util.Valida;
 import br.com.foursys.vendas.view.EstoquePrincipal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,6 +51,7 @@ public class EstoqueController {
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.salvar(estoque);
+                    LoginController.verificaLog(Mensagem.salvar, Mensagem.tabelaEstoque);
                     JOptionPane.showMessageDialog(null, Mensagem.estoqueInseridoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.estoqueInseridoErro);
@@ -71,6 +73,7 @@ public class EstoqueController {
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.salvar(estoque);
+                    LoginController.verificaLog(Mensagem.alterar, Mensagem.tabelaEstoque);
                     JOptionPane.showMessageDialog(null, Mensagem.estoqueAlteradoSucesso);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, Mensagem.estoqueAlteradoErro);
@@ -115,6 +118,7 @@ public class EstoqueController {
                 EstoqueDAO dao = new EstoqueDAO();
                 try {
                     dao.excluir(estoque);
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaEstoque);
                     JOptionPane.showMessageDialog(null, Mensagem.estoqueExcluidoSucesso);
                     listarEstoque();
                 } catch (Exception ex) {
@@ -239,17 +243,18 @@ public class EstoqueController {
         this.viewEstoque.getJlbValorCusto().setText(produto.getValorCusto() + "");
     }
 // metodo responsavel por fazer as validações necessarias
+
     public boolean validarSalvar() {
         if (Valida.verificarCombo(this.viewEstoque.getJcbProduto().getSelectedIndex())) {
             JOptionPane.showMessageDialog(null, Mensagem.produtoNaoSelecionado, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewEstoque.getJcbProduto().grabFocus();
             return false;
         } else if (Valida.verificarVazio(this.viewEstoque.getJtfQtdeMin().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeMaximaVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeVazio, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
         } else if (!Valida.validarNumero(this.viewEstoque.getJtfQtdeMin().getText())) {
-            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeMaximaInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, Mensagem.estoqueQuantidadeInvalido, Mensagem.atencao, JOptionPane.WARNING_MESSAGE);
             this.viewEstoque.getJtfQtdeMin().grabFocus();
             return false;
         } else if (Valida.verificarVazio(this.viewEstoque.getJtfQtde().getText())) {
@@ -266,6 +271,25 @@ public class EstoqueController {
             return false;
         }
         return true;
+    }
+
+    public List<Estoque> buscarEstoque() {
+
+        EstoqueDAO dao = new EstoqueDAO();
+        List<Estoque> listaEstoque = new ArrayList<Estoque>();
+
+        try {
+            listaEstoque = dao.buscarTodos();
+        } catch (Exception ex) {
+            Logger.getLogger(EstoqueController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listaEstoque;
+    }
+
+    public void salvarEstoqueDAO(Estoque estoque) {
+        EstoqueDAO dao = new EstoqueDAO();
+        dao.salvar(estoque);
     }
 
 }

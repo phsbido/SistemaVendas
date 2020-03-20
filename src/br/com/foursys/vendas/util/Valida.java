@@ -5,10 +5,13 @@ import br.com.caelum.stella.validation.CNPJValidator;
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.caelum.stella.validation.InvalidStateException;
 import br.com.caelum.stella.validation.ie.IESaoPauloValidator;
+import br.com.foursys.vendas.controller.EstoqueController;
+import br.com.foursys.vendas.model.Estoque;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,6 +87,20 @@ public class Valida {
         }
     }
 
+    public static boolean validarDataVencimento(String data) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");//Formata a data
+            sdf.setLenient(false);//Seta para que não seja estranha ex:31/02/2019
+            sdf.parse(data);//Tenta colocar a string data num objeto date
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataVerificada = LocalDate.parse(data, dtf);//Tenta colocar a string data formatada num objeto datetime 
+            LocalDate hoje = LocalDate.now();//Verifica se a data é maior que a data atual
+            return dataVerificada.compareTo(hoje) >= 0;
+        } catch (ParseException ex) {
+            return false;
+        }
+    }
+
     public static boolean validarNome(String nome) {
         nome = nome.replace(" ", "");
         for (int i = 0; i < nome.length(); i++) {
@@ -124,4 +141,11 @@ public class Valida {
         return data;
     }
 
+    public static boolean verificaQuantidade(int quantidade) {
+        return quantidade <= 0;
+    }
+
+    public static boolean quantidadeEstoque(int quantidade, Estoque estoque) {
+        return quantidade > estoque.getQuantidadeEstoque();
+    }
 }

@@ -28,6 +28,7 @@ public class ItemCompraController {
             for (ItemCompra itemCompra : listaExcluir) {
                 if (itemCompra.getCompraIdCompra().getIdCompra() == compra.getIdCompra()) {
                     dao.excluir(itemCompra);
+                    LoginController.verificaLog(Mensagem.excluir, Mensagem.tabelaItemCompra);
                 }
             }
         } catch (Exception ex) {

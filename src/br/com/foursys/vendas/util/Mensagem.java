@@ -100,7 +100,7 @@ public class Mensagem {
     public static String pagamentoNaoSelecionado = "Selecione uma forma de pagamento.";
     public static String pagamentoSimNao = "Selecione se o produto foi pago.";
     public static String pagamentoVencido = "Informe se o pagamento está vencido.";
-    
+
     //mensagens Conta
     public static String contaNaoSelecionada = "Por favor, selecione uma conta.";
     public static String contaAlteradaSucesso = "Alteração de conta salva com sucesso.";
@@ -118,6 +118,7 @@ public class Mensagem {
     public static String estoqueAlteradoSucesso = "Estoque alterado com sucesso!";
     public static String estoqueAlteradoErro = "Falha ao alterar estoque!";
     public static String estoqueNaoSelecionado = "Por favor, selecione um estoque para realizar esta ação.";
+    public static String estoqueIndisponivel = "Estoque indisponível.";
     //Mensagens Geral
     public static String confirmaSair = "Deseja realmente sair?";
     public static String atencao = " Atenção!";
@@ -128,15 +129,37 @@ public class Mensagem {
     public static String dataVazia = "Por favor, informe uma data.\nCampo obrigatório.";
     public static String dataInvalida = "Data inválida!";
     //Mensagens Compra
-    public static String valorMenorQueZero = "O valor não pode ser menor que zero!";
+    public static String valorMenorQueZero = "O valor com desconto não pode ser menor que zero!";
     public static String descontoMenorQueZero = "O desconto não pode ser menor que zero!";
     public static String confirmaCompra = "Deseja realmente confirmar esta compra?";
     public static String confirmaVenda = "Deseja realmente confirmar esta Venda?";
     public static String erroSalvarContaPagar = "Erro ao salvar conta a pagar";
     public static String erroSalvarContaReceber = "Erro ao salvar conta a receber";
     public static String erroSalvarCompra = "Erro ao salvar compra.";
+    public static String erroSalvarVenda = "Erro ao salvar venda.";
     public static String sucessoSalvarContaPagar = "Conta a pagar salva com sucesso!";
     public static String sucessoSalvarContaReceber = "Conta a receber salva com sucesso!";
     public static String sucessoSalvarCompra = "Compra salva com sucesso!";
     public static String sucessoSalvarVenda = "Venda salva com sucesso!";
+
+    //mensagens log
+    public static String salvar = "Salvar";
+    public static String alterar = "Alterar";
+    public static String excluir = "Excluir";
+    public static String tabelaClientes = "Clientes";
+    public static String tabelaFuncionario = "Funcionário";
+    public static String tabelaFornecedor = "Fornecedor";
+    public static String tabelaProduto = "Produto";
+    public static String tabelaEstoque = "Estoque";
+    public static String tabelaContasPagar = "Contas a pagar";
+    public static String tabelaContasReceber = "Contas a receber";
+    public static String tabelaCompras = "Compras";
+    public static String tabelaVendas = "Vendas";
+    public static String tabelaContato = "Contato";
+    public static String tabelaEndereco = "Endereco";
+    public static String tabelaItemCompra = "Item Compra";
+    public static String tabelaItemVenda = "Item Venda";
+    public static String login = "Login";
+    public static String tabelaPessoaFisica = "Pessoa Física";
+    public static String tabelaPessoaJuridica = "Pessoa Jurídica";
 }//fim da classe
